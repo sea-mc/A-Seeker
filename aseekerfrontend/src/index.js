@@ -10,11 +10,13 @@ import Login from "./components/login";
 
 const mux = (
     <Router>
+        {/*Generic elements required for all pages */}
         <div className="App">
             <Navbar/>
             <SideBar/>
         </div>
-        <Route path="/login" component={Login} replace/>
+        <Route path={"/login"} component={Login} replace/>
+        <Route path={"/"} exact component={HomePage} replace/>
     </Router>
 );
 ReactDOM.render(

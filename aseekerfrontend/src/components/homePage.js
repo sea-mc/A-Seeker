@@ -8,11 +8,6 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 function HomePage() {
   return (
     <div>
-        {/*Generic elements required for all pages */}
-        <div className="App">
-          <Navbar/>
-          <SideBar/>
-        </div>
         {/*Page specific content*/}
         <div className="homePage">
             <h1> What is A-Seeker?</h1>
