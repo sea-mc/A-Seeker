@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './components/css/index.css';
-import HomePage from './components/homePage';
+import bodyContent from './components/bodyContent';
 import * as serviceWorker from './serviceWorker';
 import { Route, Link, BrowserRouter as Router, Switch, NavLink } from 'react-router-dom'
 import Navbar from "./components/navbar";
 import SideBar from "./components/sideBar";
 import Login from "./components/login";
+import Register from "./components/register";
 
 const mux = (
     <Router>
@@ -16,7 +17,8 @@ const mux = (
             <SideBar/>
         </div>
         <Route path={"/login"} component={Login} replace/>
-        <Route path={"/"} exact component={HomePage} replace/>
+        <Route path={"/"} exact component={bodyContent} replace/>
+        <Route path={"/register"} component={Register} replace/>
     </Router>
 );
 ReactDOM.render(

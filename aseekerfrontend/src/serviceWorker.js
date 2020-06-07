@@ -123,7 +123,7 @@ function checkValidServiceWorker(swUrl, config) {
     })
     .catch(() => {
       console.log(
-        'No internet connection found. HomePage is running in offline mode.'
+        'No internet connection found. bodyContent is running in offline mode.'
       );
     });
 }

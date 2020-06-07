@@ -3,7 +3,7 @@ import './css/bodyContent.css'
 import './css/bootstrap.css';
 import bodyContent from "./bodyContent";
 
-class Login extends Component {
+class Register extends Component {
     render() {
         return (
             <form className={bodyContent()}>
@@ -18,15 +18,17 @@ class Login extends Component {
                     <label>Password</label>
                     <input type="password" className="form-control" placeholder="Enter password" />
                 </div>
-                
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
-                </p>
+                <div className="form-group">
+                    <label>Password</label>
+                    <input type="password" className="form-control" placeholder="Confirm password" />
+                </div>
+
+
+                <button type="submit" className="btn btn-primary btn-block">Register</button>
             </form>
         );
     }
 }
 
-export default Login;
+export default Register;

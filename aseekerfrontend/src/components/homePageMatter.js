@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import "./css/homePage.css"
+import "./css/bodyContent.css"
 
 class homePageMatter extends Component {
     render() {

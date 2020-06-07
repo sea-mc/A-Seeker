@@ -1,15 +1,15 @@
 import React from 'react';
 import logo from '../logo.svg';
 import './css/App.css';
-import './css/homePage.css'
+import './css/bodyContent.css'
 import Navbar from "./navbar";
 import SideBar from "./sideBar";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-function HomePage() {
+function bodyContent() {
   return (
     <div>
         {/*Page specific content*/}
-        <div className="homePage">
+        <div className="bodyContent">
             <h1> What is A-Seeker?</h1>
             <p>A-Seeker is a tool that uses speech recognition to transcribe audio files. Once an
                 audio file has been transcribed, you can search through the transcription and be taken to that point in the media.
@@ -29,4 +29,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default bodyContent;
