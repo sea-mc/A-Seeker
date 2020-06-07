@@ -1,0 +1,12 @@
+.homePage {
+    /* make sure the contents are not under the sidebar */
+    margin-left: 15vw; /* Same as the width of the sidebar */
+    position: absolute;
+    height: 100%;
+    all: revert;
+    padding-left: 15px;
+}
+
+.quickStart {
+    text-align: center;
+}

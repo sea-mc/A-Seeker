@@ -1,13 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './components/css/index.css';
+import Index from './components/index';
+import homePageMatter from "./components/homePageMatter";
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+
+            <Router>
+                <div>
+                    <Route path="/" component={Index} />
+                    {/*<Route path="/register" component={NavBar} />*/}
+                    {/*<Route path="/login" component={NavBar} />*/}
+                </div>
+            </Router>,
+
   document.getElementById('root')
 );
 

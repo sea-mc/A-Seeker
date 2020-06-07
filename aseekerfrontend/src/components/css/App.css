@@ -1,0 +1,65 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 2vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: calc(8px + 2vmin);
+  color: white;
+}
+.App-header div button {
+  padding: 5px;
+  flex: 1;
+}
+
+.App-Sidebar {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 15vw; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #edeced; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+.App-Sidebar h4 {
+  font-size: 25px;
+}
+
+.App-Sidebar ul {
+
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App-body {
+  margin-left: 160px; /* Same as the width of the sidebar */
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
