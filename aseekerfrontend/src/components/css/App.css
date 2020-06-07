@@ -44,8 +44,16 @@
 }
 
 .App-Sidebar ul {
-
+  padding-top: 15%;
+  list-style-type: none;
+  font-size: 23px;
 }
+
+.App-Sidebar li {
+  padding: 10px;
+  border: black thin;
+}
+
 
 .App-link {
   color: #61dafb;

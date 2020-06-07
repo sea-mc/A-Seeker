@@ -4,16 +4,16 @@ import './css/App.css';
 import './css/homePage.css'
 import Navbar from "./navbar";
 import SideBar from "./sideBar";
-import homePageMatter from "./homePageMatter";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-function Index() {
+function HomePage() {
   return (
     <div>
+        {/*Generic elements required for all pages */}
         <div className="App">
           <Navbar/>
           <SideBar/>
-
         </div>
+        {/*Page specific content*/}
         <div className="homePage">
             <h1> What is A-Seeker?</h1>
             <p>A-Seeker is a tool that uses speech recognition to transcribe audio files. Once an
@@ -22,7 +22,7 @@ function Index() {
 
             <div className="quickStart">
                 <h3>I'm going to save my work: </h3>
-                <a href="/signup">Sign Up</a>
+                <a href="/signup">Sign Up</a> Or <a href="/login"> Log in</a>
                 <h3>I'm just trying this out: </h3>
                 <a href="/transcriptions">Transcriptions Page</a>
             </div>
@@ -34,4 +34,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default HomePage;

@@ -1,22 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './components/css/index.css';
-import Index from './components/index';
-import homePageMatter from "./components/homePageMatter";
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import HomePage from './components/homePage';
 import * as serviceWorker from './serviceWorker';
+import { Route, Link, BrowserRouter as Router, Switch, NavLink } from 'react-router-dom'
+import Navbar from "./components/navbar";
+import SideBar from "./components/sideBar";
+import Login from "./components/login";
 
-
+const mux = (
+    <Router>
+        <div className="App">
+            <Navbar/>
+            <SideBar/>
+        </div>
+        <Route path="/login" component={Login} replace/>
+    </Router>
+);
 ReactDOM.render(
-
-            <Router>
-                <div>
-                    <Route path="/" component={Index} />
-                    {/*<Route path="/register" component={NavBar} />*/}
-                    {/*<Route path="/login" component={NavBar} />*/}
-                </div>
-            </Router>,
-
+    mux,
   document.getElementById('root')
 );
 

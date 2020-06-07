@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
+import { Route, Link, BrowserRouter as Router, Switch, NavLink } from 'react-router-dom'
 
 class Navbar extends Component {
     render() {
         return (
             <header className="App-header">
-                <div>
-                    <button>Log In</button>
-                    <button>Sign Up</button>
-                </div>
+                    <div>
+                        <Link to="/login">Log In</Link>
+                        <Link to = "/register">Sign Up</Link>
+                    </div>
             </header>
 
         );
