@@ -1,13 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './components/css/index.css';
+import bodyContent from './components/bodyContent';
 import * as serviceWorker from './serviceWorker';
+import { Route, Link, BrowserRouter as Router, Switch, NavLink } from 'react-router-dom'
+import Navbar from "./components/navbar";
+import SideBar from "./components/sideBar";
+import Login from "./components/login";
+import Register from "./components/register";
 
+const mux = (
+    <Router>
+        {/*Generic elements required for all pages */}
+        <div className="App">
+            <Navbar/>
+            <SideBar/>
+        </div>
+        <Route path={"/login"} component={Login} replace/>
+        <Route path={"/"} exact component={bodyContent} replace/>
+        <Route path={"/register"} component={Register} replace/>
+    </Router>
+);
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    mux,
   document.getElementById('root')
 );
 

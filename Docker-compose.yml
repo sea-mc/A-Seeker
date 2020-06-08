@@ -9,6 +9,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - '1337:80'
+<<<<<<< HEAD
 
   db:
      image: mysql:5.7
@@ -23,3 +24,5 @@ services:
 
 volumes:
     db_data: {}
+=======
+>>>>>>> UC-5-Registration

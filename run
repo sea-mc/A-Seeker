@@ -1,5 +1,14 @@
 #!/bin/bash
 
+<<<<<<< HEAD
 docker rm frontend
 
 docker-compose up -d 
+=======
+#This script starts the A-Seeker architecture
+
+docker rm frontend
+
+
+docker-compose up -d --build
+>>>>>>> UC-5-Registration
