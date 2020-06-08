@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./aseekerfrontend
+      dockerfile: Dockerfile
+    ports:
+      - '1337:80'
+
+  db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: password123
+       MYSQL_DATABASE: aseeker
+       MYSQL_USER: root
+       MYSQL_PASSWORD: toor
+
+volumes:
+    db_data: {}
