@@ -13,6 +13,7 @@ services:
   database:
      container_name: audio_database
      image: mysql:5.7
+     command: --init-file sqlStartup.sql
      volumes:
        - db_data:/var/lib/mysql
      restart: always
