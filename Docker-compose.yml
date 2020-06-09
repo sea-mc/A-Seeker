@@ -11,11 +11,12 @@ services:
       - '1337:80'
 
   database:
-     container_name: audio_database
+     container_name: transcription_database
      image: mysql:5.7
-     command: --init-file sqlStartup.sql
      volumes:
        - db_data:/var/lib/mysql
+       - ./mysql:/tmp/db
+     command: --init-file /tmp/db/sqlStartup.sql
      restart: always
      environment:
        MYSQL_ROOT_PASSWORD: password123

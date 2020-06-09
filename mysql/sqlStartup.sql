@@ -14,8 +14,8 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `aseeker` DEFAULT CHARACTER SET utf8 ;
+USE `aseeker` ;
 
 -- -----------------------------------------------------
 -- Table `mydb`.`account`
@@ -49,3 +49,8 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'toor';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
+
+FLUSH PRIVILEGES;

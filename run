@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#This script starts the A-Seeker architecture
+docker-compose down 
 
-docker-compose down
+docker rm frontend
 
 docker-compose up -d --build
