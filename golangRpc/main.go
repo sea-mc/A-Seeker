@@ -1,39 +1,35 @@
 package main
 
 import (
-	userAuth "./controller/UserAuthentication"
-	"database/sql"
-	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	userAuthController "./controller/UserAuthentication"
+	userAuthService "./service/userAuth"
+
+	deepSpeechController "./controller/deepSpeech"
+	transcriptionStorageController "./controller/transcriptionStorage"
 	"github.com/prometheus/common/log"
 	"net/http"
-	"time"
 )
-const (
-	host = "ASeeker-transcription-database"
-	//host = "tcp(127.0.0.1)"
-
-	port     = 3306
-	user     = "root"
-	password = "toor"
-	dbname   = "aseeker"
-)
-
-var psqlInfo = fmt.Sprintf("%s:%s@tcp(%s:3306)/%s", user,password, host, dbname)
 
 func main() {
-	time.Sleep(10*time.Second)
-	var Database, err = sql.Open("mysql", psqlInfo)
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = Database.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-
+	userAuthService.InitDatabaseConn()
 	log.Info("Setting Service Up On Port 1177")
 	mux := http.DefaultServeMux
-	mux.HandleFunc("/userauth/register", userAuth.RegisterUser)
+
+	//userAuthController API
+	mux.HandleFunc("/userauth/register/new", userAuthController.RegisterUser)
+	mux.HandleFunc("/userauth/register/check", userAuthController.CheckForUser)
+	mux.HandleFunc("/userauth/register/delete", userAuthController.DeleteRegisteredUser)
+	mux.HandleFunc("/userauth/register/login", userAuthController.LoginUser)
+
+	//Transcription Storage API
+	mux.HandleFunc("/transcriptions/get/all", transcriptionStorageController.GetTranscriptions)
+	mux.HandleFunc("/transcriptions/get/single", transcriptionStorageController.GetTranscription)
+	mux.HandleFunc("/transcriptions/delete", transcriptionStorageController.DeleteTranscription)
+
+	//deepSpeech API
+	mux.HandleFunc("/deepSpeech/media/upload", deepSpeechController.UploadMedia)
+	mux.HandleFunc("/deepSpeech/media/delete", deepSpeechController.DeleteMedia)
+	mux.HandleFunc("/deepSpeech/media/get", deepSpeechController.GetMedia)
+
+	log.Info("Service Up On Port 1177")
 }
