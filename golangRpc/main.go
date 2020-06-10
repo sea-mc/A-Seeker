@@ -31,5 +31,6 @@ func main() {
 	mux.HandleFunc("/deepSpeech/media/delete", deepSpeechController.DeleteMedia)
 	mux.HandleFunc("/deepSpeech/media/get", deepSpeechController.GetMedia)
 
+	log.Fatal(http.ListenAndServe(":1177", mux))
 	log.Info("Service Up On Port 1177")
 }
