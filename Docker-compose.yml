@@ -1,7 +1,5 @@
 version: '3.7'
-
 services:
-
   frontend:
     container_name: frontend
     build:
@@ -9,20 +7,42 @@ services:
       dockerfile: Dockerfile
     ports:
       - '1337:80'
+    networks:
+      - aseeker
 
   database:
-     container_name: transcription_database
-     image: mysql:5.7
-     volumes:
-       - db_data:/var/lib/mysql
-       - ./mysql:/tmp/db
-     command: --init-file /tmp/db/sqlStartup.sql
-     restart: always
-     environment:
-       MYSQL_ROOT_PASSWORD: password123
-       MYSQL_DATABASE: aseeker
-       MYSQL_USER: root
-       MYSQL_PASSWORD: toor
+    container_name: ASeeker-transcription-database
+    image: 'mysql:5.7'
+    volumes:
+      - 'db_data:/var/lib/mysql'
+      - './mysql:/tmp/db'
+    command: '--init-file /tmp/db/sqlStartup.sql'
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: aseeker
+    networks:
+      - aseeker
+
+  middware:
+    container_name: golang-RPC-middleware
+    build:
+      context: ./golangRpc
+      dockerfile: Dockerfile
+    ports:
+      - '1177:1177'
+    networks:
+      - aseeker
+
+#for a good networking tutorial see https://runnable.com/docker/docker-compose-networking
+networks:
+    aseeker:
+        # use the bridge driver
+        driver: bridge
+        ipam:
+            driver: default
+
 
 volumes:
-    db_data: {}
+  db_data: {}
