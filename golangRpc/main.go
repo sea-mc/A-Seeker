@@ -3,6 +3,8 @@ package main
 import (
 	userAuthController "./controller/UserAuthentication"
 	userAuthService "./service/userAuth"
+	"fmt"
+	"github.com/gorilla/handlers"
 
 	deepSpeechController "./controller/deepSpeech"
 	transcriptionStorageController "./controller/transcriptionStorage"
@@ -31,6 +33,13 @@ func main() {
 	mux.HandleFunc("/deepSpeech/media/delete", deepSpeechController.DeleteMedia)
 	mux.HandleFunc("/deepSpeech/media/get", deepSpeechController.GetMedia)
 
-	log.Fatal(http.ListenAndServe(":1177", mux))
+
+
+	//uses old school gorilla package to handle mux
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}) //only allowed headers
+	methods := handlers.AllowedMethods([]string{"GET", "POST"}) //only allowed requests
+	origins := handlers.AllowedOrigins([]string{"*"}) //any possible domain origin
+
+	fmt.Println(http.ListenAndServe(":1177", handlers.CORS(headers, methods, origins) (mux))) //change to 8080 for localhost
 	log.Info("Service Up On Port 1177")
 }

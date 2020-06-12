@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	host     = "ASeeker-transcription-userAuth"
+	host     = "ASeeker-transcription-database"
 	port     = 3306
 	user     = "root"
 	password = "toor"
@@ -20,8 +20,9 @@ var Database *sql.DB
 
 func InitDatabaseConn() {
 	log.Info("Starting Database Conn...")
-	log.Info("Sleeping for 5 seconds...")
-	time.Sleep(5 * time.Second)
+	log.Info("Sleeping for 10 seconds...")
+	time.Sleep(10 * time.Second)
+	log.Info("Attempting connection...")
 
 	var psqlInfo = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", user, password, host, port, dbname)
 	tmpdb, err := sql.Open("mysql", psqlInfo)
@@ -51,7 +52,7 @@ func CheckIfUserIsRegistered(email string) bool {
 }
 
 func RegisterUser(email, password string) error {
-	sqlq := "insert into accounts(email, password) values ('" + email + "', '" + password + "');"
+	sqlq := "insert into account (email, password) values ('" + email + "', '" + password + "');"
 	_, e := Database.Query(sqlq)
 	if e != nil {
 		log.Error(e)
@@ -62,7 +63,7 @@ func RegisterUser(email, password string) error {
 }
 
 func DeleteUser(email string) error {
-	sqlq := "DELETE FROM accounts where email = '" + email + "';"
+	sqlq := "DELETE FROM account where email = '" + email + "';"
 	_, e := Database.Query(sqlq)
 	if e != nil {
 		log.Error(e)

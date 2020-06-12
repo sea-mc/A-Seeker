@@ -10,6 +10,7 @@ RUN go get github.com/google/uuid
 RUN go get github.com/pkg/errors
 RUN go get github.com/sirupsen/logrus
 RUN go get github.com/prometheus/common/log
+RUN go get github.com/gorilla/handlers
 RUN go get github.com/go-sql-driver/mysql
 COPY . ./
 

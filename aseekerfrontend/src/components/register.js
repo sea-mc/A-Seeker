@@ -14,20 +14,20 @@ class Register extends Component {
         event.preventDefault();
 
         var requestOptions = {
-                    method: 'POST',
-                    redirect: 'follow'
-                };
-                const data = new FormData(event.email);
-                console.log(data);
-                console.log("http://localhost:1177/udserauth/register/new?email="+this.state.email +"&password="+this.state.password);
-                fetch("http://localhost:1177/userauth/register/new?email="+this.state.email +"&password="+this.state.password, requestOptions)
-                    .then(response => response.text())
-                    .then(result => function(){
-                        console.log(result);
-                        console.log(result.status);
+            method: 'POST',
+            redirect: 'follow'
+        };
 
-                    })
-                    .catch(error => console.log('error', error));
+        fetch( "http://localhost:1177/userauth/register/new?email="+this.state.email +"&password="+this.state.password, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result)
+                alert("Registration Successful, please check your email")
+            })
+            .catch(error => {
+                console.log('error', error)
+                alert("Internal Server Error, Please refresh page and resubmit form (Sorry!)")
+            });
 
     };
 
