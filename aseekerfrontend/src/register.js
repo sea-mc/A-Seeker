@@ -9,7 +9,6 @@ import SideBar from "./components/sideBar";
 import Login from "./components/login";
 import Register from "./components/register";
 
-
 const mux = (
     <Router>
         {/*Generic elements required for all pages */}
@@ -17,7 +16,7 @@ const mux = (
             <Navbar/>
             <SideBar/>
         </div>
-        {/*<Route path={"/login"} component={Login} replace/>*/}
+        <Route path={"/login"} component={Login} replace/>
         <Route path={"/"} exact component={bodyContent} replace/>
         <Route path={"/register"} component={Register} replace/>
     </Router>
@@ -26,10 +25,11 @@ const mux = (
 
 ReactDOM.render(
     mux,
-  document.getElementById('root')
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
