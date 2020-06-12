@@ -4,8 +4,9 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm ci --silent
 RUN npm install react-scripts@3.4.1 -g --silent
+RUN npm install react-hook-form@5.7.2 -g --silent
+RUN npm ci
 COPY . ./
 RUN npm run build
 
