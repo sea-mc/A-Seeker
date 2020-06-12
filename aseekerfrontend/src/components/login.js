@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
 import './css/bodyContent.css'
 import './css/bootstrap.css';
+import './loginButton'
 import bodyContent from "./bodyContent";
+import LoginButton from "./loginButton";
 
+//Checks the clients cookies for an auth token
+//if one is found it is checked against the middle ware
 class Login extends Component {
+
     render() {
         return (
             <form className={bodyContent()}>
@@ -20,7 +25,7 @@ class Login extends Component {
                 </div>
                 
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                <LoginButton/>
                 <p className="forgot-password text-right">
                     Forgot <a href="#">password?</a>
                 </p>
