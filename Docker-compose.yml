@@ -35,6 +35,18 @@ services:
     networks:
       - aseeker
 
+  deepspeech:
+    container_name: deepspeech
+    build:
+      context: ./deepspeech/DeepSpeech
+      dockerfile: Dockerfile
+    ports:
+      - '1178:1178'
+    networks:
+      - aseeker
+
+
+
 #for a good networking tutorial see https://runnable.com/docker/docker-compose-networking
 networks:
     aseeker:

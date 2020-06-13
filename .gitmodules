@@ -1,7 +1,3 @@
-
 [submodule "DeepSpeech"]
-	path = deepspeech/DeepSpeech
-	url = https://github.com/coxs4/DeepSpeech.git
-[submodule "deepspeech/DeepSpeech"]
 	path = deepspeech/DeepSpeech
 	url = https://github.com/coxs4/DeepSpeech.git
