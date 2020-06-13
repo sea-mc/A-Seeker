@@ -44,9 +44,19 @@ func CheckIfUserIsRegistered(email string) bool {
 	if e != nil {
 		log.Fatal(e)
 	}
-
+	usr := struct {
+		email string
+		password string
+	}{
+		email: "",
+		password: "",
+	}
 	for r.Next() {
-		log.Info(r.Columns())
+		r.Scan(&usr.email, &usr.password)
+		log.Info(usr)
+		if usr.email == email {
+			return true
+		}
 	}
 	return false
 }

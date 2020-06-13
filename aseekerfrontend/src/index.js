@@ -8,6 +8,7 @@ import Navbar from "./components/navbar";
 import SideBar from "./components/sideBar";
 import Login from "./components/login";
 import Register from "./components/register";
+import Cookies from 'universal-cookie';
 
 
 const mux = (
@@ -17,7 +18,7 @@ const mux = (
             <Navbar/>
             <SideBar/>
         </div>
-        {/*<Route path={"/login"} component={Login} replace/>*/}
+        <Route path={"/login"} component={Login} replace/>
         <Route path={"/"} exact component={bodyContent} replace/>
         <Route path={"/register"} component={Register} replace/>
     </Router>

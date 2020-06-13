@@ -2,6 +2,8 @@ package UserAuthentication
 
 import (
 	"../../service/userAuth"
+	"encoding/json"
+	"github.com/google/uuid"
 	"github.com/prometheus/common/log"
 	"net/http"
 )
@@ -74,6 +76,7 @@ func DeleteRegisteredUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
+	log.Info("get a login request")
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -83,12 +86,16 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	if !userAuth.CheckIfUserIsRegistered(email) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	w.WriteHeader(http.StatusAccepted)
+
+	accessToken := uuid.New()
+	j, _ := json.Marshal(accessToken)
+	w.Write(j)
 }
 
 func CheckNetworkError(w http.ResponseWriter, err error) bool {

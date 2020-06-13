@@ -21,12 +21,12 @@ class Register extends Component {
         fetch( "http://localhost:1177/userauth/register/new?email="+this.state.email +"&password="+this.state.password, requestOptions)
             .then(response => response.text())
             .then(result => {
-                console.log(result)
+                console.log(result);
                 alert("Registration Successful, please check your email")
             })
             .catch(error => {
-                console.log('error', error)
-                alert("Internal Server Error, Please refresh page and resubmit form (Sorry!)")
+                console.log('error', error);
+                alert("Internal Server Error, Please refresh page and resubmit form (Sorry!)");
             });
 
     };

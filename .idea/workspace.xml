@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0b7a7a7f-a98b-4333-ba5f-e2a9d346b50c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/aseekerfrontend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/aseekerfrontend/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/golangRpc/service/userAuth/userAuthService.go" beforeDir="false" afterPath="$PROJECT_DIR$/golangRpc/service/userAuth/userAuthService.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1dEIjVr9OwUag7DgRV9LsUDF6rD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0b7a7a7f-a98b-4333-ba5f-e2a9d346b50c" name="Default Changelist" comment="" />
+      <created>1591983961003</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591983961003</updated>
+      <workItem from="1591983962311" duration="12000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="275" y="128" width="1940" height="1166" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1591983974308">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state x="275" y="128" width="1940" height="1166" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.2560.1417/2560.23.2560.1417/-1920.23.1920.1177@0.23.2560.1417" timestamp="1591983974308" />
+  </component>
+</project>

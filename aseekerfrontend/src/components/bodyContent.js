@@ -5,6 +5,7 @@ import './css/bodyContent.css'
 import Navbar from "./navbar";
 import SideBar from "./sideBar";
 import {BrowserRouter as Router, Route} from "react-router-dom";
+import Register from "./register";
 function bodyContent() {
   return (
     <div>
@@ -17,7 +18,7 @@ function bodyContent() {
 
             <div className="quickStart">
                 <h3>I'm going to save my work: </h3>
-                <a href="/signup">Sign Up</a> Or <a href="/login"> Log in</a>
+                <a href="/register">Sign Up</a> Or <a href="/login"> Log in</a>
                 <h3>I'm just trying this out: </h3>
                 <a href="/transcriptions">Transcriptions Page</a>
             </div>
