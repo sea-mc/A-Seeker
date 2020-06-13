@@ -1,4 +1,4 @@
 
 [submodule "DeepSpeech"]
-	path = DeepSpeech
+	path = DeepSpeech/deepspeech
 	url = https://github.com/coxs4/DeepSpeech.git
