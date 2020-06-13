@@ -14,6 +14,7 @@ import (
 
 func main() {
 	userAuthService.InitDatabaseConn()
+	userAuthController.InitAuthMap()
 	log.Info("Setting Service Up On Port 1177")
 	mux := http.DefaultServeMux
 
@@ -33,13 +34,11 @@ func main() {
 	mux.HandleFunc("/deepSpeech/media/delete", deepSpeechController.DeleteMedia)
 	mux.HandleFunc("/deepSpeech/media/get", deepSpeechController.GetMedia)
 
-
-
 	//uses old school gorilla package to handle mux
 	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}) //only allowed headers
-	methods := handlers.AllowedMethods([]string{"GET", "POST"}) //only allowed requests
-	origins := handlers.AllowedOrigins([]string{"*"}) //any possible domain origin
+	methods := handlers.AllowedMethods([]string{"GET", "POST"})                                       //only allowed requests
+	origins := handlers.AllowedOrigins([]string{"*"})                                                 //any possible domain origin
 
-	fmt.Println(http.ListenAndServe(":1177", handlers.CORS(headers, methods, origins) (mux))) //change to 8080 for localhost
+	fmt.Println(http.ListenAndServe(":1177", handlers.CORS(headers, methods, origins)(mux))) //change to 8080 for localhost
 	log.Info("Service Up On Port 1177")
 }
