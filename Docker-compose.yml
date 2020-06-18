@@ -38,7 +38,7 @@ services:
   deepspeech:
     container_name: deepspeech
     build:
-      context: ./deepspeech/DeepSpeech
+      context: ./deepspeech/
       dockerfile: Dockerfile
     ports:
       - '1178:1178'
