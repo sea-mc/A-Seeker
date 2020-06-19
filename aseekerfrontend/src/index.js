@@ -8,7 +8,7 @@ import Navbar from "./components/navbar";
 import SideBar from "./components/sideBar";
 import Login from "./components/login";
 import Register from "./components/register";
-
+import TranscriptionList from "./components/transcriptionList";
 
 const mux = (
     <Router>
@@ -17,9 +17,10 @@ const mux = (
             <Navbar/>
             <SideBar/>
         </div>
-        {/*<Route path={"/login"} component={Login} replace/>*/}
+        <Route path={"/login"} component={Login} replace/>
         <Route path={"/"} exact component={bodyContent} replace/>
         <Route path={"/register"} component={Register} replace/>
+        <Route path={"/transcriptions"} component={TranscriptionList} replace/>
     </Router>
 );
 

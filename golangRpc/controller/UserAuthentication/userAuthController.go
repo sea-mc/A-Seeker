@@ -2,15 +2,18 @@ package UserAuthentication
 
 import (
 	"../../service/userAuth"
+
 	"github.com/prometheus/common/log"
 	"net/http"
 )
 
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
+		log.Errorf("register user got bad http method; expected POST got " + r.Method)
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
+	log.Info("Attempting to register user ")
 
 	email := r.URL.Query()["email"][0]
 	if email == "" {
@@ -23,14 +26,16 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
+	if userAuth.CheckForUser(email) {
+		w.WriteHeader(http.StatusBadRequest)
+	}
 	err := userAuth.RegisterUser(email, password)
 	CheckNetworkError(w, err)
 
 }
 
 //Checks if a registered user exists in the userAuth
-func CheckForUser(w http.ResponseWriter, r *http.Request) {
+func CheckUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -41,7 +46,7 @@ func CheckForUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if userAuth.CheckIfUserIsRegistered(email[0]) {
+	if userAuth.CheckForUser(email[0]) {
 		//user is registered
 		w.WriteHeader(http.StatusFound)
 	} else {
@@ -52,43 +57,53 @@ func CheckForUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func DeleteRegisteredUser(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodDelete {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-	email := r.URL.Query()["email"][0]
-	if email == "" {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Error("Empty email was passed to delete user")
-	}
-
-	if !userAuth.CheckIfUserIsRegistered(email) {
-		w.WriteHeader(http.StatusNotFound)
-		return
-	}
-
-	e := userAuth.DeleteUser(email)
-	CheckNetworkError(w, e)
-
-}
+//func DeleteRegisteredUser(w http.ResponseWriter, r *http.Request) {
+//	if r.Method != http.MethodDelete {
+//		w.WriteHeader(http.StatusMethodNotAllowed)
+//		return
+//	}
+//	email := r.URL.Query()["email"][0]
+//	if email == "" {
+//		w.WriteHeader(http.StatusInternalServerError)
+//		log.Error("Empty email was passed to delete user")
+//	}
+//
+//	if !userAuth.LoginUser(email) {
+//		w.WriteHeader(http.StatusNotFound)
+//		return
+//	}
+//
+//	e := userAuth.DeleteUser(email)
+//	CheckNetworkError(w, e)
+//
+//}
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
+		log.Errorf("Login User got bad http method; expected POST got " + r.Method)
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
+	log.Info("Attempting to log user in")
 	email := r.URL.Query()["email"][0]
 	if email == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	if !userAuth.CheckIfUserIsRegistered(email) {
-		w.WriteHeader(http.StatusUnauthorized)
+	log.Info("user email = " + email)
+	password := r.URL.Query()["password"][0]
+	if password == "" {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
+	if !userAuth.LoginUser(email, password) {
+		log.Errorf("Login attempt failed for email address " + email)
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
 	w.WriteHeader(http.StatusAccepted)
+	log.Info(email + " has logged in")
 }
 
 func CheckNetworkError(w http.ResponseWriter, err error) bool {
