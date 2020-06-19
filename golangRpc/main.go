@@ -7,12 +7,14 @@ import (
 
 	deepSpeechController "./controller/deepSpeech"
 	transcriptionStorageController "./controller/transcriptionStorage"
+	transcriptionService "./service/transcriptions"
 	"github.com/prometheus/common/log"
 	"net/http"
 )
 
 func main() {
 	userAuthService.InitDatabaseConn()
+	transcriptionService.InitTranscriptionDBConn()
 	log.Info("Setting Service Up On Port 1177")
 	mux := http.DefaultServeMux
 
