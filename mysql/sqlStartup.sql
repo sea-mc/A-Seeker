@@ -36,6 +36,14 @@ CREATE TABLE IF NOT EXISTS `aseeker`.`transcription` (
 ENGINE = InnoDB;
 
 
+
+
+--- Load demo data ---
+
+INSERT INTO account (email, password) VALUES ('test@test.com', 'password123');
+INSERT INTO transcription (email, preview, full_transcription, audio_path, title) VALUES ('test@test.com', ' This is the preview ', ' this is the full transcription', '/path/to/audiofile', 'demo transcription');
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

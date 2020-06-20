@@ -12,7 +12,27 @@ class TranscriptionUploadButton extends React.Component {
     render() {
         return (
             <div  className="transcriptionUpload">
-            <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+            <Dropzone
+                onDrop={ acceptedFiles => {
+
+                    //do upload post
+                    const formData = new FormData();
+                    formData.append('myFile', acceptedFiles[0]); //only one file at a time
+                    console.log(formData);
+                    fetch('http://localhost:1177/deepSpeech/media/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data)
+                        })
+                        .catch(error => {
+                            alert("Error Uploading File, Please Try Again (Sorry!)");
+                            console.log(error);
+                        })
+                    }}>
+
                 {({getRootProps, getInputProps}) => (
                     <section  >
                         <div {...getRootProps()} >

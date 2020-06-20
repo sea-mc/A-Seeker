@@ -3,27 +3,37 @@ import TranscriptionUploadButton from "./transcriptionUploadButton";
 import css from "./css/transcriptionList.css"
 class TranscriptionList extends React.Component {
 
-    state = {
-        Transcriptions: []
-    };
+    constructor() {
+        super();
+        this.state = {
+            Transcriptions: []
+        };
+    }
+
 
     componentDidMount() {
 
         //get the user email from the state
         var requestOptions = {
-            method: 'POST',
+            method: 'GET',
             redirect: 'follow',
-            body: JSON.stringify(this.state.email)
+
         };
 
-
+        alert(JSON.stringify(requestOptions.body));
         //call the middleware to get the users transcriptions.
         fetch('http://localhost:1177/transcriptions/get/all',requestOptions )
-            .then((response) => response.json())
+            .then((response) => response.text())
             .then(transcriptionList => {
+                alert(JSON.stringify(transcriptionList));
+
                 this.setState({ Transcriptions: transcriptionList });
-                alert(transcriptionList);
+                alert("Success");
+            }).catch (err => {
+            alert(err);
+            console.log(err)
             });
+
 
     }
 

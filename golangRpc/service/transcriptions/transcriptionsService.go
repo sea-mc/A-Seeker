@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/prometheus/common/log"
-	"time"
 )
 
 var Database *sql.DB
@@ -20,9 +19,6 @@ const (
 )
 
 func InitTranscriptionDBConn() {
-	log.Info("Starting transcriptions Database Conn...")
-	log.Info("Sleeping for 10 seconds...")
-	time.Sleep(10 * time.Second)
 	log.Info("Attempting connection...")
 
 	var psqlInfo = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", user, password, host, port, dbname)
