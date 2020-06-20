@@ -3,11 +3,15 @@ import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '~/audio'
+AUDIO_FOLDER = '~/audio'
+
+if not os.path.exists(AUDIO_FOLDER):
+    os.makedirs(AUDIO_FOLDER)
+
 ALLOWED_EXTENSIONS = {'wav', 'mp3', 'mp4'}
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = AUDIO_FOLDER
 
 if __name__ == '__main__':
     connect_to_db()
@@ -36,5 +40,7 @@ def upload_file():
             return redirect(url_for('uploaded_file',
                                     filename=filename))
     return 200
+
+
 
 

@@ -6,6 +6,11 @@ def transcribe_input(filepath, filename):
         format_file(filename)
     transcribe_one(filepath, "/transcriptions/" + filename)
 
+    # email = user.get_email()
+
+    preview =
+
+
 
 def format_file(filename):
     proper_filetypes = [".mp3", ".mp4"]
