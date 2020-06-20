@@ -21,7 +21,7 @@ func main() {
 	//userAuthController API
 	mux.HandleFunc("/userauth/register/new", userAuthController.RegisterUser)
 	mux.HandleFunc("/userauth/register/check", userAuthController.CheckUser)
-	//mux.HandleFunc("/userauth/register/delete", userAuthController.DeleteRegisteredUser)
+	mux.HandleFunc("/userauth/register/delete", userAuthController.DeleteRegisteredUser)
 	mux.HandleFunc("/userauth/register/login", userAuthController.LoginUser)
 
 	//Transcription Storage API

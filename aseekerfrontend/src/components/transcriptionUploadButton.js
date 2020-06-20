@@ -4,10 +4,6 @@ import TranscriptionUpload from "./css/transcriptionUploadCSS.css"
 
 class TranscriptionUploadButton extends React.Component {
 
-    state = {
-        Transcriptions: []
-    };
-
 
     render() {
         return (
@@ -36,7 +32,7 @@ class TranscriptionUploadButton extends React.Component {
                 {({getRootProps, getInputProps}) => (
                     <section  >
                         <div {...getRootProps()} >
-                            <input {...getInputProps()}/>
+                            <input {...getInputProps()} type="file"/>
                             <p>Drag 'n' drop some files here, or click to select files</p>
                         </div>
                     </section>

@@ -3,11 +3,9 @@ import TranscriptionUploadButton from "./transcriptionUploadButton";
 import css from "./css/transcriptionList.css"
 class TranscriptionList extends React.Component {
 
-    constructor() {
-        super();
-        this.state = {
-            Transcriptions: []
-        };
+    constructor(props) {
+        super(props);
+        this.setState(this.state)
     }
 
 
@@ -17,7 +15,6 @@ class TranscriptionList extends React.Component {
         var requestOptions = {
             method: 'GET',
             redirect: 'follow',
-
         };
 
         alert(JSON.stringify(requestOptions.body));
@@ -26,12 +23,15 @@ class TranscriptionList extends React.Component {
             .then((response) => response.text())
             .then(transcriptionList => {
                 alert(JSON.stringify(transcriptionList));
-
                 this.setState({ Transcriptions: transcriptionList });
                 alert("Success");
+                alert(this.state.Transcriptions)
+
             }).catch (err => {
-            alert(err);
-            console.log(err)
+
+                alert(err);
+                console.log(err)
+
             });
 
 

@@ -94,3 +94,15 @@ func DeleteUser(email string) error {
 
 	return nil
 }
+
+func DeleteTranscriptions(email string) error {
+
+	sqlq := "DELETE FROM transcription where email = '" + email + "';"
+	_, e := Database.Query(sqlq)
+	if e != nil {
+	log.Error(e)
+	return e
+}
+
+	return nil
+}

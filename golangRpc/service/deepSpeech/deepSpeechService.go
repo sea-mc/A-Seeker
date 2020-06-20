@@ -3,6 +3,7 @@ package deepSpeech
 import (
 	"github.com/prometheus/common/log"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 )
 
@@ -24,10 +25,17 @@ func GetMedia(w http.ResponseWriter, fileName string) []byte{
 }
 
 
-func UploadMediaAsBytes(w http.ResponseWriter, file []byte) {
+func UploadMediaAsFile(w http.ResponseWriter, file multipart.File) {
 	log.Info("Sending an upload")
-	w.WriteHeader(http.StatusOK)
-	log.Info(file)
+	req, err := http.NewRequest(http.MethodPost, "http://localhost:1178/", file)
+	if NetworkErr(w, err) {
+		return
+	}
+	resp, err := http.DefaultClient.Do(req)
+	if NetworkErr(w, err) {
+		return
+	}
+	w.WriteHeader(resp.StatusCode)
 	log.Info("Upload Sent")
 }
 

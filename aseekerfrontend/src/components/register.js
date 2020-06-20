@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 import './css/bodyContent.css'
 import './css/bootstrap.css';
+import Cookies from 'universal-cookie'
 
 
+const cookies = new Cookies();
 class Register extends Component {
 
     constructor(props) {
         super(props);
         this.state = { email: '' , password: ''};
+
     }
 
     mySubmitHandler = (event) => {
@@ -21,11 +24,13 @@ class Register extends Component {
         fetch( "http://localhost:1177/userauth/register/new?email="+this.state.email +"&password="+this.state.password, requestOptions)
             .then(response => response.text())
             .then(result => {
-                console.log(result)
+                console.log(result);
                 alert("Registration Successful, please check your email")
+                cookies.set('email', this.state.email, {path: '/'});
+
             })
             .catch(error => {
-                console.log('error', error)
+                console.log('error', error);
                 alert("Internal Server Error, Please refresh page and resubmit form (Sorry!)")
             });
 
