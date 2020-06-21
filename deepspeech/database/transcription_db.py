@@ -19,11 +19,6 @@ def connect_to_db():
     except Error as e:
         print(e)
 
-    finally:
-        if conn is not None and conn.is_connected():
-            conn.close()
-            print('Connection to database closed.')
-
 
 def read_db_config(filename='config.ini', section='mysql'):
     parser = ConfigParser()
