@@ -23,8 +23,10 @@ class Database:
         self.con = pymysql.connect(host=host, user=user, password=password, db=db, cursorclass=pymysql.cursors.DictCursor)
         self.cur = self.con.cursor()
 
-    def insert_transcription(email, preview, full_transcription, audio_path, title):
+    def insert_transcription(self, email, preview, full_transcription, audio_path, title):
         title = title+'.wav'
+
+        self.cur.execute('INSERT INTO transcription (test@test.com,Preview...,A full transcription...,/audio/title,example)')
         # POST method to insert transcription into DB
 
     def get_transcriptions(self):
