@@ -7,7 +7,7 @@ RUN apk update && apk add py3-setuptools
 RUN apk update && apk add py-pip
 
 RUN pip3 install Werkzeug
-RUN pip install mysql-connector-python
+RUN pip install PyMySQL
 RUN pip install Flask
 RUN ls -la
 
