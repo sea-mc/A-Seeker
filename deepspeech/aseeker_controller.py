@@ -8,8 +8,6 @@ def transcribe_input(filepath, filename):
 
     # email = user.get_email()
 
-    preview =
-
 
 
 def format_file(filename):
