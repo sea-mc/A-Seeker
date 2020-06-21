@@ -1,3 +1,4 @@
+import time
 from configparser import ConfigParser
 from database.aseeker_config import *
 import mysql
@@ -5,6 +6,7 @@ from mysql.connector import Error, MySQLConnection
 
 
 def connect_to_db():
+    time.sleep(10)
     conn = None
     try:
         conn = mysql.connector.connect(host=HOST,
