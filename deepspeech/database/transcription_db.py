@@ -1,64 +1,39 @@
-import time
-from configparser import ConfigParser
+import configparser
 from database.aseeker_config import *
-import mysql
-from mysql.connector import Error, MySQLConnection
+from flask import Flask
+import pymysql
+import time
 
 
-def connect_to_db():
-    time.sleep(10)
-    conn = None
-    try:
-        conn = mysql.connector.connect(host=HOST,
-                                       database=DB_NAME,
-                                       user=USER,
-                                       password=PASSWORD)
-        if conn.is_connected():
-            print('Connected to Transcriptions database')
-
-    except Error as e:
-        print(e)
+db = Flask(__name__)
 
 
-def read_db_config(filename='config.ini', section='mysql'):
-    parser = ConfigParser()
-    parser.read(filename)
+db.config['MYSQL_HOST'] = 'localhost'
+db.config['MYSQL_USER'] = 'root'
+db.config['MYSQL_PASSWORD'] = 'toor'
+db.config['MYSQL_DB'] = 'aseeker'
 
-    db = {}
-    if parser.has_section(section):
-        items = parser.items(section)
-        for item in items:
-            db[item[0]] = item[1]
-    else:
-        raise Exception('{0} not found in the {1} file'.format(section, filename))
+class Database:
+    def __init__(self):
+        host = 'localhost'
+        user = 'root'
+        password = 'toor'
+        db = 'aseeker'
 
-    return db
+        self.con = pymysql.connect(host=host, user=user, password=password, db=db, cursorclass=pymysql.cursors.DictCursor)
+        self.cur = self.con.cursor()
+
+    def insert_transcription(email, preview, full_transcription, audio_path, title):
+        title = title+'.wav'
+        # POST method to insert transcription into DB
+
+    def get_transcriptions(self):
+        self.cur.execute('SELECT * FROM transcriptions LIMIT 5')
+
+        result = self.cur.fetchall()
+
+        return result
 
 
-def insert_transcription(email, preview, full_transcription, audio_path, title):
-    if email == '':
-        print("Empty email provided, return error later.")
-        email = 'example@gmail.com'
 
-    query = "INSERT INTO aseeker.transcription(email,preview,full_transcription,audio_path,title) " \
-            "VALUES(%s,%s,%s,%s,%s)"
-    args = (email, preview, full_transcription, audio_path, title)
 
-    try:
-        conn = MySQLConnection(**read_db_config())
-        cursor = conn.cursor()
-        cursor.execute(query, args)
-
-        if cursor.lastrowid:
-            print('Last insert was: ', cursor.lastrowid)
-        else:
-            print('Last insert was not found.')
-
-        conn.commit()
-
-    except Error as e:
-        print(e)
-
-    finally:
-        cursor.close()
-        conn.close()

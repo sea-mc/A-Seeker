@@ -1,4 +1,4 @@
-from database.transcription_db import connect_to_db
+from database.transcription_db import *
 import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -14,8 +14,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = AUDIO_FOLDER
 
 if __name__ == '__main__':
-    connect_to_db()
-    app.run(host='0.0.0.0', port ='1178')
+    app.run(host='0.0.0.0', port='1178')
 
 
 def allowed_file(filename):
@@ -23,7 +22,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/upload', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -42,5 +41,6 @@ def upload_file():
     return 200
 
 
-
-
+@app.route('/user/get-transcriptions', methods=['GET'])
+def get_transcriptions():
+    get_transcriptions()
