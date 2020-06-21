@@ -6,7 +6,7 @@ RUN apk update && apk add python3
 RUN apk update && apk add py3-setuptools
 RUN apk update && apk add py-pip
 
-RUN pip3 install Werkzeug
+RUN pip install Werkzeug
 RUN pip install PyMySQL
 RUN pip install Flask
 RUN ls -la
