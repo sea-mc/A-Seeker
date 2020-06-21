@@ -1,10 +1,11 @@
+import sys
+sys.path.append('~/A-Seeker')
 from database.transcription_db import *
 import os
 from flask import Flask, flash, request, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 
 AUDIO_FOLDER = '~/audio'
-
 if not os.path.exists(AUDIO_FOLDER):
     os.makedirs(AUDIO_FOLDER)
 
@@ -12,9 +13,6 @@ ALLOWED_EXTENSIONS = {'wav', 'mp3', 'mp4'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = AUDIO_FOLDER
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='1178')
 
 
 def allowed_file(filename):
@@ -49,3 +47,7 @@ def upload_file():
 @app.route('/user/get-transcriptions', methods=['GET'])
 def get_transcriptions():
     get_transcriptions()
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='1178')
