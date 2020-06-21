@@ -8,6 +8,7 @@ class Navbar extends Component {
                     <div>
                         <Link to="/login">Log In</Link>
                         <Link to = "/register">Sign Up</Link>
+                        <Link to = "/logout">Log Out</Link>
                     </div>
             </header>
 

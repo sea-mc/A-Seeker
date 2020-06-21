@@ -40,7 +40,6 @@ class Login extends Component {
         if (this.state.password.toString() === '' || this.state.password === undefined) {
             alert("Please enter your password")
         }
-        alert('http://localhost:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString())
         //call auth api and check for user-pass
         fetch('http://localhost:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString(), requestOptions)
             .then(response => response.text())

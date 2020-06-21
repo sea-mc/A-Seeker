@@ -1,40 +1,37 @@
 import React, {Component} from 'react';
 import TranscriptionUploadButton from "./transcriptionUploadButton";
 import css from "./css/transcriptionList.css"
+
+import  Cookies  from 'universal-cookie';
+
+const cookies = new Cookies();
+
 class TranscriptionList extends React.Component {
+
 
     constructor(props) {
         super(props);
-        this.setState(this.state)
+        this.state = {
+            transcriptions: []
+        }
     }
 
-
-    componentDidMount() {
-
-        //get the user email from the state
+    componentWillMount() {
+        //get the user email from the cookies
         var requestOptions = {
             method: 'GET',
             redirect: 'follow',
         };
 
-        alert(JSON.stringify(requestOptions.body));
         //call the middleware to get the users transcriptions.
-        fetch('http://localhost:1177/transcriptions/get/all',requestOptions )
-            .then((response) => response.text())
+        fetch('http://localhost:1177/transcriptions/get/all?email='+cookies.get("email"),requestOptions )
+            .then((response) => response.json())
             .then(transcriptionList => {
-                alert(JSON.stringify(transcriptionList));
-                this.setState({ Transcriptions: transcriptionList });
-                alert("Success");
-                alert(this.state.Transcriptions)
-
+                this.setState({ transcriptions: transcriptionList });
             }).catch (err => {
-
                 alert(err);
                 console.log(err)
-
             });
-
-
     }
 
 
@@ -44,8 +41,7 @@ class TranscriptionList extends React.Component {
                <TranscriptionUploadButton/>
                <br/><br/>
                 <ul className="transcriptionList">
-                    <li>Transcription 1</li>
-                    {this.state.Transcriptions.map(((transcription) => (<li key={transcription.title}>(transcription.title)</li>)))}
+                    {this.state.transcriptions.map(transcription => <div>{transcription.title} {transcription.email} {transcription.preview}</div>)}
                 </ul>
             </div>
         );

@@ -37,6 +37,23 @@ func InitTranscriptionDBConn() {
 		log.Infof("Transcription Database connection successful: %s  %s  %s", user, host, dbname)
 	}
 }
+func GetAll() {
+	sqlq := "select * from transcription;"
+	r, e := Database.Query(sqlq)
+	if e != nil {
+		log.Fatal()
+	}
+
+	var transcriptions []domain.Transcription
+	for r.Next() {
+		log.Info("Got a transcription")
+		trns := domain.Transcription{}
+		r.Scan(&trns.Email, &trns.Preview, &trns.FullTranscription, &trns.ContentFilePath, &trns.Title)
+		transcriptions = append(transcriptions, trns)
+		log.Info(trns)
+	}
+
+}
 func GetTranscriptions(email string) ([]domain.Transcription, error) {
 	sqlq := "select * from transcription where email = '" + email + "';"
 	r, e := Database.Query(sqlq)
@@ -46,6 +63,7 @@ func GetTranscriptions(email string) ([]domain.Transcription, error) {
 
 	var transcriptions []domain.Transcription
 	for r.Next() {
+		log.Info("Got a transcription")
 		trns := domain.Transcription{}
 		r.Scan(&trns.Email, &trns.Preview, &trns.FullTranscription, &trns.ContentFilePath, &trns.Title)
 		transcriptions = append(transcriptions, trns)

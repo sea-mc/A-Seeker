@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './css/bodyContent.css'
 import './css/bootstrap.css';
+import bodyContent from "./bodyContent";
 import  Cookies  from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -8,7 +9,6 @@ const cookies = new Cookies();
 class Account extends Component {
 
     constructor(props) {
-
         super(props);
         this.state = { email: '' , password: ''};
     }
@@ -32,14 +32,17 @@ class Account extends Component {
                 console.log('error', error);
                 alert("Internal Server Error, Please refresh page and resubmit form (Sorry!)")
             });
-
     };
 
 
     render() {
-        return (
+        var email = cookies.get("email");
+        return(
             <div>
-                <h3>Hello, {this.state.email}</h3>
+                <h3 className="bodyContent">Hello, {email}</h3>
+                <br/>
+                <br/>
+                <br/>
                 <form onSubmit={this.mySubmitHandler}  className="form-group">
                     <div className="form-row">
                         <button type="submit" className="btn btn-primary btn-block">Delete Account</button>

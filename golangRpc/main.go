@@ -17,7 +17,7 @@ func main() {
 	transcriptionService.InitTranscriptionDBConn()
 	log.Info("Setting Service Up On Port 1177")
 	mux := http.DefaultServeMux
-
+	transcriptionService.GetAll()
 	//userAuthController API
 	mux.HandleFunc("/userauth/register/new", userAuthController.RegisterUser)
 	mux.HandleFunc("/userauth/register/check", userAuthController.CheckUser)
