@@ -1,4 +1,4 @@
-from deepspeech.database.transcription_db import connect_to_db
+from database.transcription_db import connect_to_db
 import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
