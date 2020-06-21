@@ -7,7 +7,7 @@ const cookies = new Cookies();
 
 //Checks the clients cookies for an auth token
 //if one is found it is checked against the middle ware
-class Login extends Component {
+class TranscriptionView extends Component {
 
     constructor(props) {
         super(props);
@@ -43,12 +43,12 @@ class Login extends Component {
         //call auth api and check for user-pass
         fetch('http://localhost:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString(), requestOptions)
             .then(response => {
-                    if (response.status === 401) {
-                        alert("Login Unsuccessful - Account not registered");
-                    }else{
-                        alert("Login Successful");
-                        cookies.set('email', this.state.email, {path: '/'});
-                    }
+                if (response.status === 401) {
+                    alert("Login Unsuccessful - Account not registered");
+                }else{
+                    alert("Login Successful");
+                    cookies.set('email', this.state.email, {path: '/'});
+                }
             });
     };
 
@@ -78,4 +78,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default TranscriptionView;

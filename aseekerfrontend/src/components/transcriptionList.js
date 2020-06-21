@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import TranscriptionUploadButton from "./transcriptionUploadButton";
 import css from "./css/transcriptionList.css"
-
+import {ListGroup, ListGroupItem} from "react-bootstrap";
 import  Cookies  from 'universal-cookie';
-
+import BodyContent from "./css/bodyContent.css"
+import {MDBInput} from "mdbreact";
 const cookies = new Cookies();
 
 class TranscriptionList extends React.Component {
-
 
     constructor(props) {
         super(props);
@@ -29,20 +29,46 @@ class TranscriptionList extends React.Component {
             .then(transcriptionList => {
                 this.setState({ transcriptions: transcriptionList });
             }).catch (err => {
-                alert(err);
+                alert("Please Login To view your saved transcriptions.");
                 console.log(err)
             });
     }
 
+    goToTranscription = (event) => {
+
+    };
 
     render() {
         return (
             <div className={css.transcriptionList}>
-               <TranscriptionUploadButton/>
+            <div >
+                <TranscriptionUploadButton/>
+                <div className="transcriptionUploadTitleInput">
+                    <textarea
+                        className="form-control"
+                        id="exampleFormControlTextarea1"
+                        rows="5"
+                        placeholder={"Enter Transcription Title Here (Do not include any file extensions)"}
+                        contentEditable={"true"}
+                    />
+                <br/>
+                </div>
+            </div>
                <br/><br/>
-                <ul className="transcriptionList">
-                    {this.state.transcriptions.map(transcription => <div>{transcription.title} {transcription.email} {transcription.preview}</div>)}
-                </ul>
+                    <ul className="transcriptionList">
+                        <ListGroup id="list-group-tabs-example">
+                        {this.state.transcriptions.map((transcription) =>
+                                <ListGroup.Item action onClick={this.goToTranscription}>
+                                    <div>
+                                        <h4>{transcription.title}</h4>
+                                        <h6>{transcription.preview}</h6>
+                                        <br/>
+                                        <h6>{transcription.contentFilePath}</h6>
+                                    </div>
+                                </ListGroup.Item>
+                            )}
+                        </ListGroup>
+                    </ul>
             </div>
         );
     }

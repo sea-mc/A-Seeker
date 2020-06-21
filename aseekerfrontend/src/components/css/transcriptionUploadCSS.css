@@ -1,15 +1,24 @@
 .transcriptionUpload{
     /* make sure the contents are not under the sidebar */
     margin-top: 1vh;
-    margin-left: 15vw; /* Same as the width of the sidebar plus one for padding */
+    margin-left: 30%; /* Same as the width of the sidebar plus one for padding */
     position: center;
-    text-align: left;
-    height: 3%;
-    all: revert;
-    padding-left: 15px;
+    width: 50%;
+
+    text-align: center;
     border: black solid 1px;
 }
 
+.transcriptionUploadTitleInput {
+    /* make sure the contents are not under the sidebar */
+    margin-top: 1vh;
+    margin-left: 30%; /* Same as the width of the sidebar plus one for padding */
+    position: center;
+    width: 50%;
+
+    text-align: center;
+
+}
 .dropzone-previews {
     height: 200px;
     width: 500px;

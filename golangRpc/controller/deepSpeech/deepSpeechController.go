@@ -1,11 +1,11 @@
 package deepSpeech
 
 import (
+	"../../service/deepSpeech"
 	"bytes"
 	"fmt"
 	"github.com/prometheus/common/log"
 	"io"
-	"../../service/deepSpeech"
 	"net/http"
 	"strings"
 )
@@ -16,7 +16,7 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(32 << 20) // limit your max input length!
 	var buf bytes.Buffer
 	// in your case file would be fileupload
-	file, header, err := r.FormFile("myFile")
+	file, header, err := r.FormFile("file")
 	if err != nil {
 		log.Info(header)
 		panic(err)
@@ -25,7 +25,6 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 
 	//send the file
 	deepSpeech.UploadMediaAsFile(w, file)
-
 
 	name := strings.Split(header.Filename, ".")
 	fmt.Printf("File name %s\n", name[0])
