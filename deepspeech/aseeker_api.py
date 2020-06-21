@@ -15,7 +15,7 @@ app.config['UPLOAD_FOLDER'] = AUDIO_FOLDER
 
 if __name__ == '__main__':
     connect_to_db()
-    app.run(port='1178')
+    app.run(host='0.0.0.0', port ='1178')
 
 
 def allowed_file(filename):

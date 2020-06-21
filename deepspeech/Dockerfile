@@ -13,8 +13,6 @@ RUN ls -la
 
 COPY . ./app
 
-EXPOSE 1178
-
 RUN ls -la
 
-ENTRYPOINT ["python3","app/aseeker_api.py"] --port 1178
+ENTRYPOINT ["python3","app/aseeker_api.py"]

@@ -41,7 +41,8 @@ func GetAll() {
 	sqlq := "select * from transcription;"
 	r, e := Database.Query(sqlq)
 	if e != nil {
-		log.Fatal()
+		log.Error(e)
+		return
 	}
 
 	var transcriptions []domain.Transcription
