@@ -1,6 +1,6 @@
 import time
 from configparser import ConfigParser
-from deepspeech.database.aseeker_config import *
+from database.aseeker_config import *
 import mysql
 from mysql.connector import Error, MySQLConnection
 
