@@ -2,16 +2,19 @@ FROM python:3-alpine3.10
 
 MAINTAINER Sean Cox <coxs4@wit.edu>
 
-#Set variables
-ARG GITHUB_TOKEN
-
-# Install git + SSL ca certificates.
-# Git is required for fetching the dependencies.
-# Ca-certificates is required to call HTTPS endpoints.
-RUN apk update && apk add --no-cache git ca-certificates && update-ca-certificates
+RUN apk update && apk add python3
 RUN apk update && apk add py3-setuptools
+RUN apk update && apk add py-pip
 
+RUN pip3 install Werkzeug
+RUN pip install mysql-connector-python
+RUN pip install Flask
+RUN ls -la
 
-COPY . /deepspeech
+COPY . ./app
 
-ENTRYPOINT ["python3","/deepspeech/aseeker_api.py"]
+EXPOSE 1178
+
+RUN ls -la
+
+ENTRYPOINT ["python3","app/aseeker_api.py"] --port 1178
