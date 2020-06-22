@@ -1,5 +1,4 @@
-import sys
-sys.path.append('~/A-Seeker/deepspeech')
+import transcription_db
 import os
 from flask import Flask, flash, request, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
@@ -34,7 +33,8 @@ def upload_file(filename):
 
 @app.route('/get-transcriptions', methods=['GET'])
 def get_transcriptions():
-    transcription_db.get_transcriptions()
+    db = transcription_db.Database()
+    db.get_transcriptions()
 
 
 if __name__ == '__main__':
