@@ -1,3 +1,4 @@
+import json
 import transcription_db
 import os
 from flask import Flask, flash, request, redirect, url_for, jsonify
@@ -34,7 +35,9 @@ def upload_file(filename):
 @app.route('/get-transcriptions', methods=['GET'])
 def get_transcriptions():
     db = transcription_db.Database()
-    db.get_transcriptions()
+    results = db.get_transcriptions()
+
+    return json.dumps(results)
 
 
 if __name__ == '__main__':

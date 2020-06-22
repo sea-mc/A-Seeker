@@ -19,8 +19,8 @@ class Database:
         # POST method to insert transcription into DB
 
     def get_transcriptions(self):
-        self.cur.execute('SELECT * FROM transcriptions;')
+        self.cur.execute('SELECT * FROM transcription;')
 
         result = self.cur.fetchall()
-
+        print(result)
         return result
