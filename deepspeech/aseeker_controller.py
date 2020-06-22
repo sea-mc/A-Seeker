@@ -1,11 +1,10 @@
-from deepspeech.DeepSpeech.transcribe import *
+from .DeepSpeech.transcribe import *
 
 
 def transcribe_input(filepath, filename):
     if ".wav" not in filename:
         format_file(filename)
     transcribe_one(filepath, "/transcriptions/" + filename)
-
     # email = user.get_email()
 
 
