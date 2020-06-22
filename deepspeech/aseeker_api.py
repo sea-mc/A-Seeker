@@ -1,8 +1,8 @@
 import json
-import transcription_db
 import os
-from flask import Flask, flash, request, redirect, url_for, jsonify
-from werkzeug.utils import secure_filename
+import aseeker_controller
+import transcription_db
+from flask import Flask, request
 
 AUDIO_FOLDER = '~/audio'
 if not os.path.exists(AUDIO_FOLDER):
@@ -27,6 +27,8 @@ def upload_file(filename):
 
     with open(os.path.join(AUDIO_FOLDER, filename), "wb") as fp:
         fp.write(request.data)
+
+    aseeker_controller.transcribe_input(AUDIO_FOLDER+"/"+filename, filename)
 
     # Return 201 CREATED
     return "", 201
