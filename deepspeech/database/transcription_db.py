@@ -29,7 +29,7 @@ class Database:
         self.cur.execute('INSERT INTO transcription (test@test.com,Preview...,A full transcription...,/audio/title,example)')
         # POST method to insert transcription into DB
 
-    def get_transcriptions(self):
+    def get_transcriptions_db(self):
         self.cur.execute('SELECT * FROM transcriptions LIMIT 5')
 
         result = self.cur.fetchall()

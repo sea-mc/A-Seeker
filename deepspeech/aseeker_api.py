@@ -37,7 +37,7 @@ def upload_file(filename):
 
 @app.route('/user/get-transcriptions', methods=['GET'])
 def get_transcriptions():
-    get_transcriptions()
+    database.get_transcriptions_db()
 
 
 if __name__ == '__main__':
