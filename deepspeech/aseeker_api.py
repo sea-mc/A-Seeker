@@ -1,6 +1,5 @@
-import sys
-sys.path.append('~/A-Seeker')
-from database.transcription_db import *
+import json
+import transcription_db
 import os
 from flask import Flask, flash, request, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
@@ -22,8 +21,6 @@ def allowed_file(filename):
 
 @app.route('/upload/<filename>', methods=['POST'])
 def upload_file(filename):
-    """Upload a file."""
-
     if "/" in filename:
         # Return 400 BAD REQUEST
         os.abort(400, "no subdirectories directories allowed")
@@ -35,9 +32,12 @@ def upload_file(filename):
     return "", 201
 
 
-@app.route('/user/get-transcriptions', methods=['GET'])
+@app.route('/get-transcriptions', methods=['GET'])
 def get_transcriptions():
-    get_transcriptions()
+    db = transcription_db.Database()
+    results = db.get_transcriptions()
+
+    return json.dumps(results)
 
 
 if __name__ == '__main__':
