@@ -30,7 +30,7 @@ class Database:
         # POST method to insert transcription into DB
 
     def get_transcriptions(self):
-        self.cur.execute('SELECT * FROM transcriptions LIMIT 5')
+        self.cur.execute('SELECT * FROM aseeker.transcriptions')
 
         result = self.cur.fetchall()
 
