@@ -1,6 +1,6 @@
 import json
 import os
-import aseeker_controller
+from deepspeech import aseeker_controller, transcription_db
 import transcription_db
 from flask import Flask, request
 
@@ -28,8 +28,10 @@ def upload_file(filename):
     with open(os.path.join(AUDIO_FOLDER, filename), "wb") as fp:
         fp.write(request.data)
 
-    aseeker_controller.transcribe_input(AUDIO_FOLDER+"/"+filename, filename)
+    transcription = aseeker_controller.transcribe_input(AUDIO_FOLDER+"/"+filename, filename)
 
+    db = transcription_db.Database("")
+    db.insert_transcription(transcription)
     # Return 201 CREATED
     return "", 201
 

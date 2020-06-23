@@ -13,14 +13,10 @@ class Database:
         self.cur = self.con.cursor()
 
     def insert_transcription(self, email, preview, full_transcription, audio_path, title):
-        title = title + '.wav'
-
-        self.cur.execute('INSERT INTO transcription (test@test.com,Preview...,A full transcription...,/audio/title,example);')
-        # POST method to insert transcription into DB
+        self.cur.execute('INSERT INTO transcription (email,Preview...,{},{},example);', full_transcription, audio_path)
 
     def get_transcriptions(self):
         self.cur.execute('SELECT * FROM transcription;')
-
         result = self.cur.fetchall()
         print(result)
         return result
