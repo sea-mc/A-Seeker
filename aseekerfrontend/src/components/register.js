@@ -25,7 +25,7 @@ class Register extends Component {
             .then(response => response.text())
             .then(result => {
                 console.log(result);
-                alert("Registration Successful, please check your email")
+                alert("Registration Successful!");
                 cookies.set('email', this.state.email, {path: '/'});
 
             })

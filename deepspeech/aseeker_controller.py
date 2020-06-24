@@ -1,4 +1,4 @@
-from .DeepSpeech.transcribe import *
+from DeepSpeech.transcribe import *
 
 
 def transcribe_input(filepath, filename):
