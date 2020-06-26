@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import './css/bodyContent.css'
-import './css/bootstrap.css';
+import './css/transcriptionView.css'
+import './css/bootstrap.css'
 import './loginButton'
+import EditableText from  './editableText'
 import Cookies from 'universal-cookie'
 const cookies = new Cookies();
+
+
 
 //Checks the clients cookies for an auth token
 //if one is found it is checked against the middle ware
@@ -33,13 +36,6 @@ class TranscriptionView extends Component {
             redirect: 'follow',
         };
 
-        if (this.state.email.toString() === '' || this.state.email === undefined){
-            alert("Please enter your email.")
-        }
-
-        if (this.state.password.toString() === '' || this.state.password === undefined) {
-            alert("Please enter your password")
-        }
         //call auth api and check for user-pass
         fetch('http://localhost:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString(), requestOptions)
             .then(response => {
@@ -48,32 +44,30 @@ class TranscriptionView extends Component {
                 }else{
                     alert("Login Successful");
                     cookies.set('email', this.state.email, {path: '/'});
+
+                    //call the middleware to get the transcription that was clicked.
+                    this.fetch('http://localhost:1177/transcriptions/get/single?'+cookies.get("email"),requestOptions )
+                        .then((response) => response.json())
+                        .then(transcriptionList => {
+                            this.setState({ transcriptions: transcriptionList });
+                        }).catch (err => {
+                            alert("Please Login To view your saved transcriptions.");
+                            console.log(err)
+                        });
                 }
             });
+        
+        
     };
 
 
     render() {
         return (
-            <form onSubmit={this.handleClick}>
-                <h3>Sign In</h3>
-
-                <div className="form-group">
-                    <label>Email address</label>
-                    <input type="email" onChange={this.emailChangeHandler} className="form-control" placeholder="Enter email" />
-                </div>
-
-                <div className="form-group">
-                    <label>Password</label>
-                    <input type="password" onChange={this.passwordChangeHandler} className="form-control" placeholder="Enter password" />
-                </div>
-
-
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
-                </p>
-            </form>
+            <input
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}
+            />
         );
     }
 }
