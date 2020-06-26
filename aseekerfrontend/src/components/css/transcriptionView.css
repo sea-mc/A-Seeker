@@ -1,9 +1,0 @@
-.transcriptionView {
-    /* make sure the contents are not under the sidebar */
-    margin-left: 16vw; /* Same as the width of the sidebar plus one for padding */
-    position: absolute;
-    height: 100%;
-    width: 50%;
-    all: revert;
-    padding-left: 15px;
-}

@@ -7,6 +7,7 @@ import BodyContent from "./css/bodyContent.css"
 import {MDBInput} from "mdbreact";
 const cookies = new Cookies();
 
+
 class TranscriptionList extends React.Component {
 
     constructor(props) {
@@ -35,7 +36,7 @@ class TranscriptionList extends React.Component {
     }
 
     goToTranscription = (event) => {
-
+        // load the transcription view for this element
     };
 
     render() {
@@ -58,7 +59,7 @@ class TranscriptionList extends React.Component {
                     <ul className="transcriptionList">
                         <ListGroup id="list-group-tabs-example">
                         {this.state.transcriptions.map((transcription) =>
-                                <ListGroup.Item action onClick={this.goToTranscription}>
+                                <ListGroup.Item action onClick={this.goToTranscription()}>
                                     <div>
                                         <h4>{transcription.title}</h4>
                                         <h6>{transcription.preview}</h6>
