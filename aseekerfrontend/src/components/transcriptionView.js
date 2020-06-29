@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import './css/transcriptionView.css'
 import './css/bootstrap.css'
 import './loginButton'
-import EditableText from  './editableText'
+import './css/bodyContent.css'
+import bodyContent from "./bodyContent";
 import Cookies from 'universal-cookie'
+import TranscriptionTextWindow from "./transcriptionTextWindow";
+import css from './css/transcriptionView.css'
 const cookies = new Cookies();
 
 
@@ -14,7 +16,11 @@ class TranscriptionView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { email: '' , password: ''};
+
+        this.state = {
+            title: this.props.location.state.title
+        }
+
     }
 
 
@@ -44,16 +50,6 @@ class TranscriptionView extends Component {
                 }else{
                     alert("Login Successful");
                     cookies.set('email', this.state.email, {path: '/'});
-
-                    //call the middleware to get the transcription that was clicked.
-                    this.fetch('http://localhost:1177/transcriptions/get/single?'+cookies.get("email"),requestOptions )
-                        .then((response) => response.json())
-                        .then(transcriptionList => {
-                            this.setState({ transcriptions: transcriptionList });
-                        }).catch (err => {
-                            alert("Please Login To view your saved transcriptions.");
-                            console.log(err)
-                        });
                 }
             });
         
@@ -63,7 +59,13 @@ class TranscriptionView extends Component {
 
     render() {
         return (
-            ""
+            <div className="transcriptionView">
+                <div>
+                    {<h4>{this.state.title}</h4>}
+                    <TranscriptionTextWindow/>
+                </div>
+            </div>
+
         );
     }
 }
