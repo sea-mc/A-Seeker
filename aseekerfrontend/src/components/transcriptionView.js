@@ -4,6 +4,7 @@ import './loginButton'
 import './css/bodyContent.css'
 import bodyContent from "./bodyContent";
 import Cookies from 'universal-cookie'
+import TranscriptionTextWindow from "./transcriptionTextWindow";
 import css from './css/transcriptionView.css'
 const cookies = new Cookies();
 
@@ -17,38 +18,43 @@ class TranscriptionView extends Component {
         super(props);
 
         this.state = {
-            title: this.props.location.state.title,
-            content: {
-                email: "",
-                title: this.props.location.state.title,
-                preview: "",
-                fullTranscription: "",
-                contentFilePath: "",
-            }
+            title: this.props.location.state.title
         }
 
-
     }
 
-    componentDidMount() {
-        //call the transcription api and get the content of the selected transcription
+
+    emailChangeHandler = (event) => {
+        this.setState({email: event.target.value})
+    };
+
+
+    passwordChangeHandler = (event) => {
+        this.setState({password: event.target.value})
+    };
+
+
+    handleClick = (event) => {
+        event.preventDefault();
+
         var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
+            method: 'POST',
+            redirect: 'follow',
         };
 
-        fetch( "http://localhost:1177/transcriptions/get/single?title="+this.state.title, requestOptions)
-            .then(response => response.text())
-            .then(result => {
-                console.log(result);
-                this.setState({content: result})
-
-            })
-            .catch(error => {
-                console.log('error', error);
-                alert("Internal Server Error, Please refresh page (Sorry!)")
+        //call auth api and check for user-pass
+        fetch('http://localhost:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString(), requestOptions)
+            .then(response => {
+                if (response.status === 401) {
+                    alert("Login Unsuccessful - Account not registered");
+                }else{
+                    alert("Login Successful");
+                    cookies.set('email', this.state.email, {path: '/'});
+                }
             });
-    }
+        
+        
+    };
 
 
     render() {
@@ -56,6 +62,7 @@ class TranscriptionView extends Component {
             <div className="transcriptionView">
                 <div>
                     {<h4>{this.state.title}</h4>}
+                    <TranscriptionTextWindow/>
                 </div>
             </div>
 

@@ -10,6 +10,7 @@ import Login from "./components/login";
 import Register from "./components/register";
 import TranscriptionList from "./components/transcriptionList";
 import Account from "./components/account";
+import TranscriptionTextWindow from "./components/transcriptionTextWindow";
 import TranscriptionView from "./components/transcriptionView";
 
 const mux = (
