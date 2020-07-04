@@ -3,7 +3,7 @@ import pymysql
 
 class Database:
     def __init__(self):
-        host = 'localhost'
+        host = 'ASeeker-transcription-database'
         user = 'root'
         password = 'toor'
         db = 'aseeker'

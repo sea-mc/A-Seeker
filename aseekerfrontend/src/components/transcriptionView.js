@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
-import './css/bodyContent.css'
-import './css/bootstrap.css';
+import './css/bootstrap.css'
 import './loginButton'
+import './css/bodyContent.css'
+import bodyContent from "./bodyContent";
 import Cookies from 'universal-cookie'
+import css from './css/transcriptionView.css'
 const cookies = new Cookies();
+
+
 
 //Checks the clients cookies for an auth token
 //if one is found it is checked against the middle ware
@@ -11,69 +15,50 @@ class TranscriptionView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { email: '' , password: ''};
+
+        this.state = {
+            title: this.props.location.state.title,
+            content: {
+                email: "",
+                title: this.props.location.state.title,
+                preview: "",
+                fullTranscription: "",
+                contentFilePath: "",
+            }
+        }
+
+
     }
 
-
-    emailChangeHandler = (event) => {
-        this.setState({email: event.target.value})
-    };
-
-
-    passwordChangeHandler = (event) => {
-        this.setState({password: event.target.value})
-    };
-
-
-    handleClick = (event) => {
-        event.preventDefault();
-
+    componentDidMount() {
+        //call the transcription api and get the content of the selected transcription
         var requestOptions = {
-            method: 'POST',
-            redirect: 'follow',
+            method: 'GET',
+            redirect: 'follow'
         };
 
-        if (this.state.email.toString() === '' || this.state.email === undefined){
-            alert("Please enter your email.")
-        }
+        fetch( "http://localhost:1177/transcriptions/get/single?title="+this.state.title, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                this.setState({content: result})
 
-        if (this.state.password.toString() === '' || this.state.password === undefined) {
-            alert("Please enter your password")
-        }
-        //call auth api and check for user-pass
-        fetch('http://localhost:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString(), requestOptions)
-            .then(response => {
-                if (response.status === 401) {
-                    alert("Login Unsuccessful - Account not registered");
-                }else{
-                    alert("Login Successful");
-                    cookies.set('email', this.state.email, {path: '/'});
-                }
+            })
+            .catch(error => {
+                console.log('error', error);
+                alert("Internal Server Error, Please refresh page (Sorry!)")
             });
-    };
+    }
 
 
     render() {
         return (
-            <form onSubmit={this.handleClick}>
-                <h3>Sign In</h3>
-
-                <div className="form-group">
-                    <label>Email address</label>
-                    <input type="email" onChange={this.emailChangeHandler} className="form-control" placeholder="Enter email" />
+            <div className="transcriptionView">
+                <div>
+                    {<h4>{this.state.title}</h4>}
                 </div>
+            </div>
 
-                <div className="form-group">
-                    <label>Password</label>
-                    <input type="password" onChange={this.passwordChangeHandler} className="form-control" placeholder="Enter password" />
-                </div>
-
-
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
-                </p>
-            </form>
         );
     }
 }

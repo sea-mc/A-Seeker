@@ -30,6 +30,7 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("File name %s\n", name[0])
 	io.Copy(&buf, file)
 	buf.Reset()
+	log.Info("Upload media has returned")
 
 }
 

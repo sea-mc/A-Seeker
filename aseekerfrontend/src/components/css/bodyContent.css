@@ -3,6 +3,7 @@
     margin-left: 16vw; /* Same as the width of the sidebar plus one for padding */
     position: absolute;
     height: 100%;
+    width: 75%;
     all: revert;
     padding-left: 15px;
 }

@@ -2,15 +2,18 @@ import React, {Component} from 'react';
 import TranscriptionUploadButton from "./transcriptionUploadButton";
 import css from "./css/transcriptionList.css"
 import {ListGroup, ListGroupItem} from "react-bootstrap";
+import {withRouter} from 'react-router-dom';
 import  Cookies  from 'universal-cookie';
 import BodyContent from "./css/bodyContent.css"
 import {MDBInput} from "mdbreact";
 const cookies = new Cookies();
 
+
 class TranscriptionList extends React.Component {
 
     constructor(props) {
         super(props);
+        this.goToTranscription = this.goToTranscription.bind(this)
         this.state = {
             transcriptions: []
         }
@@ -23,42 +26,46 @@ class TranscriptionList extends React.Component {
             redirect: 'follow',
         };
 
-        //call the middleware to get the users transcriptions.
+        //call the middleware to get the requested transcription.
         fetch('http://localhost:1177/transcriptions/get/all?email='+cookies.get("email"),requestOptions )
             .then((response) => response.json())
             .then(transcriptionList => {
                 this.setState({ transcriptions: transcriptionList });
             }).catch (err => {
-                alert("Please Login To view your saved transcriptions.");
+                alert("An error occured: "+err);
                 console.log(err)
             });
     }
 
-    goToTranscription = (event) => {
-
-    };
+    goToTranscription(title){
+        // load the transcription view for this element
+        this.props.history.push({
+            pathname: "/transcription/view",
+            state: {title : title}
+        })
+    }
 
     render() {
         return (
             <div className={css.transcriptionList}>
-            <div >
-                <TranscriptionUploadButton/>
-                <div className="transcriptionUploadTitleInput">
-                    <textarea
-                        className="form-control"
-                        id="exampleFormControlTextarea1"
-                        rows="5"
-                        placeholder={"Enter Transcription Title Here (Do not include any file extensions)"}
-                        contentEditable={"true"}
-                    />
-                <br/>
+                <div>
+                    <TranscriptionUploadButton/>
+                    <div className="transcriptionUploadTitleInput">
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea1"
+                            rows="5"
+                            placeholder={"Enter Transcription Title Here (Do not include any file extensions)"}
+                            contentEditable={"true"}
+                        />
+                    <br/>
                 </div>
             </div>
                <br/><br/>
                     <ul className="transcriptionList">
                         <ListGroup id="list-group-tabs-example">
                         {this.state.transcriptions.map((transcription) =>
-                                <ListGroup.Item action onClick={this.goToTranscription}>
+                                <ListGroup.Item action onClick={() => this.goToTranscription(transcription.title)}>
                                     <div>
                                         <h4>{transcription.title}</h4>
                                         <h6>{transcription.preview}</h6>
@@ -71,7 +78,7 @@ class TranscriptionList extends React.Component {
                     </ul>
             </div>
         );
-    }
+    };
 }
 
-export default TranscriptionList;
+export default withRouter(TranscriptionList);

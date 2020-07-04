@@ -1,18 +1,27 @@
-FROM python:3-alpine3.10
+FROM python:3.7.7-buster
 
-MAINTAINER Sean Cox <coxs4@wit.edu>
+RUN apt update
 
-RUN apk update && apk add python3
-RUN apk update && apk add py3-setuptools
-RUN apk update && apk add py-pip
+RUN pip3 install Werkzeug
+RUN pip3 install PyMySQL
+RUN pip3 install flask
+RUN pip3 install Flask
+RUN pip3 install flask_restful
+RUN pip3 install virtualenv
+RUN pip3 install tensorflow==1.15.3
+RUN pip3 install deepspeech
+RUN pip3 install semver
+RUN pip3 install attrdict
+RUN pip3 install ds_ctcdecoder==0.7.3
+RUN pip3 install pyxdg
+RUN pip3 install webrtcvad
+RUN pip3 install progressbar
+RUN pip3 install fin
+RUN pip3 install sox
+RUN pip install sox
+RUN apt-get install sox --yes
+COPY . ./
 
-RUN pip install Werkzeug
-RUN pip install PyMySQL
-RUN pip install Flask
-RUN ls -la
-
-COPY . ./app
-
-RUN ls -la
-
-ENTRYPOINT ["python3","app/aseeker_api.py"]
+#RUN wget -i ./modelUrls
+RUN mkdir audio
+ENTRYPOINT ["python","aseeker_api.py"]

@@ -1,39 +1,39 @@
 version: '3.7'
 services:
-  frontend:
-    container_name: frontend
-    build:
-      context: ./aseekerfrontend
-      dockerfile: Dockerfile
-    ports:
-      - '1337:80'
-    networks:
-      - aseeker
-
-  database:
-    container_name: ASeeker-transcription-database
-    image: 'mysql:5.7'
-    volumes:
-      - 'db_data:/var/lib/mysql'
-      - './mysql:/tmp/db'
-    command: '--init-file /tmp/db/sqlStartup.sql'
-    restart: always
-    ports:
-      - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: aseeker
-    networks:
-      - aseeker
-
-  middware:
-    container_name: golang-RPC-middleware
-    build:
-      context: ./golangRpc
-      dockerfile: Dockerfile
-    ports:
-      - '1177:1177'
-    networks:
-      - aseeker
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: ./aseekerfrontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '1337:80'
+  #   networks:
+  #     - aseeker
+  #
+  # database:
+  #   container_name: ASeeker-transcription-database
+  #   image: 'mysql:5.7'
+  #   volumes:
+  #     - 'db_data:/var/lib/mysql'
+  #     - './mysql:/tmp/db'
+  #   command: '--init-file /tmp/db/sqlStartup.sql'
+  #   restart: always
+  #   ports:
+  #     - '3306:3306'
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: aseeker
+  #   networks:
+  #     - aseeker
+  #
+  # middware:
+  #   container_name: golang-RPC-middleware
+  #   build:
+  #     context: ./golangRpc
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '1177:1177'
+  #   networks:
+  #     - aseeker
 
   deepspeech:
     container_name: deepspeech
@@ -41,11 +41,9 @@ services:
       context: ./deepspeech
       dockerfile: Dockerfile
     ports:
-      - '1178:1178'
+      - '5000:5000'
     networks:
       - aseeker
-
-
 
 #for a good networking tutorial see https://runnable.com/docker/docker-compose-networking
 networks:

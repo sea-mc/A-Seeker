@@ -27,7 +27,7 @@ func GetMedia(w http.ResponseWriter, fileName string) []byte{
 
 func UploadMediaAsFile(w http.ResponseWriter, file multipart.File, fileName string) {
 	log.Info("Sending an upload")
-	req, err := http.NewRequest(http.MethodPost, "http://deepspeech:1178/upload/"+fileName, file)
+	req, err := http.NewRequest(http.MethodPost, "http://deepspeech:5000/upload/"+fileName, file)
 	if NetworkErr(w, err) {
 		return
 	}
