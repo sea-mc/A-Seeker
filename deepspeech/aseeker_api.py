@@ -28,11 +28,21 @@ def allowed_file(filename):
 
 @app.route('/upload/<filename>', methods=['POST'])
 def upload_file(filename):
+
     if "/" in filename:
         # Return 400 BAD REQUEST
         os.abort(400, "no subdirectories directories allowed")
+
+    # if ".jpg" in filename and ".png" in filename | ".pdf" in filename:
+    #     return "", 500
+
     with open(os.path.join(AUDIO_FOLDER, filename), "wb") as fp:
         fp.write(request.data)
+
+    # if ".wav" not in filename | ".mp3" not in filename | ".mp4" not in filename:
+    #     #convert media
+    #     filename = aseeker_controller.convertMedia(filename)
+
     transcription = aseeker_controller.transcribe_input(os.path.join(AUDIO_FOLDER, filename), filename)
     # db = transcription_db.Database()
     # db.insert_transcription(transcription)
