@@ -96,6 +96,7 @@ def transcribe_file(audio_path, tlog_path):
                 word = ''
         individualTimes.append(time.time() - chunkstart)
 
+    words.append(word)
     stamped_words = [{"word": w, "time": t} for w, t in zip(words, word_times)]
 
     timeSum = 0.0
