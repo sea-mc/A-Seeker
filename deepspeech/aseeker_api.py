@@ -44,6 +44,7 @@ def upload_file(filename):
     #     filename = aseeker_controller.convertMedia(filename)
 
     transcription = aseeker_controller.transcribe_input(os.path.join(AUDIO_FOLDER, filename), filename)
+
     # db = transcription_db.Database()
     # db.insert_transcription(transcription)
     # Return 201 CREATED
