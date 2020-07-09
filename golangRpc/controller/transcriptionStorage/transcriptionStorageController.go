@@ -25,6 +25,7 @@ func GetTranscriptions(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	log.Info(utranscriptions)
 	j, err := json.Marshal(utranscriptions)
 	if err != nil {
 		log.Error(err)
@@ -32,13 +33,6 @@ func GetTranscriptions(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Info("Returning the following json " + string(j))
-	//DemojsonRecord, _ := json.Marshal(domain.Transcription{
-	//	Email:             "test@test.com",
-	//	Title:             "Transcription",
-	//	Preview:           "This is a preview",
-	//	FullTranscription: "this is the full transcription",
-	//	ContentFilePath:   "/filename.wav",
-	//})
 
 	w.Write(j)
 }
@@ -61,13 +55,13 @@ func GetTranscription(w http.ResponseWriter, r *http.Request) {
 		log.Error("Empty title was passed to get transcription.")
 	}
 
-	utranscription, err := transcriptions.GetTranscription(email, title)
+	utranscription, err := transcriptions.GetTranscriptionByTitle(title)
 	if err != nil {
 		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	j, err := json.Marshal(utranscriptions)
+	j, err := json.Marshal(utranscription)
 	if err != nil {
 		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)

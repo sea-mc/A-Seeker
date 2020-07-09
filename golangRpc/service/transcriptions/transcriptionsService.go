@@ -3,15 +3,18 @@ package transcriptions
 import (
 	"../../domain"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/prometheus/common/log"
+	"strings"
 )
 
 var Database *sql.DB
 
 const (
 	host     = "ASeeker-transcription-database"
+	//host     = "localhost"
 	port     = 3306
 	user     = "root"
 	password = "toor"
@@ -37,6 +40,7 @@ func InitTranscriptionDBConn() {
 		log.Infof("Transcription Database connection successful: %s  %s  %s", user, host, dbname)
 	}
 }
+//this is a debug function
 func GetAll() {
 	sqlq := "select * from transcription;"
 	r, e := Database.Query(sqlq)
@@ -47,15 +51,14 @@ func GetAll() {
 
 	var transcriptions []domain.Transcription
 	for r.Next() {
-		log.Info("Got a transcription")
 		trns := domain.Transcription{}
 		r.Scan(&trns.Email, &trns.Preview, &trns.FullTranscription, &trns.ContentFilePath, &trns.Title)
 		transcriptions = append(transcriptions, trns)
-		log.Info(trns)
 	}
 
 }
 func GetTranscriptions(email string) ([]domain.Transcription, error) {
+	log.Info(email)
 	sqlq := "select * from transcription where email = '" + email + "';"
 	r, e := Database.Query(sqlq)
 	if e != nil {
@@ -63,15 +66,33 @@ func GetTranscriptions(email string) ([]domain.Transcription, error) {
 	}
 
 	var transcriptions []domain.Transcription
+
 	for r.Next() {
-		log.Info("Got a transcription")
 		trns := domain.Transcription{}
-		r.Scan(&trns.Email, &trns.Preview, &trns.FullTranscription, &trns.ContentFilePath, &trns.Title)
+
+		err := r.Scan(&trns.Email, &trns.Preview, &trns.RawFullTranscription, &trns.ContentFilePath, &trns.Title)
+		if err != nil {
+			log.Error(err)
+		}
 		transcriptions = append(transcriptions, trns)
 	}
 	if len(transcriptions) == 0 {
 		return []domain.Transcription{}, errors.New("Could not find any transcriptions for email " + email)
 	}
+
+	//decode the base64 json and marshal it into the correct attribute
+	for _, e := range transcriptions {
+
+		var token domain.TranscriptionToken
+		err := json.Unmarshal(e.RawFullTranscription, &token)
+		if err != nil {
+			log.Error(err)
+		}
+
+
+	}
+
+	log.Info(transcriptions)
 	return transcriptions, nil
 }
 
@@ -92,8 +113,11 @@ func GetTranscriptionByTitle(title string) (domain.Transcription, error) {
 }
 
 func InsertTranscription(transcription domain.Transcription) error {
-	sqlq := "insert into transcription (email, preview, full_transcription, content_url, title)" +
-		" values ('" + transcription.Email + "', '" + transcription.Preview + "' " + transcription.FullTranscription + " '," + "'" + transcription.ContentFilePath + "','" + transcription.Title + "');"
+	jsonTranscription, _ := json.Marshal(transcription)
+	jsonString := string(jsonTranscription)
+	jsonString = strings.Replace(jsonString, "'", "\\'", -1)
+	sqlq := "insert into transcription (email, preview, full_transcription, audio_path, title)" +
+		" values ('" + transcription.Email + "', '" + transcription.Preview + "', '" + jsonString + "'," + "'" + transcription.ContentFilePath + "','" + transcription.Title + "');"
 	_, e := Database.Query(sqlq)
 	if e != nil {
 		log.Error(e)

@@ -20,8 +20,9 @@ RUN pip3 install fin
 RUN pip3 install sox
 RUN pip install sox
 RUN apt-get install sox --yes
+RUN apt-get install ffmpeg --yes
 COPY . ./
 
-#RUN wget -i ./modelUrls
-RUN mkdir audio
+RUN wget -c -i ./modelUrls
+RUN mkdir -p audio
 ENTRYPOINT ["python","aseeker_api.py"]

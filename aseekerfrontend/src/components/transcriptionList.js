@@ -13,7 +13,7 @@ class TranscriptionList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.goToTranscription = this.goToTranscription.bind(this)
+        this.goToTranscription = this.goToTranscription.bind(this);
         this.state = {
             transcriptions: []
         }
@@ -31,6 +31,7 @@ class TranscriptionList extends React.Component {
             .then((response) => response.json())
             .then(transcriptionList => {
                 this.setState({ transcriptions: transcriptionList });
+                alert(JSON.stringify(this.state.transcriptions))
             }).catch (err => {
                 alert("An error occured: "+err);
                 console.log(err)
@@ -69,6 +70,7 @@ class TranscriptionList extends React.Component {
                                     <div>
                                         <h4>{transcription.title}</h4>
                                         <h6>{transcription.preview}</h6>
+                                        <p>{transcription.full_transcription}</p>
                                         <br/>
                                         <h6>{transcription.contentFilePath}</h6>
                                     </div>

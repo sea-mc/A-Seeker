@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import Dropzone from 'react-dropzone'
-import TranscriptionUpload from "./css/transcriptionUploadCSS.css"
-import BodyContent from "./css/bodyContent.css";
-import { MDBInput } from 'mdbreact';
+import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
 class TranscriptionUploadButton extends React.Component {
 
 
@@ -12,18 +11,23 @@ class TranscriptionUploadButton extends React.Component {
             <div  className="transcriptionUpload">
             <Dropzone
                 onDrop={ acceptedFiles => {
-
+                    var email = cookies.get("email");
+                    if (email === ""){
+                        alert("Please login to upload a transcription");
+                        return
+                    }
+                    alert(email);
                     //do upload post
                     const formData = new FormData();
                     formData.append('file', acceptedFiles[0]); //only one file at a time
-                    console.log(formData);
-                    fetch('http://localhost:1177/deepSpeech/media/upload', {
+                    fetch('http://localhost:1177/deepSpeech/media/upload?email='+cookies.get("email"), {
                         method: 'POST',
                         body: formData
                     })
                         .then(response => response.text())
                         .then(data => {
-                            console.log(data)
+                            console.log(data);
+                            alert(data);
                         })
                         .catch(error => {
                             alert("Error Uploading File, Please Try Again (Sorry!)");
