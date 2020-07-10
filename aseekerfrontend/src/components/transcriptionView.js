@@ -12,51 +12,37 @@ const cookies = new Cookies();
 //Checks the clients cookies for an auth token
 //if one is found it is checked against the middle ware
 class TranscriptionView extends Component {
-
     constructor(props) {
         super(props);
-
         this.state = {
             title: this.props.location.state.title
         }
 
     }
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+    }
 
-
-    emailChangeHandler = (event) => {
-        this.setState({email: event.target.value})
-    };
-
-
-    passwordChangeHandler = (event) => {
-        this.setState({password: event.target.value})
-    };
-
-
-    handleClick = (event) => {
-        event.preventDefault();
-
+    componentDidMount() {
         var requestOptions = {
-            method: 'POST',
+            method: 'GET',
             redirect: 'follow',
         };
 
         //call auth api and check for user-pass
-        fetch('http://localhost:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString(), requestOptions)
+        fetch('http://localhost:1177/transcriptions/get/single?email=' + cookies.get("email") + "&title="+this.state.title, requestOptions)
+            .then((response) => response.json())
             .then(response => {
-                if (response.status === 401) {
-                    alert("Login Unsuccessful - Account not registered");
-                }else{
-                    alert("Login Successful");
-                    cookies.set('email', this.state.email, {path: '/'});
-                }
-            });
-        
-        
-    };
+                alert(JSON.stringify(response));
+                console.log(response)
+            }).catch(err => {
+            alert("An error occured: " + err);
+            console.log(err)
 
+        });
 
-    render() {
+    }
+
+    render(){
         return (
             <div className="transcriptionView">
                 <div>
@@ -64,7 +50,7 @@ class TranscriptionView extends Component {
                 </div>
             </div>
 
-        );
+        )
     }
 }
 

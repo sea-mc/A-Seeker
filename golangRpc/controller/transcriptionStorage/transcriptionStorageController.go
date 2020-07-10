@@ -25,15 +25,12 @@ func GetTranscriptions(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	log.Info(utranscriptions)
 	j, err := json.Marshal(utranscriptions)
 	if err != nil {
 		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	log.Info("Returning the following json " + string(j))
-
 	w.Write(j)
 }
 
@@ -42,19 +39,19 @@ func GetTranscription(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-
+	log.Info(r.URL.String())
 	email := r.URL.Query()["email"][0]
 	if email == "" {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Error("Empty email was passed to get transcription.")
 	}
 
-	title := r.URL.Query()["title"][1]
+	title := r.URL.Query()["title"][0]
 	if title == "" {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Error("Empty title was passed to get transcription.")
 	}
-
+	log.Info("Getting transcription " + title + " for user " + email)
 	utranscription, err := transcriptions.GetTranscriptionByTitle(title)
 	if err != nil {
 		log.Error(err)
@@ -67,7 +64,6 @@ func GetTranscription(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	log.Info("Returning the following json " + string(j))
 	//DemojsonRecord, _ := json.Marshal(domain.Transcription{
 	//	Email:             "test@test.com",
 	//	Title:             "Transcription",
@@ -85,5 +81,4 @@ func DeleteTranscription(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-
 }

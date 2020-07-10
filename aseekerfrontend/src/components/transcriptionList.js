@@ -4,8 +4,7 @@ import css from "./css/transcriptionList.css"
 import {ListGroup, ListGroupItem} from "react-bootstrap";
 import {withRouter} from 'react-router-dom';
 import  Cookies  from 'universal-cookie';
-import BodyContent from "./css/bodyContent.css"
-import {MDBInput} from "mdbreact";
+import  transcriptionUpload from "./css/transcriptionUploadCSS.css"
 const cookies = new Cookies();
 
 
@@ -31,7 +30,6 @@ class TranscriptionList extends React.Component {
             .then((response) => response.json())
             .then(transcriptionList => {
                 this.setState({ transcriptions: transcriptionList });
-                alert(JSON.stringify(this.state.transcriptions))
             }).catch (err => {
                 alert("An error occured: "+err);
                 console.log(err)
@@ -49,11 +47,11 @@ class TranscriptionList extends React.Component {
     render() {
         return (
             <div className={css.transcriptionList}>
-                <div>
+                <div className="transcriptionUpload">
                     <TranscriptionUploadButton/>
-                    <div className="transcriptionUploadTitleInput">
+                    <div>
                         <textarea
-                            className="form-control"
+                            className="form-control transcriptionUploadTitleInput"
                             id="exampleFormControlTextarea1"
                             rows="5"
                             placeholder={"Enter Transcription Title Here (Do not include any file extensions)"}

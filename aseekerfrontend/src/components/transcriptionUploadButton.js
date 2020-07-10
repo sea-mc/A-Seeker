@@ -8,7 +8,7 @@ class TranscriptionUploadButton extends React.Component {
 
     render() {
         return (
-            <div  className="transcriptionUpload">
+            <div>
             <Dropzone
                 onDrop={ acceptedFiles => {
                     var email = cookies.get("email");
@@ -16,7 +16,6 @@ class TranscriptionUploadButton extends React.Component {
                         alert("Please login to upload a transcription");
                         return
                     }
-                    alert(email);
                     //do upload post
                     const formData = new FormData();
                     formData.append('file', acceptedFiles[0]); //only one file at a time
@@ -27,7 +26,6 @@ class TranscriptionUploadButton extends React.Component {
                         .then(response => response.text())
                         .then(data => {
                             console.log(data);
-                            alert(data);
                         })
                         .catch(error => {
                             alert("Error Uploading File, Please Try Again (Sorry!)");

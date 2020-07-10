@@ -48,14 +48,13 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 	buf.Reset()
 	log.Info("Upload media has returned")
 
-	transcriptionResponse := domain.TranscriptionResponse{}
+	var transcriptionResponse []domain.TranscriptionToken
 	fullTranscription, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	log.Info(fullTranscription)
 	log.Info(string(fullTranscription))
 	err = json.Unmarshal(fullTranscription, &transcriptionResponse)
 	if err != nil {
@@ -63,7 +62,7 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	var FullTranscriptions []domain.TranscriptionToken
+	var FullTranscriptions domain.TranscriptionTokens
 	for _, e := range transcriptionResponse {
 		token := domain.TranscriptionToken{
 			Word: e.Word,
@@ -73,9 +72,7 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 	}
 
 	transcription.FullTranscription = FullTranscriptions
-	log.Info(transcription)
 	j, _ := json.Marshal(transcription)
-	log.Info(j)
 	//todo; route this properly between deepspeech and transcriptionstoragecontroller
 	err = transcriptions.InsertTranscription(transcription)
 	if err != nil {

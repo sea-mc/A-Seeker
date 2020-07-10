@@ -13,8 +13,8 @@ import (
 var Database *sql.DB
 
 const (
-	host     = "ASeeker-transcription-database"
-	//host     = "localhost"
+	//host     = "ASeeker-transcription-database"
+	host     = "localhost"
 	port     = 3306
 	user     = "root"
 	password = "toor"
@@ -58,7 +58,7 @@ func GetAll() {
 
 }
 func GetTranscriptions(email string) ([]domain.Transcription, error) {
-	log.Info(email)
+	log.Info("Getting Transcription list for " + email)
 	sqlq := "select * from transcription where email = '" + email + "';"
 	r, e := Database.Query(sqlq)
 	if e != nil {
@@ -92,7 +92,6 @@ func GetTranscriptions(email string) ([]domain.Transcription, error) {
 
 	}
 
-	log.Info(transcriptions)
 	return transcriptions, nil
 }
 
@@ -105,7 +104,18 @@ func GetTranscriptionByTitle(title string) (domain.Transcription, error) {
 
 	for r.Next() {
 		trns := domain.Transcription{}
-		r.Scan(&trns.Email, &trns.Preview, &trns.FullTranscription, &trns.ContentFilePath, &trns.Title)
+		r.Scan(&trns.Email, &trns.Preview, &trns.RawFullTranscription, &trns.ContentFilePath, &trns.Title)
+
+		log.Info(trns)
+		log.Info("{["+string(trns.RawFullTranscription))
+
+		//var tokens  domain.TranscriptionTokens
+		var rawTranscript domain.Transcription
+		e := json.Unmarshal([]byte(trns.RawFullTranscription), &rawTranscript)
+		if e != nil {
+			return domain.Transcription{}, e
+		}
+		trns.FullTranscription = rawTranscript.FullTranscription
 		return trns, nil
 	}
 

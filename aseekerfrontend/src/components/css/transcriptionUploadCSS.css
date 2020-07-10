@@ -1,27 +1,24 @@
 .transcriptionUpload{
     /* make sure the contents are not under the sidebar */
     margin-top: 1vh;
-    margin-left: 30%; /* Same as the width of the sidebar plus one for padding */
+    margin-left: 30vw; /* Same as the width of the sidebar plus one for padding */
     position: center;
     width: 50%;
-
     text-align: center;
-    border: black solid 1px;
+    align-content: center;
 }
 
 .transcriptionUploadTitleInput {
     /* make sure the contents are not under the sidebar */
-    margin-top: 1vh;
-    margin-left: 30%; /* Same as the width of the sidebar plus one for padding */
+    margin-top: .5vh;
+    height: 25%;
     position: center;
-    width: 50%;
-
     text-align: center;
 
 }
-.dropzone-previews {
-    height: 200px;
-    width: 500px;
-    border: dashed 1px red;
+.transcriptionUpload section {
+    height: 25%;
+    width: 100%;
+    border: dashed 1px black;
     background-color: lightblue;
 }
