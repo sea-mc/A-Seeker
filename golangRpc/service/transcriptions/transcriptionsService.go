@@ -116,7 +116,7 @@ func InsertTranscription(transcription domain.Transcription) error {
 	jsonTranscription, _ := json.Marshal(transcription)
 	jsonString := string(jsonTranscription)
 	jsonString = strings.Replace(jsonString, "'", "\\'", -1)
-	sqlq := "insert into transcription (email, preview, full_transcription, audio_path, title)" +
+	sqlq := "insert into transcription (email, preview, full_transcription, content_url, title)" +
 		" values ('" + transcription.Email + "', '" + transcription.Preview + "', '" + jsonString + "'," + "'" + transcription.ContentFilePath + "','" + transcription.Title + "');"
 	_, e := Database.Query(sqlq)
 	if e != nil {

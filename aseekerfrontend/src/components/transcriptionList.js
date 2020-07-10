@@ -6,6 +6,7 @@ import {withRouter} from 'react-router-dom';
 import  Cookies  from 'universal-cookie';
 import BodyContent from "./css/bodyContent.css"
 import {MDBInput} from "mdbreact";
+import bodyContent from "./bodyContent";
 const cookies = new Cookies();
 
 
@@ -49,7 +50,7 @@ class TranscriptionList extends React.Component {
     render() {
         return (
             <div className={css.transcriptionList}>
-                <div>
+                <div className={bodyContent()}>
                     <TranscriptionUploadButton/>
                     <div className="transcriptionUploadTitleInput">
                         <textarea
