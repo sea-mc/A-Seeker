@@ -1,8 +1,0 @@
-#!/bin/bash
-git submodule update --init --recursive
-docker system prune -a --volumes -y 
-docker-compose down 
-
-docker rm frontend
-
-docker-compose up -d --build
