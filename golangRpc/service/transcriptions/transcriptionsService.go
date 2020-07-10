@@ -40,6 +40,7 @@ func InitTranscriptionDBConn() {
 		log.Infof("Transcription Database connection successful: %s  %s  %s", user, host, dbname)
 	}
 }
+
 //this is a debug function
 func GetAll() {
 	sqlq := "select * from transcription;"
@@ -89,7 +90,6 @@ func GetTranscriptions(email string) ([]domain.Transcription, error) {
 			log.Error(err)
 		}
 
-
 	}
 
 	return transcriptions, nil
@@ -105,13 +105,10 @@ func GetTranscriptionByTitle(title string) (domain.Transcription, error) {
 	for r.Next() {
 		trns := domain.Transcription{}
 		r.Scan(&trns.Email, &trns.Preview, &trns.RawFullTranscription, &trns.ContentFilePath, &trns.Title)
-
 		log.Info(trns)
-		log.Info("{["+string(trns.RawFullTranscription))
-
-		//var tokens  domain.TranscriptionTokens
+		log.Info("{[" + string(trns.RawFullTranscription))
 		var rawTranscript domain.Transcription
-		e := json.Unmarshal([]byte(trns.RawFullTranscription), &rawTranscript)
+		e := json.Unmarshal(trns.RawFullTranscription, &rawTranscript)
 		if e != nil {
 			return domain.Transcription{}, e
 		}
@@ -135,6 +132,20 @@ func InsertTranscription(transcription domain.Transcription) error {
 	}
 
 	return nil
+}
+
+func CheckForUser(email string) bool {
+	sqlq := "select * from account where email = '" + email + "';"
+	r, e := Database.Query(sqlq)
+	if e != nil {
+		log.Error(e)
+		return false
+	}
+	userfound := false
+	for r.Next() {
+		userfound = true
+	}
+	return userfound
 }
 
 func DeleteTranscription(transcriptionTitle string) error {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './css/bodyContent.css'
 import './css/bootstrap.css';
-import bodyContent from "./bodyContent";
+import accountPage from './css/accountPage.css'
 import  Cookies  from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -39,7 +39,7 @@ class Account extends Component {
         var email = cookies.get("email");
         return(
             <div>
-                <h3 className="bodyContent">Hello, {email}</h3>
+                <h3 className={accountPage}>Hello, {email}</h3>
                 <br/>
                 <br/>
                 <br/>
