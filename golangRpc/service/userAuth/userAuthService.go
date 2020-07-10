@@ -1,6 +1,7 @@
 package userAuth
 
 import (
+	"../../domain"
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -10,6 +11,7 @@ import (
 
 const (
 	host     = "ASeeker-transcription-database"
+	//host     = "localhost"
 	port     = 3306
 	user     = "root"
 	password = "toor"
@@ -19,7 +21,7 @@ const (
 var Database *sql.DB
 
 func InitDatabaseConn() {
-	log.Info("Starting Database Conn...")
+	log.Info("Starting Userauth Database Conn...")
 	log.Info("Sleeping for 10 seconds...")
 	time.Sleep(10 * time.Second)
 	log.Info("Attempting connection...")
@@ -27,26 +29,31 @@ func InitDatabaseConn() {
 	var psqlInfo = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", user, password, host, port, dbname)
 	tmpdb, err := sql.Open("mysql", psqlInfo)
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
 	}
 	Database = tmpdb //Because we use := we cannot directly assign Database as := places things on the stack
 
 	err = Database.Ping()
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+		log.Errorf("Transcription Database connection unsuccessful: %s  %s  %s", user, host, dbname)
+
+	} else {
+		log.Infof("Transcription Database connection successful: %s  %s  %s", user, host, dbname)
 	}
-	log.Infof("Transcription Database connection successful: %s  %s  %s", user, host, dbname)
 }
 
-func CheckIfUserIsRegistered(email string) bool {
-	sqlq := "select * from account where email = '" + email + "';"
+func LoginUser(email, pass string) bool {
+	sqlq := "select * from account where email = '" + email + "' and password = '" + pass + "';"
 	r, e := Database.Query(sqlq)
 	if e != nil {
 		log.Fatal(e)
 	}
 
 	for r.Next() {
-		log.Info(r.Columns())
+		usr := domain.Account{}
+		r.Scan(&usr.Email, &usr.Password)
+		return true
 	}
 	return false
 }
@@ -62,6 +69,22 @@ func RegisterUser(email, password string) error {
 	return nil
 }
 
+func CheckForUser(email string) bool {
+	sqlq := "select * from account where email = '" + email + "';"
+	r, e := Database.Query(sqlq)
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	for r.Next() {
+		usr := domain.Account{}
+		r.Scan(&usr.Email, &usr.Password)
+		return true
+	}
+
+	return false
+}
+
 func DeleteUser(email string) error {
 	sqlq := "DELETE FROM account where email = '" + email + "';"
 	_, e := Database.Query(sqlq)
@@ -69,6 +92,18 @@ func DeleteUser(email string) error {
 		log.Error(e)
 		return e
 	}
+
+	return nil
+}
+
+func DeleteTranscriptions(email string) error {
+
+	sqlq := "DELETE FROM transcription where email = '" + email + "';"
+	_, e := Database.Query(sqlq)
+	if e != nil {
+	log.Error(e)
+	return e
+}
 
 	return nil
 }

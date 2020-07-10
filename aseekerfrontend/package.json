@@ -7,10 +7,15 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.5.0",
+    "mdbreact": "^4.27.0",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.0.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.0.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "universal-cookie": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -15,12 +15,9 @@ RUN go get github.com/go-sql-driver/mysql
 COPY . ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o main
-RUN echo "$(pwd)"
-RUN echo "$(ls)"
 
 FROM alpine:3.9
 
 COPY --from=builder ./go/main .
 
-RUN echo "$(ls)"
 ENTRYPOINT ["./main"]
