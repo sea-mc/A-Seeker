@@ -5,6 +5,7 @@ import './css/bodyContent.css'
 import bodyContent from "./bodyContent";
 import Cookies from 'universal-cookie'
 import css from './css/transcriptionView.css'
+import TranscriptionTextWindow from "./transcriptionTextWindow";
 const cookies = new Cookies();
 
 
@@ -47,6 +48,7 @@ class TranscriptionView extends Component {
             <div className="transcriptionView">
                 <div>
                     {<h4>{this.state.title}</h4>}
+                    {<TranscriptionTextWindow />}
                 </div>
             </div>
 
