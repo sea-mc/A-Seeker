@@ -7,3 +7,10 @@
     all: revert;
     padding-left: 15px;
 }
+
+.transcriptionView video {
+    align-content: end;
+    position:absolute;
+    width: 50%;
+    margin-left: 45.5vw;
+}

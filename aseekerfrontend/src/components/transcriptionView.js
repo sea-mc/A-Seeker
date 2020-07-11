@@ -33,10 +33,7 @@ class TranscriptionView extends Component {
         fetch('http://localhost:1177/transcriptions/get/single?email=' + cookies.get("email") + "&title="+this.state.title, requestOptions)
             .then((response) => response.json())
             .then(response => {
-                alert(JSON.stringify(response));
-                console.log(response);
                 this.setState({transcription: response.fulTranscription});
-                alert(JSON.stringify(this.state.transcription))
             }).catch(err => {
             alert("An error occured: " + err);
             console.log(err)
@@ -49,15 +46,16 @@ class TranscriptionView extends Component {
         return (
             <div className="transcriptionView">
                 <div>
-                    {<h4>{this.state.title}</h4>}
+                    {<h4> Transcription Title: {this.state.title}</h4>}
                     {<TranscriptionTextWindow transcription={this.state.transcription}/>}
                 </div>
+
                 <video id="player" playsinline controls data-poster="/path/to/poster.jpg">
                     <source src="/path/to/video.mp4" type="video/mp4"/>
                     <source src="/path/to/video.webm" type="video/webm"/>
-
-                    <track kind="captions" label="English captions" src="/path/to/captions.vtt" srcLang="en" default/>
+                    {/*<track kind="captions" label="English captions" src="/path/to/captions.vtt" srcLang="en" default/>*/}
                 </video>
+
             </div>
 
         )
