@@ -16,7 +16,8 @@ class TranscriptionView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: this.props.location.state.title
+            title: this.props.location.state.title,
+            my_transcription: ''
         }
 
     }
@@ -32,9 +33,8 @@ class TranscriptionView extends Component {
         //call auth api and check for user-pass
         fetch('http://localhost:1177/transcriptions/get/single?email=' + cookies.get("email") + "&title="+this.state.title, requestOptions)
             .then((response) => response.json())
-            .then(response => {
-                alert(JSON.stringify(response));
-                console.log(response)
+            .then(transcription_from_db => {
+                this.setState({ my_transcription: transcription_from_db });
             }).catch(err => {
             alert("An error occured: " + err);
             console.log(err)
@@ -48,7 +48,7 @@ class TranscriptionView extends Component {
             <div className="transcriptionView">
                 <div>
                     {<h4>{this.state.title}</h4>}
-                    {<TranscriptionTextWindow />}
+                    {<TranscriptionTextWindow value={this.state.my_transcription}/>}
                 </div>
             </div>
 
