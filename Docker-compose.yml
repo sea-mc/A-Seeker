@@ -1,14 +1,14 @@
 version: '3.7'
 services:
-  # frontend:
-  #   container_name: frontend
-  #   build:
-  #     context: ./aseekerfrontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - '1337:80'
-  #   networks:
-  #     - aseeker
+  frontend:
+    container_name: frontend
+    build:
+      context: ./aseekerfrontend
+      dockerfile: Dockerfile
+    ports:
+      - '1337:80'
+    networks:
+      - aseeker
 
   database:
     container_name: ASeeker-transcription-database

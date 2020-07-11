@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	//host     = "ASeeker-transcription-database"
-	host     = "localhost"
+	host = "ASeeker-transcription-database"
+	//host     = "localhost"
 	port     = 3306
 	user     = "root"
 	password = "toor"
@@ -101,9 +101,9 @@ func DeleteTranscriptions(email string) error {
 	sqlq := "DELETE FROM transcription where email = '" + email + "';"
 	_, e := Database.Query(sqlq)
 	if e != nil {
-	log.Error(e)
-	return e
-}
+		log.Error(e)
+		return e
+	}
 
 	return nil
 }
