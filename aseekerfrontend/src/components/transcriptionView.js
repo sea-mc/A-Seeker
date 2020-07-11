@@ -5,8 +5,10 @@ import './css/bodyContent.css'
 
 import bodyContent from "./bodyContent";
 import Cookies from 'universal-cookie'
-import css from './css/transcriptionView.css'
-import TranscriptionTextWindow from "./transcriptionTextWindow";
+import './css/transcriptionView.css'
+import './css/transcriptionTextWindow.css'
+import {Form} from "react-bootstrap";
+
 const cookies = new Cookies();
 
 
@@ -19,6 +21,10 @@ class TranscriptionView extends Component {
         this.state = {
             title: this.props.location.state.title
         }
+
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.extract_words = this.extract_words.bind(this);
 
     }
 
@@ -33,7 +39,11 @@ class TranscriptionView extends Component {
         fetch('http://localhost:1177/transcriptions/get/single?email=' + cookies.get("email") + "&title="+this.state.title, requestOptions)
             .then((response) => response.json())
             .then(response => {
-                this.setState({transcription: response.fulTranscription});
+                this.setState({
+                    transcription: this.extract_words(response.fulTranscription).join(' '),
+                    times: this.extract_times(response.fulTranscription)
+                });
+                console.log(response)
             }).catch(err => {
             alert("An error occured: " + err);
             console.log(err)
@@ -42,19 +52,49 @@ class TranscriptionView extends Component {
 
     }
 
+    extract_words(api_response) {
+        const words = []
+        for(var i=0; i<api_response.length; i++){
+            words.push(api_response[i].word.valueOf(String))
+        }
+        return words
+    }
+
+    extract_times(api_response) {
+        const times = []
+        for(var i=0; i<api_response.length; i++){
+            times.push(api_response[i].time)
+        }
+        return times
+    }
+
+    handleEdit(event) {
+        this.setState({transcription : event.target.value})
+    }
+
+    handleSubmit(event) {
+        alert('A change was submitted: ' + this.state.transcription);
+        event.preventDefault();
+    }
+
     render(){
         return (
             <div className="transcriptionView">
-                <div>
                     {<h4> Transcription Title: {this.state.title}</h4>}
-                    {<TranscriptionTextWindow transcription={this.state.transcription}/>}
-                </div>
-
                 <video id="player" playsinline controls data-poster="/path/to/poster.jpg">
                     <source src="/path/to/video.mp4" type="video/mp4"/>
                     <source src="/path/to/video.webm" type="video/webm"/>
                     {/*<track kind="captions" label="English captions" src="/path/to/captions.vtt" srcLang="en" default/>*/}
                 </video>
+                <div className="transcriptionTextWindow">
+                    <Form.Control
+                        as="textarea"
+                        rows="45"
+                        width
+                        value={this.state.transcription} // todo: once transcription can be passed from backend it loads here
+                        onChange={this.handleEdit}
+                    />
+                </div>
 
             </div>
 
