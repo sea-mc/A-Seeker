@@ -10,8 +10,8 @@ class TranscriptionTextWindow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            transcription: this.props.location.state.transcription
-        }
+            transcription: this.props.transcription
+        };
 
         this.handleEdit = this.handleEdit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,7 +34,7 @@ class TranscriptionTextWindow extends React.Component {
                 <Form.Control
                     as="textarea"
                     rows="45"
-                    value={this.state.transcription} // todo: once transcription can be passed from backend it loads here
+                    // value={this.state.transcription} // todo: once transcription can be passed from backend it loads here
                     onChange={this.handleEdit}
                 />
             </div>

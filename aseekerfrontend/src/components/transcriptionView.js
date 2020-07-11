@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './css/bootstrap.css'
 import './loginButton'
 import './css/bodyContent.css'
+
 import bodyContent from "./bodyContent";
 import Cookies from 'universal-cookie'
 import css from './css/transcriptionView.css'
@@ -20,8 +21,7 @@ class TranscriptionView extends Component {
         }
 
     }
-    getSnapshotBeforeUpdate(prevProps, prevState) {
-    }
+
 
     componentDidMount() {
         var requestOptions = {
@@ -34,7 +34,9 @@ class TranscriptionView extends Component {
             .then((response) => response.json())
             .then(response => {
                 alert(JSON.stringify(response));
-                console.log(response)
+                console.log(response);
+                this.setState({transcription: response.fulTranscription});
+                alert(JSON.stringify(this.state.transcription))
             }).catch(err => {
             alert("An error occured: " + err);
             console.log(err)
@@ -48,8 +50,14 @@ class TranscriptionView extends Component {
             <div className="transcriptionView">
                 <div>
                     {<h4>{this.state.title}</h4>}
-                    {<TranscriptionTextWindow />}
+                    {<TranscriptionTextWindow transcription={this.state.transcription}/>}
                 </div>
+                <video id="player" playsinline controls data-poster="/path/to/poster.jpg">
+                    <source src="/path/to/video.mp4" type="video/mp4"/>
+                    <source src="/path/to/video.webm" type="video/webm"/>
+
+                    <track kind="captions" label="English captions" src="/path/to/captions.vtt" srcLang="en" default/>
+                </video>
             </div>
 
         )
