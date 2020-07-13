@@ -1,17 +1,16 @@
 package deepSpeech
 
 import (
-	"../../service/transcriptions"
+	"../../domain"
 	"../../service/deepSpeech"
+	"../../service/transcriptions"
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"../../domain"
 	"github.com/prometheus/common/log"
 	"io"
 	"io/ioutil"
 	"net/http"
-	"strings"
 )
 
 func UploadMedia(w http.ResponseWriter, r *http.Request) {
@@ -26,13 +25,13 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	defer file.Close()
-	name := strings.Split(header.Filename, ".")
+	name := string(header.Filename)
 	transcription := domain.Transcription{
 		Email:             r.URL.Query().Get("email"),
-		Title:             name[0],
+		Title:             name,
 		Preview:           "Preview TODO",
 		FullTranscription: nil,
-		ContentFilePath:   "audio/"+name[0],
+		ContentFilePath:   "audio/"+name,
 	}
 	email := r.URL.Query().Get("email")
 	if email == ""{
@@ -42,7 +41,7 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 	}
 	//send the file
 	log.Infof("Uploading Media File: %s for %s", r.URL.Query().Get("email"), name[0])
-	response := deepSpeech.UploadMediaAsFile(w, file, name[0])
+	response := deepSpeech.UploadMediaAsFile(w, file, name)
 	fmt.Printf("File name %s\n", name[0])
 	io.Copy(&buf, file)
 	buf.Reset()
@@ -90,5 +89,17 @@ func DeleteMedia(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetMedia(w http.ResponseWriter, r *http.Request) {
-
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+	name := r.URL.Query().Get("filename")
+	if name == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	log.Info("getting media for file " + name)
+	b := deepSpeech.GetMedia(w, name)
+	w.Write(b)
+	return
 }

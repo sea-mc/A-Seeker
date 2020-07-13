@@ -1,14 +1,14 @@
 version: '3.7'
 services:
-  frontend:
-    container_name: frontend
-    build:
-      context: ./aseekerfrontend
-      dockerfile: Dockerfile
-    ports:
-      - '1337:80'
-    networks:
-      - aseeker
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: ./aseekerfrontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '1337:80'
+  #   networks:
+  #     - aseeker
 
   database:
     container_name: ASeeker-transcription-database
@@ -40,6 +40,8 @@ services:
     build:
       context: ./deepspeech
       dockerfile: Dockerfile
+    volumes:
+      - 'aseeker_media:/audio'
 
     ports:
       - '5000:5000'
@@ -57,3 +59,4 @@ networks:
 
 volumes:
   db_data: {}
+  aseeker_media: {}
