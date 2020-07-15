@@ -74,9 +74,10 @@ def transcribe_file(audio_path, tlog_path):
     word = ''
     words = []
     word_times = []
-    stamped_words = []
+    cur_time = 0.0
 
     print("Beginning to process generated file chunks")
+
     for i, segment in enumerate(segments):
         chunkstart = time.time()
         # Run deepspeech on the chunk
@@ -87,17 +88,20 @@ def transcribe_file(audio_path, tlog_path):
 
         for token in output.transcripts[0].tokens:
             if word == '':
-                word_times.append(token.start_time)
+                cur_time += token.start_time
+                word_times.append(cur_time)
 
             word += (str(token.text))
 
             if token.text == ' ':
                 words.append(word)
                 word = ''
-        individualTimes.append(time.time() - chunkstart)
+            individualTimes.append(time.time() - chunkstart)
 
     words.append(word)
     stamped_words = [{"word": w, "time": t} for w, t in zip(words, word_times)]
+    for t in word_times:
+        print("\n", t)
 
     timeSum = 0.0
     for i in individualTimes:
