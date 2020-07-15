@@ -5,7 +5,7 @@ import tensorflow as tf
 import transcribe
 import aseeker_controller
 import transcription_db
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from DeepSpeech.deepspeech_training.util.config import Config, initialize_globals
 
 from DeepSpeech.deepspeech_training.util.config import initialize_globals
@@ -33,23 +33,19 @@ def upload_file(filename):
         # Return 400 BAD REQUEST
         os.abort(400, "no subdirectories directories allowed")
 
-    # if ".jpg" in filename and ".png" in filename | ".pdf" in filename:
-    #     return "", 500
-
     with open(os.path.join(AUDIO_FOLDER, filename), "wb") as fp:
         fp.write(request.data)
 
-    # if ".wav" not in filename | ".mp3" not in filename | ".mp4" not in filename:
-    #     #convert media
-    #     filename = aseeker_controller.convertMedia(filename)
-
     transcription = aseeker_controller.transcribe_input(os.path.join(AUDIO_FOLDER, filename), filename)
 
-    # db = transcription_db.Database()
-    # db.insert_transcription(transcription)
-    # Return 201 CREATED
     return transcription, 201
 
+@app.route('/get/<filename>', methods=['GET'])
+def get_file(filename):
+    try:
+        return send_from_directory(AUDIO_FOLDER, filename=filename, as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
 
 @app.route('/get-transcriptions', methods=['GET'])
 def get_transcriptions():

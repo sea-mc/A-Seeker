@@ -3,13 +3,18 @@
     margin-left: 16vw; /* Same as the width of the sidebar plus one for padding */
     position: absolute;
     height: 100%;
-    width: 75%;
+    width: 48%;
     all: revert;
     padding-left: 15px;
 }
 .transcriptionView video {
     align-content: end;
-    position:absolute;
-    width: 50%;
-    margin-left: 45.5vw;
+    position: fixed;
+    width: 35%;
+    margin-left: 47vw;
+}
+.transcriptionView p {
+    display: inline-block;
+    padding: 2px;
+
 }
