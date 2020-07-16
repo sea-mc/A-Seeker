@@ -43,6 +43,7 @@ global output
 
 
 def transcribe_file(audio_path, tlog_path):
+    print(audio_path)
     audio_file = wave.open(audio_path, 'rb')
     loadtime = time.time()
     ds = Model(os.getcwd() + "/deepspeech-0.7.4-models.pbmm")
