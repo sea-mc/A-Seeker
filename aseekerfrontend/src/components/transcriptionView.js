@@ -5,21 +5,22 @@ import './css/bodyContent.css'
 import Cookies from 'universal-cookie'
 import './css/transcriptionView.css'
 import './css/transcriptionTextWindow.css'
+import ReactSearchBox from 'react-search-box'
 
 const cookies = new Cookies();
 
 
 
-class TranscriptionView extends Component {
+class TranscriptionView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             title: this.props.location.state.title,
-            tokens: []
+            tokens: [],
+            filter_tokens: [],
+            search: null
         };
 
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.extract_words = this.extract_words.bind(this);
     }
 
@@ -70,34 +71,55 @@ class TranscriptionView extends Component {
         return times
     }
 
-    handleEdit(event) {
-        this.setState({transcription : event.target.value})
+    handleChange = e => {
+        this.setState({
+            filter_tokens: this.state.tokens
+        });
+    };
+
+    searchList=(event)=>{
+        let keyword = event.target.value;
+        this.setState({search:keyword})
     }
 
-    handleSubmit(event) {
-        alert('A change was submitted: ' + this.state.transcription);
-        event.preventDefault();
-    }
-    
     gotoTime(time){
         var video = document.getElementById("video");
         //manipulate the media player to the time
-        alert(time);
         video.currentTime = time;
     }
 
     render(){
+
+        const items = this.state.tokens.filter(data=> {
+            if(this.state.search == null)
+                return data
+            else if(data.word.toLowerCase().includes(this.state.search.toLowerCase())){
+                return data
+            }
+        }).map(data=>{
+            return (
+                <li onClick={this.gotoTime(data.time)}>
+                    <span>{data.word}</span>
+                    <span>({data.time})</span>
+                </li>
+            )
+        })
+
         return (
             <div className="transcriptionView">
-                {<h4> Transcription Title: {this.state.title}</h4>}
-                    <br/>
+                {<h4> {this.state.title} </h4>}
                 <video
                     id="video"
                     controls
                     title="My own video player"
                 />
+                <div className='search-bar'>
+                    <input type="text" placeholder="Search Transcription..." onChange={(e)=>this.searchList(e)}/>
+                    <ul>
+                        {items}
+                    </ul>
+                </div>
                 <hr/>
-
                 {this.state.tokens.map((transcription) =>
                     <p onClick={function(){
                         var video = document.getElementById("video");
@@ -106,10 +128,8 @@ class TranscriptionView extends Component {
                         video.currentTime = transcription.time;
                     }}>{transcription.word}</p>
                 )}
-
-
             </div>
-        )
+        );
     }
 }
 

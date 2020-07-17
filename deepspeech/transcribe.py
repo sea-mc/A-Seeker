@@ -88,15 +88,13 @@ def transcribe_file(audio_path, tlog_path):
 
         for token in output.transcripts[0].tokens:
             if word == '':
-                cur_time += token.start_time
-                word_times.append(cur_time)
-
-            word += (str(token.text))
-
+                word_times.append(cur_time + token.start_time)
+            word += (str(token.text)).strip()
             if token.text == ' ':
                 words.append(word)
                 word = ''
             individualTimes.append(time.time() - chunkstart)
+        cur_time += output.transcripts[0].tokens[len(output.transcripts[0].tokens) - 1].start_time
 
     words.append(word)
     stamped_words = [{"word": w, "time": t} for w, t in zip(words, word_times)]

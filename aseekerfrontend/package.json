@@ -15,8 +15,12 @@
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.1",
+    "react-native-elements": "^2.0.4",
+    "react-native-paper": "^3.10.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-search-bar": "^2.2.0",
+    "react-search-box": "^2.0.2",
     "react-web-media-player": "^1.1.6",
     "shaka-player": "^3.0.1",
     "universal-cookie": "^4.0.3"
