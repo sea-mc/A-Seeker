@@ -5,7 +5,6 @@ import './css/bodyContent.css'
 import Cookies from 'universal-cookie'
 import './css/transcriptionView.css'
 import './css/transcriptionTextWindow.css'
-import ReactSearchBox from 'react-search-box'
 
 const cookies = new Cookies();
 
