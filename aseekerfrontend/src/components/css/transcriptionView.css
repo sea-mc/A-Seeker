@@ -3,7 +3,34 @@
     margin-left: 16vw; /* Same as the width of the sidebar plus one for padding */
     position: absolute;
     height: 100%;
-    width: 75%;
+    width: 48%;
     all: revert;
     padding-left: 15px;
+    padding-top: 15px;
+}
+.transcriptionView video {
+    align-content: end;
+    position: fixed;
+    width: 35%;
+    margin-left: 47vw;
+}
+.search-bar ul {
+    align-content: end;
+    position: fixed;
+    height: 80%;
+    width: 50%;
+    margin-top: 2vh;
+}
+.search-bar{
+    align-content: end;
+    position: fixed;
+    height: content-box;
+    margin-left: 47vw;
+    width: 100%;
+    margin-top: 40vh;
+}
+.transcriptionView p {
+    display: inline-block;
+    padding: 2px;
+
 }

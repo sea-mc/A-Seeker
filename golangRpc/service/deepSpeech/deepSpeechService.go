@@ -8,7 +8,8 @@ import (
 )
 
 func GetMedia(w http.ResponseWriter, fileName string) []byte{
-	req, err := http.NewRequest(http.MethodGet, "http://localhost:1178/"+fileName, nil)
+	log.Info("http://deepspeech:5000/get/"+fileName)
+	req, err := http.NewRequest(http.MethodGet, "http://deepspeech:5000/get/"+fileName, nil)
 	if NetworkErr(w, err) {
 		return nil
 	}

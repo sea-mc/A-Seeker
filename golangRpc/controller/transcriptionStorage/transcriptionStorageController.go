@@ -39,7 +39,6 @@ func GetTranscription(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	log.Info(r.URL.String())
 	email := r.URL.Query()["email"][0]
 	if email == "" {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -81,4 +80,27 @@ func DeleteTranscription(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
+	email := r.URL.Query()["email"][0]
+	if email == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Error("Empty email was passed to get transcription.")
+	}
+
+	title := r.URL.Query()["title"][0]
+	if title == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Error("Empty title was passed to get transcription.")
+	}
+	log.Info("Removing transcription " + title + " for user " + email)
+	if transcriptions.CheckForUser(email) {
+		err := transcriptions.DeleteTranscription(title)
+		if err != nil {
+			log.Error(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusGone)
+		return
+	}
+	w.WriteHeader(http.StatusBadRequest)
 }

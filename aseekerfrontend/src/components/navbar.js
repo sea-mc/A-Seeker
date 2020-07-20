@@ -13,8 +13,8 @@ class Navbar extends Component {
         return (
             <header className="App-header">
                     <div>
-                        <Link to="/login">Log In</Link>
-                        <Link to = "/register">Sign Up</Link>
+                        <Link className="padding" to="/login">Log In</Link>
+                        <Link className="padding" to = "/register">Sign Up</Link>
                         <a  href="/" onClick={this.onClick}>Log Out</a>
                     </div>
             </header>

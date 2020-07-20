@@ -13,8 +13,8 @@ import (
 var Database *sql.DB
 
 const (
-	//host     = "ASeeker-transcription-database"
-	host     = "localhost"
+	host = "ASeeker-transcription-database"
+	//host     = "localhost"
 	port     = 3306
 	user     = "root"
 	password = "toor"
@@ -40,6 +40,7 @@ func InitTranscriptionDBConn() {
 		log.Infof("Transcription Database connection successful: %s  %s  %s", user, host, dbname)
 	}
 }
+
 //this is a debug function
 func GetAll() {
 	sqlq := "select * from transcription;"
@@ -86,9 +87,10 @@ func GetTranscriptions(email string) ([]domain.Transcription, error) {
 		var token domain.TranscriptionToken
 		err := json.Unmarshal(e.RawFullTranscription, &token)
 		if err != nil {
-			log.Error(err)
+			if !strings.Contains(e.Title, "demo") {
+				log.Error(err)
+			}
 		}
-
 
 	}
 
@@ -105,13 +107,8 @@ func GetTranscriptionByTitle(title string) (domain.Transcription, error) {
 	for r.Next() {
 		trns := domain.Transcription{}
 		r.Scan(&trns.Email, &trns.Preview, &trns.RawFullTranscription, &trns.ContentFilePath, &trns.Title)
-
-		log.Info(trns)
-		log.Info("{["+string(trns.RawFullTranscription))
-
-		//var tokens  domain.TranscriptionTokens
 		var rawTranscript domain.Transcription
-		e := json.Unmarshal([]byte(trns.RawFullTranscription), &rawTranscript)
+		e := json.Unmarshal(trns.RawFullTranscription, &rawTranscript)
 		if e != nil {
 			return domain.Transcription{}, e
 		}
@@ -126,7 +123,7 @@ func InsertTranscription(transcription domain.Transcription) error {
 	jsonTranscription, _ := json.Marshal(transcription)
 	jsonString := string(jsonTranscription)
 	jsonString = strings.Replace(jsonString, "'", "\\'", -1)
-	sqlq := "insert into transcription (email, preview, full_transcription, audio_path, title)" +
+	sqlq := "insert into transcription (email, preview, full_transcription, content_url, title)" +
 		" values ('" + transcription.Email + "', '" + transcription.Preview + "', '" + jsonString + "'," + "'" + transcription.ContentFilePath + "','" + transcription.Title + "');"
 	_, e := Database.Query(sqlq)
 	if e != nil {
@@ -135,6 +132,20 @@ func InsertTranscription(transcription domain.Transcription) error {
 	}
 
 	return nil
+}
+
+func CheckForUser(email string) bool {
+	sqlq := "select * from account where email = '" + email + "';"
+	r, e := Database.Query(sqlq)
+	if e != nil {
+		log.Error(e)
+		return false
+	}
+	userfound := false
+	for r.Next() {
+		userfound = true
+	}
+	return userfound
 }
 
 func DeleteTranscription(transcriptionTitle string) error {

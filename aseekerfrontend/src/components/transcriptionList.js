@@ -68,7 +68,6 @@ class TranscriptionList extends React.Component {
                                     <div>
                                         <h4>{transcription.title}</h4>
                                         <h6>{transcription.preview}</h6>
-                                        <p>{transcription.full_transcription}</p>
                                         <br/>
                                         <h6>{transcription.contentFilePath}</h6>
                                     </div>

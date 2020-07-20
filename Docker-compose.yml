@@ -40,6 +40,8 @@ services:
     build:
       context: ./deepspeech
       dockerfile: Dockerfile
+    volumes:
+      - 'aseeker_media:/audio'
 
     ports:
       - '5000:5000'
@@ -57,3 +59,4 @@ networks:
 
 volumes:
   db_data: {}
+  aseeker_media: {}

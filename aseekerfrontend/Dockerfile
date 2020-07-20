@@ -6,7 +6,9 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm install react-scripts@3.4.1 -g --silent
 RUN npm install react-hook-form@5.7.2 -g --silent
+RUN npm install hls
 RUN npm ci --silent
+RUN npm install plyr
 COPY . ./
 RUN npm run build
 

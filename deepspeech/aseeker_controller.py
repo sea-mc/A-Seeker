@@ -1,16 +1,14 @@
+import os
 import shlex
 import subprocess
 
 from transcribe import transcribe_file
 
+AUDIO_FOLDER = './audio'
 
 
 def transcribe_input(filepath, filename):
-    if ".wav" not in filename:
-        format_file(filename)
-
-
-    return transcribe_file(filepath, "/transcriptions/" + filename)
+    return transcribe_file(convertMedia(filepath), "/transcriptions/" + filename)
 
 
 def format_file(filename):
@@ -20,8 +18,11 @@ def format_file(filename):
 
 
 def convertMedia(filename):
-    ffmpeg_cmd = 'ffmpeg -i {} {}'.format(
-        shlex.quote(filename), shlex.quote(filename + "converted.wav"))
+
+    print("Converting " + filename + " to WAV (This could take some time...)")
+
+    ffmpeg_cmd = 'ffmpeg -y -i {} -vn {}'.format(shlex.quote(filename), shlex.quote(filename + "converted.wav"))
+
     try:
         subprocess.check_output(shlex.split(ffmpeg_cmd), stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as e:
@@ -29,4 +30,7 @@ def convertMedia(filename):
     except OSError as e:
         raise OSError(e.errno,
                       'ffmpeg not found')
+
+    print("Conversion for " + filename + " done! ")
+    print(shlex.quote(os.path.join(AUDIO_FOLDER, filename + "converted.wav")))
     return shlex.quote(filename + "converted.wav")
