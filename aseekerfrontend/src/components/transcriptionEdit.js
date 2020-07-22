@@ -14,13 +14,10 @@ class TranscriptionEdit extends React.Component {
         super(props);
         this.state = {
             title: this.props.location.state.title,
-            words: this.extract_words(this.props.location.state.tokens),
+            words: Array.from(this.extract_words(this.props.location.state.tokens)).join(" "),
             tokens: this.props.location.state.tokens
         }
-        console.log({
-            title: this.props.location.state.title,
-            tokens: this.props.location.state.tokens
-        })
+
     }
 
 
@@ -75,6 +72,16 @@ class TranscriptionEdit extends React.Component {
         })
     }
 
+    textChanged(event) {
+        this.setState({
+            words: event.target.value
+        });
+    }
+    getwords(){
+
+        return Array.from(this.state.words)
+    }
+
     render(){
 
         return (
@@ -90,7 +97,9 @@ class TranscriptionEdit extends React.Component {
                 />
                 <hr/>
                 <textarea
-                    value={this.state.words.join("")}
+                    value={this.state.words}
+                    spellCheck={false}
+                    onChange={(e) => this.textChanged(e)}
                     rows={25}
                 />
             </div>

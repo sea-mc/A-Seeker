@@ -34,7 +34,13 @@
     padding: 2px;
 
 }
+
 .transcriptionView textarea {
     display: inline-block;
     width: 100%;
+}
+.transcriptionView EdiText {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
 }
