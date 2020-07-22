@@ -6,7 +6,6 @@ import Cookies from 'universal-cookie'
 import './css/transcriptionView.css'
 import './css/transcriptionTextWindow.css'
 import {Button, ButtonGroup, ToggleButton} from "react-bootstrap";
-import Link from "react-router-dom/modules/Link";
 
 const cookies = new Cookies();
 
@@ -89,23 +88,15 @@ class TranscriptionView extends React.Component {
         video.currentTime = time;
     }
 
-    // enableEditing(title, token_list) {
-    //     console.log({
-    //         title: title,
-    //         words : this.extract_words(token_list),
-    //         times : this.extract_times(token_list),
-    //         tokens : token_list
-    //     })
-    //     this.props.history.push({
-    //         pathname: "/transcription/edit",
-    //         state: {
-    //             title: title,
-    //             words : this.extract_words(token_list),
-    //             times : this.extract_times(token_list),
-    //             tokens : token_list
-    //         }
-    //     })
-    // }
+    enableEditing(t_title, token_list) {
+        this.props.history.push({
+            pathname: "/transcription/edit",
+            state: {
+                title: t_title,
+                tokens : token_list
+            }
+        })
+    }
 
     render(){
 
@@ -127,10 +118,9 @@ class TranscriptionView extends React.Component {
         return (
             <div className="transcriptionView">
                 <h4> {this.state.title} </h4>
-                <Link to={{
-                    pathname: "/transcription/edit",
-                    title: this.state.title
-                }}>Edit</Link>
+                <Button variant="primary" size="sm" onClick={() =>
+                    this.enableEditing(this.state.title, this.state.tokens)}
+                >Edit</Button>
                 <video
                     id="video"
                     controls

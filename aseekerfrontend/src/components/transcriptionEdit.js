@@ -4,7 +4,6 @@ import './css/bodyContent.css'
 import Cookies from 'universal-cookie'
 import {Button, ButtonGroup, ToggleButton} from "react-bootstrap";
 import TranscriptionView from "./transcriptionView";
-import Link from "react-router-dom/modules/Link";
 
 const cookies = new Cookies();
 
@@ -15,14 +14,11 @@ class TranscriptionEdit extends React.Component {
         super(props);
         this.state = {
             title: this.props.location.state.title,
-            words: this.props.location.state.words,
-            times: this.props.location.state.times,
+            words: this.extract_words(this.props.location.state.tokens),
             tokens: this.props.location.state.tokens
         }
         console.log({
             title: this.props.location.state.title,
-            words: this.props.location.state.words,
-            times: this.props.location.state.times,
             tokens: this.props.location.state.tokens
         })
     }
@@ -70,24 +66,23 @@ class TranscriptionEdit extends React.Component {
         video.currentTime = time;
     }
 
-    // enableViewing(title) {
-    //     this.props.history.push({
-    //         pathname: "/transcription/view",
-    //         state: {
-    //             title: title
-    //         }
-    //     })
-    // }
+    enableViewing(title) {
+        this.props.history.push({
+            pathname: "/transcription/view",
+            state: {
+                title: title
+            }
+        })
+    }
 
     render(){
 
         return (
             <div className="transcriptionView">
                 <h4> {this.state.title} </h4>
-                <Link to={{
-                    pathname: "/transcription/view",
-                    title: this.state.title
-                }}>Save</Link>
+                <Button variant="primary" size="sm" onClick={() =>
+                    this.enableViewing(this.state.title, this.state.tokens)}
+                >Save</Button>{' '}
                 <video
                     id="video"
                     controls
