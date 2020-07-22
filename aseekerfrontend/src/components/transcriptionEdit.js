@@ -14,16 +14,10 @@ class TranscriptionEdit extends React.Component {
         super(props);
         this.state = {
             title: this.props.location.state.title,
-            words: this.extract_words(this.props.location.state.tokens),
+            words: Array.from(this.extract_words(this.props.location.state.tokens)).join(" "),
             tokens: this.props.location.state.tokens
         }
-        console.log({
-            title: this.props.location.state.title,
-            tokens: this.props.location.state.tokens
-        })
 
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleSave = this.handleSave.bind(this);
     }
 
 
@@ -44,20 +38,11 @@ class TranscriptionEdit extends React.Component {
     }
 
 
-    handleSearch = e => {
+    handleEdit = e => {
         this.setState({
             filter_tokens: this.state.tokens
         });
     };
-
-    handleEdit(event) {
-        this.setState({words: event.target.value})
-    }
-
-    handleSave(event) {
-        alert('Transcription updated: ' + this.state.words);
-        event.preventDefault();
-    }
 
     extract_words(tokens) {
         const words = []
@@ -87,6 +72,16 @@ class TranscriptionEdit extends React.Component {
         })
     }
 
+    textChanged(event) {
+        this.setState({
+            words: event.target.value
+        });
+    }
+    getwords(){
+
+        return Array.from(this.state.words)
+    }
+
     render(){
 
         return (
@@ -101,12 +96,12 @@ class TranscriptionEdit extends React.Component {
                     title="My own video player"
                 />
                 <hr/>
-                <form id="edit-transcription-form" method="POST" onSubmit={this.handleSave}>
-                    <textarea id="transcription-text" name="textarea"
-                              value={this.state.words}
-                              onChange={this.handleEdit}
-                    />
-                </form>
+                <textarea
+                    value={this.state.words}
+                    spellCheck={false}
+                    onChange={(e) => this.textChanged(e)}
+                    rows={25}
+                />
             </div>
         );
     }
