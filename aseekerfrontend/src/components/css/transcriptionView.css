@@ -34,3 +34,7 @@
     padding: 2px;
 
 }
+.transcriptionView textarea {
+    display: inline-block;
+    width: 100%;
+}
