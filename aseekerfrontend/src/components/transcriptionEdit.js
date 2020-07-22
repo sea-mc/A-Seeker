@@ -63,7 +63,24 @@ class TranscriptionEdit extends React.Component {
         video.currentTime = time;
     }
 
-    enableViewing(title) {
+    enableViewing(title, tokens) {
+
+        //upload tokens to the backend
+        var requestOptions = {
+            method: 'POST',
+            redirect: 'follow',
+            body: JSON.stringify(Array.from(tokens))
+        };
+
+        fetch('http://localhost:1177/transcriptions/update?email='+this.state.email + "&title="+title, requestOptions)
+            .then(response => {
+                alert(response.status)
+            });
+
+        console.log(this.state.words);
+        console.log(this.state.tokens);
+
+
         this.props.history.push({
             pathname: "/transcription/view",
             state: {
@@ -87,7 +104,7 @@ class TranscriptionEdit extends React.Component {
         return (
             <div className="transcriptionView">
                 <h4> {this.state.title} </h4>
-                <Button variant="primary" size="sm" onClick={() =>
+                <Button variant="primary" size="sm" onClick={(e) =>
                     this.enableViewing(this.state.title, this.state.tokens)}
                 >Save</Button>{' '}
                 <video

@@ -134,6 +134,19 @@ func InsertTranscription(transcription domain.Transcription) error {
 	return nil
 }
 
+func UpdateTranscription(transcription domain.Transcription) error {
+	jsonTranscription, _ := json.Marshal(transcription)
+	jsonString := string(jsonTranscription)
+	jsonString = strings.Replace(jsonString, "'", "\\'", -1)
+	sqlq := "update transcription SET full_transcription = '"  + jsonString + "' WHERE email = '" + transcription.Email+"' AND title = '"+transcription.Title+"';"
+	_, e := Database.Query(sqlq)
+	if e != nil {
+		log.Error(e)
+		return e
+	}
+	return nil
+}
+
 func CheckForUser(email string) bool {
 	sqlq := "select * from account where email = '" + email + "';"
 	r, e := Database.Query(sqlq)
