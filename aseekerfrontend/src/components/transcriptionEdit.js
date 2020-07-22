@@ -21,6 +21,9 @@ class TranscriptionEdit extends React.Component {
             title: this.props.location.state.title,
             tokens: this.props.location.state.tokens
         })
+
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
 
@@ -41,11 +44,20 @@ class TranscriptionEdit extends React.Component {
     }
 
 
-    handleEdit = e => {
+    handleSearch = e => {
         this.setState({
             filter_tokens: this.state.tokens
         });
     };
+
+    handleEdit(event) {
+        this.setState({words: event.target.value})
+    }
+
+    handleSave(event) {
+        alert('Transcription updated: ' + this.state.words);
+        event.preventDefault();
+    }
 
     extract_words(tokens) {
         const words = []
@@ -89,10 +101,12 @@ class TranscriptionEdit extends React.Component {
                     title="My own video player"
                 />
                 <hr/>
-                <textarea
-                    value={this.state.words.join("")}
-                    rows={25}
-                />
+                <form id="edit-transcription-form" method="POST" onSubmit={this.handleSave}>
+                    <textarea id="transcription-text" name="textarea"
+                              value={this.state.words}
+                              onChange={this.handleEdit}
+                    />
+                </form>
             </div>
         );
     }
