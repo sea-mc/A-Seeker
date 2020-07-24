@@ -3,7 +3,9 @@ package transcriptionStorage
 import (
 	"../../service/transcriptions"
 	"encoding/json"
+	"../../domain"
 	"github.com/prometheus/common/log"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -103,4 +105,50 @@ func DeleteTranscription(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusBadRequest)
+}
+
+
+func UpdateTranscription(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+	email := r.URL.Query()["email"][0]
+	if email == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Error("Empty email was passed to get transcription.")
+	}
+
+	title := r.URL.Query()["title"][0]
+	if title == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Error("Empty title was passed to get transcription.")
+	}
+	tokens, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	log.Info(string(tokens))
+	var allTokens domain.TranscriptionTokens
+	err = json.Unmarshal(tokens, &allTokens)
+	if err != nil {
+		log.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	transcript := domain.Transcription{
+		Email:                email,
+		Title:                title,
+		FullTranscription:    allTokens,
+	}
+
+	err = transcriptions.UpdateTranscription(transcript)
+	if err != nil {
+		log.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }

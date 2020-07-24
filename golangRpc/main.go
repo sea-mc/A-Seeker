@@ -28,6 +28,8 @@ func main() {
 	mux.HandleFunc("/transcriptions/get/all", transcriptionStorageController.GetTranscriptions)
 	mux.HandleFunc("/transcriptions/get/single", transcriptionStorageController.GetTranscription)
 	mux.HandleFunc("/transcriptions/delete", transcriptionStorageController.DeleteTranscription)
+	mux.HandleFunc("/transcriptions/update", transcriptionStorageController.UpdateTranscription)
+
 
 	//deepSpeech API
 	mux.HandleFunc("/deepSpeech/media/upload", deepSpeechController.UploadMedia)
