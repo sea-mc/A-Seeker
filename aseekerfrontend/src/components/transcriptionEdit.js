@@ -65,21 +65,43 @@ class TranscriptionEdit extends React.Component {
 
     enableViewing(title, tokens) {
 
+        //get an array of words from the text box, not including white spaces
+        let wordz = this.state.words + " ";
+        var wordsarray = Array.from(Array.from(wordz).join("").split(/(\s+)/)).filter(function (str) {
+            return /\S/.test(str)
+        });
+        var endarray = [];
+        for(var i =0; i < wordsarray.length; i++){
+            //check if current word is valid JSON object
+            try{
+                console.log(JSON.parse(wordsarray[i]));
+                endarray[i] = JSON.parse(wordsarray[i])
+            }catch {
+                if(i >= tokens.length) {
+                    endarray[i] = {
+                        word: wordsarray[i],
+                        time: tokens[tokens.length-1].time,
+                    }
+                }else {
+                    endarray[i] = {
+                        word: wordsarray[i],
+                        time: tokens[i].time,
+                    }
+                }
+            }
+        }
+        console.log(endarray);
         //upload tokens to the backend
         var requestOptions = {
             method: 'POST',
             redirect: 'follow',
-            body: JSON.stringify(Array.from(tokens))
+            body: endarray
         };
 
         fetch('http://localhost:1177/transcriptions/update?email='+this.state.email + "&title="+title, requestOptions)
             .then(response => {
                 alert(response.status)
             });
-
-        console.log(this.state.words);
-        console.log(this.state.tokens);
-
 
         this.props.history.push({
             pathname: "/transcription/view",
