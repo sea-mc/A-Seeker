@@ -11,6 +11,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 func UploadMedia(w http.ResponseWriter, r *http.Request) {
@@ -26,15 +27,16 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 	name := string(header.Filename)
+	name = strings.ReplaceAll(name, " ", "_")
 	transcription := domain.Transcription{
 		Email:             r.URL.Query().Get("email"),
 		Title:             name,
 		Preview:           "Preview TODO",
 		FullTranscription: nil,
-		ContentFilePath:   "audio/"+name,
+		ContentFilePath:   "audio/" + name,
 	}
 	email := r.URL.Query().Get("email")
-	if email == ""{
+	if email == "" {
 		w.WriteHeader(http.StatusNotAcceptable)
 		log.Error("Upload media function received a request which has am empty email query value")
 		return
@@ -79,7 +81,6 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
 
 	w.Write(j)
 }
