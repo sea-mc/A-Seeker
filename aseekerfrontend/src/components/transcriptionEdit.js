@@ -14,6 +14,7 @@ class TranscriptionEdit extends React.Component {
         super(props);
         this.state = {
             title: this.props.location.state.title,
+            email: this.props.location.state.email,
             words: Array.from(this.extract_words(this.props.location.state.tokens)).join(" "),
             tokens: this.props.location.state.tokens
         }
@@ -83,9 +84,16 @@ class TranscriptionEdit extends React.Component {
                         time: tokens[tokens.length-1].time,
                     }
                 }else {
-                    endarray[i] = {
-                        word: wordsarray[i],
-                        time: tokens[i].time,
+                    if(i===0){
+                        endarray[i] = {
+                            word: wordsarray[i],
+                            time: tokens[0].time,
+                        }
+                    }else {
+                        endarray[i] = {
+                            word: wordsarray[i],
+                            time: tokens[i - 1].time,
+                        }
                     }
                 }
             }
@@ -95,10 +103,10 @@ class TranscriptionEdit extends React.Component {
         var requestOptions = {
             method: 'POST',
             redirect: 'follow',
-            body: endarray
+            body: JSON.stringify(endarray)
         };
 
-        fetch('http://localhost:1177/transcriptions/update?email='+this.state.email + "&title="+title, requestOptions)
+        fetch('http://localhost:1177/transcriptions/update?email='+cookies.get("email") + "&title="+title, requestOptions)
             .then(response => {
                 alert(response.status)
             });

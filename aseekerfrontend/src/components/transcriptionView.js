@@ -93,7 +93,8 @@ class TranscriptionView extends React.Component {
             pathname: "/transcription/edit",
             state: {
                 title: t_title,
-                tokens : token_list
+                tokens : token_list,
+                email: this.state.email,
             }
         })
     }
