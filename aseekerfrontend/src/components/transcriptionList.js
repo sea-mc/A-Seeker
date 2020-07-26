@@ -48,16 +48,16 @@ class TranscriptionList extends React.Component {
         return (
             <div className={css.transcriptionList}>
                 <div className="transcriptionUpload">
-                    <TranscriptionUploadButton/>
                     <div>
                         <textarea
                             className="form-control transcriptionUploadTitleInput"
                             id="exampleFormControlTextarea1"
-                            rows="5"
+                            rows="1"
                             placeholder={"Enter Transcription Title Here (Do not include any file extensions)"}
                             contentEditable={"true"}
                         />
                     <br/>
+                    <TranscriptionUploadButton/>
                 </div>
             </div>
                <br/><br/>

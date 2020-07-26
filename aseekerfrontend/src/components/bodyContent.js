@@ -16,10 +16,8 @@ function bodyContent() {
                 Don't forget to make an account so that you can save your transcriptions for later! </p>
 
             <div className="quickStart">
-                <h3>I'm going to save my work: </h3>
+                <h3>I'm interested!</h3>
                 <a href="/signup">Sign Up</a> Or <a href="/login"> Log in</a>
-                <h3>I'm just trying this out: </h3>
-                <a href="/transcriptions">Transcriptions Page</a>
             </div>
 
             <h1>Let's Get Started: </h1>

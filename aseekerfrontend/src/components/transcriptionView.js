@@ -101,6 +101,9 @@ class TranscriptionView extends React.Component {
 
     render(){
 
+        console.log(this.state.transcription)
+        console.log(this.state.times)
+
         const items = this.state.tokens.filter(data=> {
             if(this.state.search == null)
                 return data
