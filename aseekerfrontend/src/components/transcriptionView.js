@@ -99,25 +99,105 @@ class TranscriptionView extends React.Component {
         })
     }
 
+
+    getBody(){
+        return this.state.tokens.map((transcription) =>
+            <p onClick={function(){
+                var video = document.getElementById("video");
+                //manipulate the media player to the time
+                video.currentTime = transcription.time;
+            }}>{transcription.word}</p>
+        );
+    }
+
+
+    getResults() {
+
+        var found = [];
+        let k = 0;
+        for (var i = 0; i < this.state.tokens.length; i++) {
+            if (this.state.search !== null) {
+                if (this.state.search.length > 1) {
+                    if (this.state.tokens[i].word.toLowerCase().includes(this.state.search.toLowerCase())) {
+
+
+                        // //get the words of surrounding tokens to provide a textual context to the search result
+
+                        // //get the 5 words prior and after the found search result
+                        var firstFiveWords = "";
+                        for(let j = i-5; j < i; j++){
+                            if(this.state.tokens[i] !== undefined) {
+                                firstFiveWords += this.state.tokens[j].word + " "
+                            }
+                        }
+
+                        var nextFiveWords = "";
+                        if( i < this.state.tokens.length - 1){
+                            for(let j = i; j < i+5; j++){
+                                // console.log(j)
+                                if(this.state.tokens[j] !== undefined) {
+                                    // console.log(this.state.tokens[j].word);
+                                    nextFiveWords += this.state.tokens[j].word + " ";
+                                }
+                            }
+                        }
+
+
+                        let fin = firstFiveWords.concat(nextFiveWords);
+                        console.log(fin);
+                        found[k] = {
+                          word: fin,
+                          time: this.state.tokens[i].time
+                        };
+                        k++;
+                    }
+                }
+            }
+        }
+
+
+        var elements = [];
+        if(found.length === 0){
+            return (
+            <li>
+                <span></span>
+                <span></span>
+            </li>
+            );
+        }
+
+        if (found.length > 0) {
+            for (i = 0; i < found.length; i++) {
+                if(found[i] !== undefined) {
+                    elements[i] = (
+                        <li onClick={this.gotoTime(found[i].time)}>
+                            <span>{found[i].word}</span>
+                            <span>({found[i].time})</span>
+                        </li>);
+                }
+            }
+        }
+
+        return elements;
+    }
+
     render(){
 
-        console.log(this.state.transcription)
-        console.log(this.state.times)
+        // const items = this.state.tokens.filter(data => {
+        //     if(this.state.search == null)
+        //         return data;
+        //     else if(data.word.toLowerCase().includes(this.state.search.toLowerCase())){
+        //         return data;
+        //     }
+        // }).map(data=>{
+        //     return (
+        //         <li onClick={this.gotoTime(data.time)}>
+        //             <span>{data.word}</span>
+        //             <span>({data.time})</span>
+        //         </li>
+        //     )
+        // });
 
-        const items = this.state.tokens.filter(data=> {
-            if(this.state.search == null)
-                return data
-            else if(data.word.toLowerCase().includes(this.state.search.toLowerCase())){
-                return data
-            }
-        }).map(data=>{
-            return (
-                <li onClick={this.gotoTime(data.time)}>
-                    <span>{data.word}</span>
-                    <span>({data.time})</span>
-                </li>
-            )
-        })
 
         return (
             <div className="transcriptionView">
@@ -133,17 +213,11 @@ class TranscriptionView extends React.Component {
                 <div className='search-bar'>
                     <input type="text" placeholder="Search Transcription..." onChange={(e)=>this.searchList(e)}/>
                     <ul>
-                        {items}
+                        {this.getResults()}
                     </ul>
                 </div>
                 <hr/>
-                {this.state.tokens.map((transcription) =>
-                    <p onClick={function(){
-                        var video = document.getElementById("video");
-                        //manipulate the media player to the time
-                        video.currentTime = transcription.time;
-                    }}>{transcription.word}</p>
-                )}
+                {this.getBody()}
             </div>
         );
     }
