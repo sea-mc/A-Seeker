@@ -109,8 +109,6 @@ class TranscriptionView extends React.Component {
             }}>{transcription.word}</p>
         );
     }
-
-
     getResults() {
 
         var found = [];
@@ -144,7 +142,6 @@ class TranscriptionView extends React.Component {
 
 
                         let fin = firstFiveWords.concat(nextFiveWords);
-                        console.log(fin);
                         found[k] = {
                           word: fin,
                           time: this.state.tokens[i].time
@@ -169,15 +166,22 @@ class TranscriptionView extends React.Component {
         if (found.length > 0) {
             for (i = 0; i < found.length; i++) {
                 if(found[i] !== undefined) {
+                    console.log(found[i].time);
+                    let curtime = found[i].time;
                     elements[i] = (
-                        <li onClick={this.gotoTime(found[i].time)}>
-                            <span>{found[i].word}</span>
-                            <span>({found[i].time})</span>
+                        <li onClick={()=>{
+                            var video = document.getElementById("video");
+                            //manipulate the media player to the time
+                            video.currentTime = curtime;
+                        }}>
+                            <p>{found[i].word}</p>
+                            <p>({found[i].time})</p>
                         </li>);
                 }
             }
         }
-
+        console.log(elements.join(""))
+        console.log(elements)
         return elements;
     }
 
