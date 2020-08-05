@@ -11,6 +11,7 @@ import Register from "./components/register";
 import TranscriptionList from "./components/transcriptionList";
 import Account from "./components/account";
 import TranscriptionView from "./components/transcriptionView";
+import TranscriptionEdit from "./components/transcriptionEdit";
 
 const mux = (
     <Router>
@@ -23,6 +24,7 @@ const mux = (
         <Route path={"/register"} component={Register} replace/>
         <Route path={"/transcriptions"} component={TranscriptionList} replace/>
         <Route path={"/transcription/view"} component={TranscriptionView} replace/>
+        <Route path={"/transcription/edit"} component={TranscriptionEdit} replace/>
         <Route path={"/account"} component={Account} replace/>
     </Router>
 );

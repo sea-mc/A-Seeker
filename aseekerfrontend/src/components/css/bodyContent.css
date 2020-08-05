@@ -4,8 +4,6 @@
     position: absolute;
     height: 100%;
     width: 75%;
-    all: revert;
-    padding-left: 15px;
 }
 
 .quickStart {
@@ -16,10 +14,14 @@
     border: thin black solid;
 }
 
-.bodyContent ul {
-    
+.bodyContent h3 {
+    font-size: 25px;
+    padding-right: 20vw;
+    padding-top: 5px;
 }
 
 .padding {
-    margin: 10px;
+    justify-items: right;
+    margin: 15px;
+    font-size: calc(8px + 1vmin);
 }

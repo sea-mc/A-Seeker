@@ -15,7 +15,7 @@ class Navbar extends Component {
                     <div>
                         <Link className="padding" to="/login">Log In</Link>
                         <Link className="padding" to = "/register">Sign Up</Link>
-                        <a  href="/" onClick={this.onClick}>Log Out</a>
+                        <a  className="padding" href="/" onClick={this.onClick}>Log Out</a>
                     </div>
             </header>
 

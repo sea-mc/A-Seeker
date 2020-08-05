@@ -124,13 +124,27 @@ func InsertTranscription(transcription domain.Transcription) error {
 	jsonString := string(jsonTranscription)
 	jsonString = strings.Replace(jsonString, "'", "\\'", -1)
 	sqlq := "insert into transcription (email, preview, full_transcription, content_url, title)" +
-		" values ('" + transcription.Email + "', '" + transcription.Preview + "', '" + jsonString + "'," + "'" + transcription.ContentFilePath + "','" + transcription.Title + "');"
+		" values ('" + strings.ReplaceAll(transcription.Email, "'", "") + "', '" + transcription.Preview + "', '" + jsonString + "'," + "'" + transcription.ContentFilePath + "','" + transcription.Title + "');"
 	_, e := Database.Query(sqlq)
 	if e != nil {
 		log.Error(e)
 		return e
 	}
 
+	return nil
+}
+
+func UpdateTranscription(transcription domain.Transcription) error {
+	jsonTranscription, _ := json.Marshal(transcription)
+	jsonString := string(jsonTranscription)
+	jsonString = strings.Replace(jsonString, "'", "\\'", -1)
+	sqlq := "update transcription SET full_transcription = '"  + jsonString + "' WHERE email = '" + transcription.Email+"' AND title = '"+transcription.Title+"';"
+	log.Info(sqlq)
+	_, e := Database.Query(sqlq)
+	if e != nil {
+		log.Error(e)
+		return e
+	}
 	return nil
 }
 

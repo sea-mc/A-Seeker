@@ -11,15 +11,21 @@ class TranscriptionUploadButton extends React.Component {
             <div>
             <Dropzone
                 onDrop={ acceptedFiles => {
+
+                    //get the title that the user input
+                    var uploadBox = document.getElementById("exampleFormControlTextarea1");
+
                     var email = cookies.get("email");
                     if (email === ""){
                         alert("Please login to upload a transcription");
                         return
                     }
+
                     //do upload post
                     const formData = new FormData();
                     formData.append('file', acceptedFiles[0]); //only one file at a time
-                    fetch('http://localhost:1177/deepSpeech/media/upload?email='+cookies.get("email"), {
+                    alert("http://localhost:1177/deepSpeech/media/upload?email='"+cookies.get("email")+"'&filename='"+uploadBox.value+"'");
+                    fetch("http://localhost:1177/deepSpeech/media/upload?email='"+cookies.get("email")+"'&filename='"+uploadBox.value+"'", {
                         method: 'POST',
                         body: formData
                     })

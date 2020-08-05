@@ -5,6 +5,7 @@ import './css/bodyContent.css'
 import Cookies from 'universal-cookie'
 import './css/transcriptionView.css'
 import './css/transcriptionTextWindow.css'
+import {Button, ButtonGroup, ToggleButton} from "react-bootstrap";
 
 const cookies = new Cookies();
 
@@ -41,7 +42,7 @@ class TranscriptionView extends React.Component {
                 });
                 console.log(response)
             }).catch(err => {
-            alert("An error occured: " + err);
+            alert("Please Login To submit media files for transcriptions");
             console.log(err)
 
         });
@@ -81,52 +82,126 @@ class TranscriptionView extends React.Component {
         this.setState({search:keyword})
     }
 
-    gotoTime(time){
-        var video = document.getElementById("video");
-        //manipulate the media player to the time
-        video.currentTime = time;
+
+    enableEditing(t_title, token_list) {
+        this.props.history.push({
+            pathname: "/transcription/edit",
+            state: {
+                title: t_title,
+                tokens : token_list,
+                email: this.state.email,
+            }
+        })
+    }
+
+
+    getBody(){
+        return this.state.tokens.map((transcription) =>
+            <p onClick={function(){
+                var video = document.getElementById("video");
+                //manipulate the media player to the time
+                video.currentTime = transcription.time;
+            }}>{transcription.word}</p>
+        );
+    }
+    getResults() {
+
+        var found = [];
+        let k = 0;
+        for (var i = 0; i < this.state.tokens.length; i++) {
+            if (this.state.search !== null) {
+                if (this.state.search.length > 1) {
+                    if (this.state.tokens[i].word.toLowerCase().includes(this.state.search.toLowerCase())) {
+
+
+                        // //get the words of surrounding tokens to provide a textual context to the search result
+
+                        // //get the 5 words prior and after the found search result
+                        var firstFiveWords = "";
+                        for(let j = i-5; j < i; j++){
+                            if(this.state.tokens[i] !== undefined) {
+                                firstFiveWords += this.state.tokens[j].word + " "
+                            }
+                        }
+
+                        var nextFiveWords = "";
+                        if( i < this.state.tokens.length - 1){
+                            for(let j = i; j < i+5; j++){
+                                // console.log(j)
+                                if(this.state.tokens[j] !== undefined) {
+                                    // console.log(this.state.tokens[j].word);
+                                    nextFiveWords += this.state.tokens[j].word + " ";
+                                }
+                            }
+                        }
+
+
+                        let fin = firstFiveWords.concat(nextFiveWords);
+                        found[k] = {
+                          word: fin,
+                          time: this.state.tokens[i].time
+                        };
+                        k++;
+                    }
+                }
+            }
+        }
+
+
+        var elements = [];
+        if(found.length === 0){
+            return (
+            <li>
+                <span></span>
+                <span></span>
+            </li>
+            );
+        }
+
+        if (found.length > 0) {
+            for (i = 0; i < found.length; i++) {
+                if(found[i] !== undefined) {
+                    console.log(found[i].time);
+                    let curtime = found[i].time;
+                    elements[i] = (
+                        <li onClick={()=>{
+                            var video = document.getElementById("video");
+                            //manipulate the media player to the time
+                            video.currentTime = curtime-0.75; //take 750ms off so that we can actually hear the search result
+                        }}>
+                            <p>{found[i].word}</p>
+                            <p>({found[i].time})</p>
+                        </li>);
+                }
+            }
+        }
+        return elements;
     }
 
     render(){
 
-        const items = this.state.tokens.filter(data=> {
-            if(this.state.search == null)
-                return data
-            else if(data.word.toLowerCase().includes(this.state.search.toLowerCase())){
-                return data
-            }
-        }).map(data=>{
-            return (
-                <li onClick={this.gotoTime(data.time)}>
-                    <span>{data.word}</span>
-                    <span>({data.time})</span>
-                </li>
-            )
-        })
-
         return (
             <div className="transcriptionView">
-                {<h4> {this.state.title} </h4>}
-                <video
-                    id="video"
-                    controls
-                    title="My own video player"
-                />
-                <div className='search-bar'>
-                    <input type="text" placeholder="Search Transcription..." onChange={(e)=>this.searchList(e)}/>
-                    <ul>
-                        {items}
-                    </ul>
+                <h4> {this.state.title} </h4>
+                <Button variant="primary" size="sm" onClick={() =>
+                    this.enableEditing(this.state.title, this.state.tokens)}
+                >Edit</Button>
+                <div className="mediaAndSearch">
+                    <video
+                        id="video"
+                        controls
+                    />
+                    <div className="search-bar">
+                        <input type="text" placeholder="Search Transcription..." onChange={(e)=>this.searchList(e)}/>
+                        <ul>
+                            {this.getResults()}
+                        </ul>
+                    </div>
                 </div>
                 <hr/>
-                {this.state.tokens.map((transcription) =>
-                    <p onClick={function(){
-                        var video = document.getElementById("video");
-                        //manipulate the media player to the time
-                        alert(transcription.time);
-                        video.currentTime = transcription.time;
-                    }}>{transcription.word}</p>
-                )}
+                <div className="main-transcription">
+                    {this.getBody()}
+                </div>
             </div>
         );
     }

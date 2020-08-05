@@ -53,10 +53,6 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 --- Load demo data ---
 
 INSERT IGNORE INTO account (email, password) VALUES ('test@test.com', 'password123');
-INSERT IGNORE INTO transcription (email, preview, full_transcription, content_url, title) VALUES ('test@test.com', ' This is the preview ', ' {"word":"one", "time":"1.0"}', '/path/to/audiofile', 'demo transcription 1');
-INSERT IGNORE INTO transcription (email, preview, full_transcription, content_url, title) VALUES ('test@test.com', ' This is the preview ', ' {"word":"one", "time":"1.0"}', '/path/to/audiofile', 'demo transcription 2');
-INSERT IGNORE INTO transcription (email, preview, full_transcription, content_url, title) VALUES ('test@test.com', ' This is the preview ', ' {"word":"one", "time":"1.0"}', '/path/to/audiofile', 'demo transcription 3');
-INSERT IGNORE INTO transcription (email, preview, full_transcription, content_url, title) VALUES ('test@test.com', ' This is the preview ', ' {"word":"one", "time":"1.0"}', '/path/to/audiofile', 'demo transcription 4');
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

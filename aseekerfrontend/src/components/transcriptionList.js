@@ -31,7 +31,11 @@ class TranscriptionList extends React.Component {
             .then(transcriptionList => {
                 this.setState({ transcriptions: transcriptionList });
             }).catch (err => {
-                alert("An error occured: "+err);
+                if(cookies.get("email") === ""){
+                    alert("Please Register to submit media for transcriptions");
+                }else{
+                    alert("Upload your first media file to see the processed result on this screen");
+                }
                 console.log(err)
             });
     }
@@ -48,16 +52,16 @@ class TranscriptionList extends React.Component {
         return (
             <div className={css.transcriptionList}>
                 <div className="transcriptionUpload">
-                    <TranscriptionUploadButton/>
                     <div>
                         <textarea
                             className="form-control transcriptionUploadTitleInput"
                             id="exampleFormControlTextarea1"
-                            rows="5"
+                            rows="1"
                             placeholder={"Enter Transcription Title Here (Do not include any file extensions)"}
                             contentEditable={"true"}
                         />
                     <br/>
+                    <TranscriptionUploadButton/>
                 </div>
             </div>
                <br/><br/>
@@ -67,7 +71,7 @@ class TranscriptionList extends React.Component {
                                 <ListGroup.Item action onClick={() => this.goToTranscription(transcription.title)}>
                                     <div>
                                         <h4>{transcription.title}</h4>
-                                        <h6>{transcription.preview}</h6>
+                                        {/*<h6>{transcription.preview}</h6>*/}
                                         <br/>
                                         <h6>{transcription.contentFilePath}</h6>
                                     </div>

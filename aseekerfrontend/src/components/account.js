@@ -35,19 +35,32 @@ class Account extends Component {
     };
 
 
+
     render() {
         var email = cookies.get("email");
+        var header;
+
+        var deleteButton;
+        if(email !== undefined){
+            header = <h3 className={accountPage}>Hello, {email}</h3>
+            deleteButton =
+            <form onSubmit={this.mySubmitHandler}  className="form-group">
+                <div className="form-row">
+                    <button type="submit" className="btn btn-primary btn-block">Delete Account</button>
+                </div>
+            </form>
+        }else{
+            header =<h3 className={accountPage}>Please Login Or Register An Account</h3>
+            deleteButton = "";
+        }
         return(
             <div>
-                <h3 className={accountPage}>Hello, {email}</h3>
+                <br/>
+                {header}
                 <br/>
                 <br/>
                 <br/>
-                <form onSubmit={this.mySubmitHandler}  className="form-group">
-                    <div className="form-row">
-                        <button type="submit" className="btn btn-primary btn-block">Delete Account</button>
-                    </div>
-                </form>
+                {deleteButton}
             </div>
         );
     }
