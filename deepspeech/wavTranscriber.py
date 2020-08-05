@@ -72,6 +72,7 @@ Returns tuple of
               (The longer audio split into mutiple smaller one's)
     sample_rate: Sample rate of the input audio file
     audio_length: Duraton of the input audio file
+    frames: all frames of the audio, including non-voice frames 
 '''
 def vad_segment_generator(wavFile, aggressiveness):
     logging.debug("Caught the wav file @: %s" % (wavFile))
@@ -80,6 +81,6 @@ def vad_segment_generator(wavFile, aggressiveness):
     vad = webrtcvad.Vad(int(aggressiveness))
     frames = wavSplit.frame_generator(30, audio, sample_rate)
     frames = list(frames)
-    segments = wavSplit.vad_collector(sample_rate, 30, 300, vad, frames)
+    segments = wavSplit.vad_collector(sample_rate, 10, 300, vad, frames)
 
-    return segments, sample_rate, audio_length
+    return segments, sample_rate, audio_length, frames

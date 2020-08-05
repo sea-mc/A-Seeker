@@ -65,9 +65,10 @@ def transcribe_file(audio_path, tlog_path):
     if channels > 1:
         audio_path = squash_channels(index_path, audio_path)
 
-    # break audio up into chunks to be processed
+
+     # break audio up into chunks to be processed
     print("Chunking file...")
-    segments, sample_rate, audio_length = wavTranscriber.vad_segment_generator(audio_path, 3)
+    segments, sample_rate, audio_length, frames = wavTranscriber.vad_segment_generator(audio_path, 3)
     transcribedSegments = []
 
     inference_time = time.time()
@@ -104,14 +105,14 @@ def transcribe_file(audio_path, tlog_path):
     for t in word_times:
         print("\n", t)
 
-    timeSum = 0.0
-    for i in individualTimes:
-        timeSum += i
-    averageTime = timeSum / len(individualTimes)
+    # timeSum = 0.0
+    # for i in individualTimes:
+    #     timeSum += i
+    # averageTime = timeSum / len(individualTimes)
 
-    print("done with file; took{}".format(time.time() - inference_time))
-    print("average chunk time is {}. Current run time is".format(averageTime, time.time() - inference_time))
-    print("Returning transcription to caller.")
+    # print("done with file; took{}".format(time.time() - inference_time))
+    # print("average chunk time is {}. Current run time is".format(averageTime, time.time() - inference_time))
+    # print("Returning transcription to caller.")
 
     return json.dumps(stamped_words)
 

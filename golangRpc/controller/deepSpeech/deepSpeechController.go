@@ -6,7 +6,6 @@ import (
 	"../../service/transcriptions"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/prometheus/common/log"
 	"io"
 	"io/ioutil"
@@ -26,14 +25,14 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	defer file.Close()
-	name := string(header.Filename)
-	name = strings.ReplaceAll(name, " ", "_")
+	name := r.URL.Query().Get("filename")
+	nameStr := strings.ReplaceAll(string(name), "'", "")
 	transcription := domain.Transcription{
 		Email:             r.URL.Query().Get("email"),
-		Title:             name,
+		Title:             nameStr,
 		Preview:           "Preview TODO",
 		FullTranscription: nil,
-		ContentFilePath:   "audio/" + name,
+		ContentFilePath:   "audio/" + nameStr,
 	}
 	email := r.URL.Query().Get("email")
 	if email == "" {
@@ -42,9 +41,8 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//send the file
-	log.Infof("Uploading Media File: %s for %s", r.URL.Query().Get("email"), name[0])
-	response := deepSpeech.UploadMediaAsFile(w, file, name)
-	fmt.Printf("File name %s\n", name[0])
+	log.Infof("Uploading Media File: %s for %s",nameStr,r.URL.Query().Get("email"))
+	response := deepSpeech.UploadMediaAsFile(w, file, nameStr)
 	io.Copy(&buf, file)
 	buf.Reset()
 	log.Info("Upload media has returned")
@@ -74,7 +72,6 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 
 	transcription.FullTranscription = FullTranscriptions
 	j, _ := json.Marshal(transcription)
-	//todo; route this properly between deepspeech and transcriptionstoragecontroller
 	err = transcriptions.InsertTranscription(transcription)
 	if err != nil {
 		log.Error(err)
@@ -86,7 +83,7 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteMedia(w http.ResponseWriter, r *http.Request) {
-
+	//todo;
 }
 
 func GetMedia(w http.ResponseWriter, r *http.Request) {

@@ -1,10 +1,6 @@
 import React from 'react';
-import logo from '../logo.svg';
 import './css/App.css';
 import './css/bodyContent.css'
-import Navbar from "./navbar";
-import SideBar from "./sideBar";
-import {BrowserRouter as Router, Route} from "react-router-dom";
 function bodyContent() {
   return (
     <div>
@@ -21,7 +17,7 @@ function bodyContent() {
             </div>
 
             <h1>Let's Get Started: </h1>
-            <p>To get started with A-Seeker, you can traverse to the <a href="/transcriptions">transcriptions</a> page to get started with your first upload!</p>
+            <p>To get started with A-Seeker, you can traverse to the <a href="/transcriptions">transcriptions</a> page after registering an account to get started with your first upload!</p>
         </div>
     </div>
   );

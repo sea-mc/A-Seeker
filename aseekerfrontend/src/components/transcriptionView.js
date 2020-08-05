@@ -42,7 +42,7 @@ class TranscriptionView extends React.Component {
                 });
                 console.log(response)
             }).catch(err => {
-            alert("An error occured: " + err);
+            alert("Please Login To submit media files for transcriptions");
             console.log(err)
 
         });
@@ -82,11 +82,6 @@ class TranscriptionView extends React.Component {
         this.setState({search:keyword})
     }
 
-    gotoTime(time){
-        var video = document.getElementById("video");
-        //manipulate the media player to the time
-        video.currentTime = time;
-    }
 
     enableEditing(t_title, token_list) {
         this.props.history.push({
@@ -172,7 +167,7 @@ class TranscriptionView extends React.Component {
                         <li onClick={()=>{
                             var video = document.getElementById("video");
                             //manipulate the media player to the time
-                            video.currentTime = curtime;
+                            video.currentTime = curtime-0.75; //take 750ms off so that we can actually hear the search result
                         }}>
                             <p>{found[i].word}</p>
                             <p>({found[i].time})</p>
@@ -180,28 +175,10 @@ class TranscriptionView extends React.Component {
                 }
             }
         }
-        console.log(elements.join(""))
-        console.log(elements)
         return elements;
     }
 
     render(){
-
-        // const items = this.state.tokens.filter(data => {
-        //     if(this.state.search == null)
-        //         return data;
-        //     else if(data.word.toLowerCase().includes(this.state.search.toLowerCase())){
-        //         return data;
-        //     }
-        // }).map(data=>{
-        //     return (
-        //         <li onClick={this.gotoTime(data.time)}>
-        //             <span>{data.word}</span>
-        //             <span>({data.time})</span>
-        //         </li>
-        //     )
-        // });
-
 
         return (
             <div className="transcriptionView">

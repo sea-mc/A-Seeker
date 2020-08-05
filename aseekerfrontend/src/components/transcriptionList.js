@@ -31,7 +31,11 @@ class TranscriptionList extends React.Component {
             .then(transcriptionList => {
                 this.setState({ transcriptions: transcriptionList });
             }).catch (err => {
-                alert("An error occured: "+err);
+                if(cookies.get("email") === ""){
+                    alert("Please Register to submit media for transcriptions");
+                }else{
+                    alert("Upload your first media file to see the processed result on this screen");
+                }
                 console.log(err)
             });
     }
