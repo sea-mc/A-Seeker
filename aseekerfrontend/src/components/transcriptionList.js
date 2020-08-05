@@ -71,7 +71,7 @@ class TranscriptionList extends React.Component {
                                 <ListGroup.Item action onClick={() => this.goToTranscription(transcription.title)}>
                                     <div>
                                         <h4>{transcription.title}</h4>
-                                        <h6>{transcription.preview}</h6>
+                                        {/*<h6>{transcription.preview}</h6>*/}
                                         <br/>
                                         <h6>{transcription.contentFilePath}</h6>
                                     </div>

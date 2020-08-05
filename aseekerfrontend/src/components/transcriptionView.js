@@ -186,19 +186,22 @@ class TranscriptionView extends React.Component {
                 <Button variant="primary" size="sm" onClick={() =>
                     this.enableEditing(this.state.title, this.state.tokens)}
                 >Edit</Button>
-                <video
-                    id="video"
-                    controls
-                    title="My own video player"
-                />
-                <div className='search-bar'>
-                    <input type="text" placeholder="Search Transcription..." onChange={(e)=>this.searchList(e)}/>
-                    <ul>
-                        {this.getResults()}
-                    </ul>
+                <div className="mediaAndSearch">
+                    <video
+                        id="video"
+                        controls
+                    />
+                    <div className="search-bar">
+                        <input type="text" placeholder="Search Transcription..." onChange={(e)=>this.searchList(e)}/>
+                        <ul>
+                            {this.getResults()}
+                        </ul>
+                    </div>
                 </div>
                 <hr/>
-                {this.getBody()}
+                <div className="main-transcription">
+                    {this.getBody()}
+                </div>
             </div>
         );
     }
