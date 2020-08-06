@@ -41,4 +41,3 @@ Run the start script provided in the project, this will build and run the projec
 
 * Harrison Affel, Developer
 * Sean Cox, Developer
-* Dr. Cuong Pham, Review
