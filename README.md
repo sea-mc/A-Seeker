@@ -4,11 +4,11 @@ or Audio Seeker: An audio video transcription platform
 
 ## Introduction
 
-While digital media has largely dominated the information age its presence in everyday life has significantly increased across the globe due to the COVID-19 pandemic. 
-Sorting through this information is a unique challenge, and currently there exist very few free solutions to this problem. This repository presents Audio Seeker (A-Seeker), 
-an open source software architecture capable of transcribing both audio and video files. A-Seeker provides an interactive user interface which allows users to search 
-and then click on a search result to be taken to that point in the processed media. A-Seeker achieves its Automatic Speech Recognition (ASR) functionality through the 
-utilization of Mozilla’s open source DeepSpeech implementation. 
+While digital media has largely dominated the information age its presence in everyday life has significantly increased across the globe due to the COVID-19 pandemic.
+Sorting through this information is a unique challenge, and currently there exist very few free solutions to this problem. This repository presents Audio Seeker (A-Seeker),
+an open source software architecture capable of transcribing both audio and video files. A-Seeker provides an interactive user interface which allows users to search
+and then click on a search result to be taken to that point in the processed media. A-Seeker achieves its Automatic Speech Recognition (ASR) functionality through the
+utilization of Mozilla’s open source DeepSpeech implementation.
 
 
 ## Features
@@ -24,7 +24,7 @@ A-Seeker offers the following features:
 
 ## Getting Started
 ### Installation and Setup
-Pre-Requisites: 
+Pre-Requisites:
 - Docker: utilizes OS-level virtualization to deliver software in packages called containers
 Tutorial to Setup for [Mac](https://docs.docker.com/docker-for-mac/install/) and [Windows](https://docs.docker.com/docker-for-windows/install/)
 - Clone or download A-Seeker repository
@@ -35,7 +35,7 @@ Run the start script provided in the project, this will build and run the projec
 
 ## Demo video
 
-
+[A-Seeker Demo Video](https://drive.google.com/file/d/1rkindtNzpnAwZZ06Ox8RtNJhWQqsB8e4/view?usp=sharing)
 
 ## Contributors
 

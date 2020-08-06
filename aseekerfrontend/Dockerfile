@@ -7,9 +7,9 @@ COPY package-lock.json ./
 RUN npm install react-scripts@3.4.1 -g --silent
 RUN npm install react-hook-form@5.7.2 -g --silent
 RUN npm install hls
-RUN npm install react-native-elements@^2.0.4
-RUN npm install react-native-paper@^3.10.1
-RUN npm install react-search-bar@^2.2.0
+RUN npm install react-native-elements@^2.0.4 --silent
+RUN npm install react-native-paper@^3.10.1 --silent
+RUN npm install react-search-bar@^2.2.0 --silent 
 RUN npm ci --silent
 RUN npm install plyr
 COPY . ./
