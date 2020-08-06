@@ -57,7 +57,7 @@ class TranscriptionList extends React.Component {
                             className="form-control transcriptionUploadTitleInput"
                             id="exampleFormControlTextarea1"
                             rows="1"
-                            placeholder={"Enter Transcription Title Here (Do not include any file extensions)"}
+                            placeholder={"Enter Transcription Title Here (must include file extension)"}
                             contentEditable={"true"}
                         />
                     <br/>
