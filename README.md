@@ -12,7 +12,7 @@ utilization of Mozilla’s open source DeepSpeech implementation.
 
 
 ## Features
-List all the features (use cases) of your application.
+A-Seeker offers the following features:
 1. File uploading handles wav, mp3, and mp4 files
 2. Audio is processed into text transcription that can be viewed on the UI
 3. Users can type into a search box on the transcription view page to search the transcription for keywords
