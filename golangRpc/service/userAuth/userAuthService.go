@@ -20,9 +20,11 @@ const (
 
 var Database *sql.DB
 
+//InitDataBaseConn opens a SQL connection to the A-Seeker transcription database. This function
+//MUST be called before server startup. Running this function will result in a STW for 10 seconds.
+//This is intentional, and allows the MySQL container to initialize.
 func InitDatabaseConn() {
-	log.Info("Starting Userauth Database Conn...")
-	log.Info("Sleeping for 10 seconds...")
+	log.Info("Starting UserAuth Database Conn...Sleeping for 10 seconds...")
 	time.Sleep(10 * time.Second)
 	log.Info("Attempting connection...")
 
@@ -33,7 +35,7 @@ func InitDatabaseConn() {
 	}
 	Database = tmpdb //Because we use := we cannot directly assign Database as := places things on the stack
 
-	err = Database.Ping()
+	err = Database.Ping() //sql.Open only opens a new location in memory for the db conn, does not open the conn. Use ping to open conn.
 	if err != nil {
 		log.Error(err)
 		log.Errorf("Transcription Database connection unsuccessful: %s  %s  %s", user, host, dbname)
@@ -43,6 +45,8 @@ func InitDatabaseConn() {
 	}
 }
 
+//LoginUser is a service function for determining if a user exists in the database using a simple select statement.
+//This function is called by the userAuthController to determine the validity of the credentials passed within the UI.
 func LoginUser(email, pass string) bool {
 	sqlq := "select * from account where email = '" + email + "' and password = '" + pass + "';"
 	r, e := Database.Query(sqlq)
@@ -58,6 +62,7 @@ func LoginUser(email, pass string) bool {
 	return false
 }
 
+//RegisterUser performs a SQL insert statement into the account table.
 func RegisterUser(email, password string) error {
 	sqlq := "insert into account (email, password) values ('" + email + "', '" + password + "');"
 	_, e := Database.Query(sqlq)
@@ -69,6 +74,7 @@ func RegisterUser(email, password string) error {
 	return nil
 }
 
+//CheckForUser performs a SQL select statement on the account table, filtering results on the given 'email' parameter.
 func CheckForUser(email string) bool {
 	sqlq := "select * from account where email = '" + email + "';"
 	r, e := Database.Query(sqlq)
@@ -85,6 +91,7 @@ func CheckForUser(email string) bool {
 	return false
 }
 
+//DeleteUser performs a SQL delete operation on the account table
 func DeleteUser(email string) error {
 	sqlq := "DELETE FROM account where email = '" + email + "';"
 	_, e := Database.Query(sqlq)
@@ -96,6 +103,7 @@ func DeleteUser(email string) error {
 	return nil
 }
 
+//DeleteTranscriptions performs a DELETE operation on the transcription table for all entries associated with the given email.
 func DeleteTranscriptions(email string) error {
 
 	sqlq := "DELETE FROM transcription where email = '" + email + "';"

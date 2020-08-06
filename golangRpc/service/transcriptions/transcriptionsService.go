@@ -21,6 +21,9 @@ const (
 	dbname   = "aseeker"
 )
 
+//InitDataBaseConn opens a SQL connection to the A-Seeker transcription database. This function
+//MUST be called before server startup. Running this function will result in a STW for 10 seconds.
+//This is intentional, and allows the MySQL container to initialize.
 func InitTranscriptionDBConn() {
 	log.Info("Attempting connection...")
 
@@ -58,6 +61,8 @@ func GetAll() {
 	}
 
 }
+
+//GetTranscriptions will accept an email as a parameter and will return all transcriptions associated with said email, or an error as appropriate.
 func GetTranscriptions(email string) ([]domain.Transcription, error) {
 	log.Info("Getting Transcription list for " + email)
 	sqlq := "select * from transcription where email = '" + email + "';"
@@ -97,6 +102,7 @@ func GetTranscriptions(email string) ([]domain.Transcription, error) {
 	return transcriptions, nil
 }
 
+//GetTranscriptions will accept a title as a parameter and will return all transcriptions associated with said title, or an error as appropriate.
 func GetTranscriptionByTitle(title string) (domain.Transcription, error) {
 	sqlq := "select * from transcription where title = '" + title + "';"
 	r, e := Database.Query(sqlq)
@@ -119,6 +125,7 @@ func GetTranscriptionByTitle(title string) (domain.Transcription, error) {
 	return domain.Transcription{}, errors.New("Could not find transcription by title: " + title)
 }
 
+//InsertTranscription will attempt to insert the given transcription into the database.
 func InsertTranscription(transcription domain.Transcription) error {
 	jsonTranscription, _ := json.Marshal(transcription)
 	jsonString := string(jsonTranscription)
@@ -135,11 +142,12 @@ func InsertTranscription(transcription domain.Transcription) error {
 	return nil
 }
 
+//UpdateTranscription will update the information for a given transcription. The primary keys are the email and title.
 func UpdateTranscription(transcription domain.Transcription) error {
 	jsonTranscription, _ := json.Marshal(transcription)
 	jsonString := string(jsonTranscription)
 	jsonString = strings.Replace(jsonString, "'", "\\'", -1)
-	sqlq := "update transcription SET full_transcription = '"  + jsonString + "' WHERE email = '" + transcription.Email+"' AND title = '"+transcription.Title+"';"
+	sqlq := "update transcription SET full_transcription = '" + jsonString + "' WHERE email = '" + transcription.Email + "' AND title = '" + transcription.Title + "';"
 	log.Info(sqlq)
 	_, e := Database.Query(sqlq)
 	if e != nil {
@@ -149,6 +157,7 @@ func UpdateTranscription(transcription domain.Transcription) error {
 	return nil
 }
 
+//CheckForUser runs a SQL select statement on the account table and will return true if more than one value is returned for the given email.
 func CheckForUser(email string) bool {
 	sqlq := "select * from account where email = '" + email + "';"
 	r, e := Database.Query(sqlq)
@@ -163,6 +172,7 @@ func CheckForUser(email string) bool {
 	return userfound
 }
 
+//DeleteTranscription will delete a transcription which matches the given transcriptionTitle.
 func DeleteTranscription(transcriptionTitle string) error {
 	sqlq := "delete from transcription where title = '" + transcriptionTitle + "';"
 	_, e := Database.Query(sqlq)

@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+//RegisterUser is an endpoint called by the UI registration screen to (obviously) register a new user.
+//It accepts two URL query parameters, email and password. If no record currently exists in the database, the parameters will be written to the database.
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		log.Errorf("register user got bad http method; expected POST got " + r.Method)
@@ -34,7 +36,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Checks if a registered user exists in the userAuth
+//Checks if a registered user exists in the database by performing a sql select on the provided URL query value, email.
 func CheckUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -57,6 +59,7 @@ func CheckUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+//DeleteRegisteredUser is an endpoint called by the account page within the UI. It accepts an email as a parameter
 func DeleteRegisteredUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		log.Error("Delete user got bad http method")

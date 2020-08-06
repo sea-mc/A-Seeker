@@ -13,11 +13,13 @@ import (
 )
 
 func main() {
-	userAuthService.InitDatabaseConn()
+
+	userAuthService.InitDatabaseConn() //database connection steps take 10 seconds as mysql needs time to init
 	transcriptionService.InitTranscriptionDBConn()
+
 	log.Info("Setting Service Up On Port 1177")
 	mux := http.DefaultServeMux
-	transcriptionService.GetAll()
+
 	//userAuthController API
 	mux.HandleFunc("/userauth/register/new", userAuthController.RegisterUser)
 	mux.HandleFunc("/userauth/register/check", userAuthController.CheckUser)
@@ -30,17 +32,16 @@ func main() {
 	mux.HandleFunc("/transcriptions/delete", transcriptionStorageController.DeleteTranscription)
 	mux.HandleFunc("/transcriptions/update", transcriptionStorageController.UpdateTranscription)
 
-
 	//deepSpeech API
 	mux.HandleFunc("/deepSpeech/media/upload", deepSpeechController.UploadMedia)
 	mux.HandleFunc("/deepSpeech/media/delete", deepSpeechController.DeleteMedia)
 	mux.HandleFunc("/deepSpeech/media/get", deepSpeechController.GetMedia)
 
-	//uses old school gorilla package to handle mux
+	//uses old school gorilla package to handle CORS
 	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}) //only allowed headers
 	methods := handlers.AllowedMethods([]string{"GET", "POST"})                                       //only allowed requests
 	origins := handlers.AllowedOrigins([]string{"*"})                                                 //any possible domain origin
 
 	log.Info("Service Up On Port 1177")
-	log.Info(http.ListenAndServe(":1177", handlers.CORS(headers, methods, origins)(mux))) //change to 8080 for localhost
+	log.Info(http.ListenAndServe(":1177", handlers.CORS(headers, methods, origins)(mux)))
 }

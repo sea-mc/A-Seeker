@@ -4,64 +4,60 @@ import (
 	"../../domain"
 	"../../service/deepSpeech"
 	"../../service/transcriptions"
-	"bytes"
 	"encoding/json"
 	"github.com/prometheus/common/log"
-	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
+//UploadMedia DeepSpeech controller is an external controller called by the frontend service.
+//Upon receiving a multipart http request the contents are temporarily stored in memory, within a file descriptor,
+//and then is passed to the DeepSpeech service for uploading. the JSON result of the upload is also returned.
 func UploadMedia(w http.ResponseWriter, r *http.Request) {
 
-	defer r.Body.Close()
 	r.ParseMultipartForm(32 << 20) // limit your max input length!
-	var buf bytes.Buffer
 
 	file, header, err := r.FormFile("file")
 	if err != nil {
 		log.Info(header)
 		panic(err)
 	}
-	defer file.Close()
-	name := r.URL.Query().Get("filename")
-	nameStr := strings.ReplaceAll(string(name), "'", "")
+
+	name := strings.ReplaceAll(r.URL.Query().Get("filename"), "'", "")
+
 	transcription := domain.Transcription{
 		Email:             r.URL.Query().Get("email"),
-		Title:             nameStr,
+		Title:             name,
 		Preview:           "Preview TODO",
 		FullTranscription: nil,
-		ContentFilePath:   "audio/" + nameStr,
+		ContentFilePath:   "audio/" + name,
 	}
+
 	email := r.URL.Query().Get("email")
 	if email == "" {
 		w.WriteHeader(http.StatusNotAcceptable)
 		log.Error("Upload media function received a request which has am empty email query value")
 		return
 	}
-	//send the file
-	log.Infof("Uploading Media File: %s for %s",nameStr,r.URL.Query().Get("email"))
-	response := deepSpeech.UploadMediaAsFile(w, file, nameStr)
-	io.Copy(&buf, file)
-	buf.Reset()
-	log.Info("Upload media has returned")
 
+	//send the file
+	log.Infof("Uploading Media File: %s for %s", name, r.URL.Query().Get("email"))
+	response := deepSpeech.UploadMediaAsFile(w, file, name)
+	r.Body.Close() //close the request body to save resources
+	file.Close()   //close the media file
+
+	//parse the processed transcription
 	var transcriptionResponse []domain.TranscriptionToken
-	fullTranscription, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	log.Info(string(fullTranscription))
-	err = json.Unmarshal(fullTranscription, &transcriptionResponse)
+
+	err = json.NewDecoder(response.Body).Decode(&transcriptionResponse)
 	if err != nil {
 		log.Info(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	//gather all tokens returned from processing
 	var FullTranscriptions domain.TranscriptionTokens
+
 	for _, e := range transcriptionResponse {
 		token := domain.TranscriptionToken{
 			Word: e.Word,
@@ -71,21 +67,21 @@ func UploadMedia(w http.ResponseWriter, r *http.Request) {
 	}
 
 	transcription.FullTranscription = FullTranscriptions
-	j, _ := json.Marshal(transcription)
 	err = transcriptions.InsertTranscription(transcription)
 	if err != nil {
 		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	w.Write(j)
+	w.WriteHeader(http.StatusCreated)
 }
 
+//todo;
 func DeleteMedia(w http.ResponseWriter, r *http.Request) {
-	//todo;
 }
 
+//GetMedia DeepSpeech controller will perform a GET request on the DeepSpeech service.
+//The filename performed within the GET is specified within a request URL query.
 func GetMedia(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)

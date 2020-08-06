@@ -7,8 +7,10 @@ import (
 	"net/http"
 )
 
-func GetMedia(w http.ResponseWriter, fileName string) []byte{
-	log.Info("http://deepspeech:5000/get/"+fileName)
+//GetMedia will call the DeepSpeech service API to retrieve a media file, specified by filename.
+//the results will be returned as a byte array.
+func GetMedia(w http.ResponseWriter, fileName string) []byte {
+	log.Info("http://deepspeech:5000/get/" + fileName)
 	req, err := http.NewRequest(http.MethodGet, "http://deepspeech:5000/get/"+fileName, nil)
 	if NetworkErr(w, err) {
 		return nil
@@ -18,14 +20,15 @@ func GetMedia(w http.ResponseWriter, fileName string) []byte{
 		return nil
 	}
 	b, err := ioutil.ReadAll(resp.Body)
-	if NetworkErr(w,err){
+	if NetworkErr(w, err) {
 		return nil
 	}
 	resp.Body.Close()
 	return b
 }
 
-
+//UploadMediaAsFile will accept a multipart file, and a file name. It will then POST to the
+//DeepSpeech API, which will start the ASR processing.
 func UploadMediaAsFile(w http.ResponseWriter, file multipart.File, fileName string) *http.Response {
 	log.Info("Sending an upload")
 	req, err := http.NewRequest(http.MethodPost, "http://deepspeech:5000/upload/"+fileName, file)
@@ -40,6 +43,8 @@ func UploadMediaAsFile(w http.ResponseWriter, file multipart.File, fileName stri
 	return resp
 }
 
+//NetworkErr is a utility function that accepts an error and a response writer.
+//If an error is found, the response writer automatically writes status 500 and returns false.
 func NetworkErr(w http.ResponseWriter, err error) bool {
 	if err != nil {
 		log.Error(err)
