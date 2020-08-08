@@ -6,10 +6,9 @@ import transcribe
 import aseeker_controller
 import transcription_db
 from flask import Flask, request, send_from_directory
-from DeepSpeech.deepspeech_training.util.config import Config, initialize_globals
 
-from DeepSpeech.deepspeech_training.util.config import initialize_globals
-from DeepSpeech.deepspeech_training.util.flags import create_flags, FLAGS
+from DeepSpeech.training.deepspeech_training.util.config import initialize_globals
+from DeepSpeech.training.deepspeech_training.util.flags import create_flags, FLAGS
 
 AUDIO_FOLDER = './audio'
 if not os.path.exists(AUDIO_FOLDER):

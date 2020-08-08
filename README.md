@@ -16,9 +16,9 @@ A-Seeker offers the following features:
 1. File uploading handles wav, mp3, and mp4 files
 2. Audio is processed into text transcription that can be viewed on the UI
 3. Users can type into a search box on the transcription view page to search the transcription for keywords
-4. Clicking on a search result or a word in the transcription will skip the media to that word's timestamp
+4. Clicking on a search result, or a word in the transcription will skip the media to that word's timestamp
 5. Register an account with A-Seeker so users can save their transcriptions
-6. Once registered, users can login as well as logout with their credentials
+6. Once registered, users are able to login as well as logout with their credentials
 7. Past transcriptions are saved to a user's account and can be accessed at any time
 8. Users can delete their account at any time, wiping all data from the backend
 
@@ -27,11 +27,23 @@ A-Seeker offers the following features:
 Pre-Requisites:
 - Docker: utilizes OS-level virtualization to deliver software in packages called containers
 Tutorial to Setup for [Mac](https://docs.docker.com/docker-for-mac/install/) and [Windows](https://docs.docker.com/docker-for-windows/install/)
+- Python3.X  
+- TensorFlow (Mac 2.3.0 - Linux & Container 1.15.3)
 - Clone or download A-Seeker repository
+- run the setup script to configure the deepspeech engine 
+    - The setup script will install the following        
+        - All dependencies of the DeepSpeech project
+        - The DeepSpeech language model and scorer required (~1 GB)
+        -  
 
 ### Run
 
 Run the start script provided in the project, this will build and run the project locally using docker.
+
+run the following command to avoid downloading the model every startup 
+
+ 
+`cd deepspeech && wget -c -i ./modelUrls` 
 
 ## Demo video
 

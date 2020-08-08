@@ -21,8 +21,8 @@ import logging
 logging.getLogger('sox').setLevel(logging.ERROR)
 import numpy as np
 
-from DeepSpeech.deepspeech_training.util.config import initialize_globals
-from DeepSpeech.deepspeech_training.util.logging import log_error, log_progress, create_progressbar
+from DeepSpeech.training.deepspeech_training.util.config import initialize_globals
+
 from multiprocessing import Process
 import wavTranscriber
 import Transcription
