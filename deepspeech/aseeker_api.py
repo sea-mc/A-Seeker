@@ -35,16 +35,30 @@ def upload_file(filename):
     with open(os.path.join(AUDIO_FOLDER, filename), "wb") as fp:
         fp.write(request.data)
 
-    transcription = aseeker_controller.transcribe_input(os.path.join(AUDIO_FOLDER, filename), filename)
-
+    transcription = aseeker_controller.transcribe_input(os.path.join(AUDIO_FOLDER, filename))
+    fp.close()
     return transcription, 201
+
+@app.route('/edit/<filename>/<startTime>/<endTime>', methods=['POST'])
+def trim_file_for_training(filename, startTime, endTime):
+    if "/" in filename:
+        # Return 400 BAD REQUEST
+        os.abort(400, "no subdirectories directories allowed")
+
+    fname = aseeker_controller.trimMedia(os.path.join(AUDIO_FOLDER, filename), startTime, endTime)
+
+    if fname == "":
+        return "", 500
+
+    return fname, 200
+
 
 @app.route('/get/<filename>', methods=['GET'])
 def get_file(filename):
     try:
         return send_from_directory(AUDIO_FOLDER, filename=filename, as_attachment=True)
     except FileNotFoundError:
-        abort(404)
+        os.abort(404)
 
 @app.route('/get-transcriptions', methods=['GET'])
 def get_transcriptions():
