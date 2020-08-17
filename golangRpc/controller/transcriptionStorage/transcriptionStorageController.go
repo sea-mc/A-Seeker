@@ -4,6 +4,7 @@ import (
 	"../../domain"
 	"../../service/transcriptions"
 	"encoding/json"
+	"fmt"
 	"github.com/prometheus/common/log"
 	"io/ioutil"
 	"net/http"
@@ -150,16 +151,135 @@ func UpdateTranscription(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	transcript := domain.Transcription{
+	newTranscript := domain.Transcription{
 		Email:             email,
 		Title:             title,
 		FullTranscription: allTokens,
 	}
 
-	err = transcriptions.UpdateTranscription(transcript)
-	if err != nil {
-		log.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	//check for test case
+	tmpjson := r.URL.Query()["testjson"]
+	var testjson string
+	if tmpjson != nil {
+		testjson = r.URL.Query()["testjson"][0]
+	} else {
+		testjson = ""
+	}
+
+	var old domain.Transcription
+	if testjson == "" {
+		old, err = transcriptions.GetTranscriptionByTitle(title)
+		if err != nil {
+			log.Error(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		err = transcriptions.UpdateTranscription(newTranscript)
+		if err != nil {
+			log.Error(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}else{
+		err = json.Unmarshal([]byte(testjson), &old.FullTranscription)
+		if err != nil {
+			log.Error(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}
+
+
+	lastDelta := 0
+	anydelta := false
+	var delta domain.TranscriptionTokens
+	for j := 0; j < len(old.FullTranscription); j++ {
+		if j >= len(newTranscript.FullTranscription) {
+			break
+		}
+
+		if newTranscript.FullTranscription[j].Word != old.FullTranscription[j].Word {
+			anydelta = true
+			lastDelta = j
+			delta = append(delta, newTranscript.FullTranscription[j])
+		}
+	}
+
+	if lastDelta != len(old.FullTranscription) && anydelta {
+		tmp := newTranscript.FullTranscription[lastDelta]
+		tmp.Word = ""
+		tmp.Time += 0.450		//add padding to fully capture last word
+		delta = append(delta, tmp)
+	}
+
+
+
+
+	if testjson == "" && len(delta) != 0 {
+		filename, err := transcriptions.TrimMediaForTraining(title, delta)
+		if err != nil {
+			log.Error(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+
+		//get full string
+		//could be more efficient
+
+		var full string
+		firstIndex := 0
+		lastIndex := 0
+		for i, e := range newTranscript.FullTranscription {
+			if e == delta[0] {
+				firstIndex = i
+				continue
+			}
+			if e == delta[len(delta)-1] {
+				lastDelta = i
+				continue
+			}
+		}
+
+
+		for curIndex := firstIndex; curIndex < lastIndex; curIndex ++ {
+			full = full + " " + newTranscript.FullTranscription[curIndex].Word
+		}
+
+		err = transcriptions.UpdateTrainingMedia(full, filename, email, delta)
+		if err != nil {
+			log.Error(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+
+	}else{
+		if delta != nil {
+			var full string
+			firstIndex := 0
+			lastIndex := 0
+			for i, e := range newTranscript.FullTranscription {
+				if e == delta[0] {
+					firstIndex = i
+					continue
+				}
+				if e == delta[len(delta)-1] {
+					lastDelta = i
+					continue
+				}
+			}
+
+
+			for curIndex := firstIndex; curIndex < lastIndex; curIndex ++ {
+				full = full + " " + newTranscript.FullTranscription[curIndex].Word
+			}
+			sqlq := fmt.Sprintf("insert into training (transcription, content_url, start_time, end_time, email) values ('%s', '%s', '%f', '%f', '%s');",
+				full, "filename", "start", "1", email)
+
+			log.Infoln(sqlq)
+			w.WriteHeader(http.StatusOK)
+		}
 	}
 }

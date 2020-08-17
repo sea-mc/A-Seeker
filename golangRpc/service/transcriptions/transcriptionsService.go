@@ -2,11 +2,14 @@ package transcriptions
 
 import (
 	"../../domain"
+	"bytes"
 	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/prometheus/common/log"
+	"io/ioutil"
+	"net/http"
 	"strings"
 )
 
@@ -101,6 +104,51 @@ func GetTranscriptions(email string) ([]domain.Transcription, error) {
 
 	return transcriptions, nil
 }
+
+func TrimMediaForTraining(fileName string, delta domain.TranscriptionTokens) (string, error) {
+	var start, end float64
+	start = delta[0].Time
+	end = delta[len(delta)-1].Time
+	j, _ := json.Marshal(delta)
+	log.Infoln(string(j))
+	startString := fmt.Sprintf("%f", start)
+	endString := fmt.Sprintf("%f", end)
+	log.Infoln("http://deepspeech:5000/edit/" + "fileName" + "/" + startString + "/" + endString)
+
+	req, err := http.NewRequest(http.MethodPost, "http://deepspeech:5000/edit/"+fileName+"/"+startString+"/"+endString, bytes.NewReader(j))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return "", err
+	}
+
+	fname, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(fname), nil
+}
+
+
+func UpdateTrainingMedia(deltaString, filename, email string, delta domain.TranscriptionTokens) error {
+	var start, end float64
+	start = delta[0].Time
+	end = delta[len(delta)-1].Time
+
+	sqlq := fmt.Sprintf("insert into training (transcription, content_url, start_time, end_time, email) values ('%s', '%s', '%f', '%f', '%s');",
+		deltaString, filename, start, end, email)
+
+	log.Infoln(sqlq)
+	_, e := Database.Query(sqlq)
+	if e != nil {
+		return e
+	}
+
+
+	return nil
+}
+
 
 //GetTranscriptions will accept a title as a parameter and will return all transcriptions associated with said title, or an error as appropriate.
 func GetTranscriptionByTitle(title string) (domain.Transcription, error) {

@@ -56,15 +56,29 @@ def trimMedia(filename, startTime, endTime):
                       'ffmpeg not found')
 
 
+    # add padding to the end of the audio file
     trimmedFileName = os.path.join(TRIM_FOLDER, "trimmed_"+startTime+"_"+endTime+"_"+longest_string)
 
-    ds = Model(os.getcwd() + "/deepspeech-0.7.4-models.pbmm")
+    sox_cmd = 'sox {} {} pad 0 1'.format(
+        shlex.quote(trimmedFileName),
+        shlex.quote(trimmedFileName)
+    )
+
+    try:
+        subprocess.check_output(shlex.split(sox_cmd), stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError('sox returned non-zero status: {}'.format(e.stderr))
+    except OSError as e:
+        raise OSError(e.errno,
+                      'sox not found')
 
 
 
+    trimmedFileName = os.path.join(TRIM_FOLDER, "trimmed_"+startTime+"_"+endTime+"_"+longest_string)
 
-    print("Trimming for " + filename + " done! ", file=sys.stderr)
-    return transcribe_file(ds, trimmedFileName)
+
+    print("Trimming & padding for " + filename + " done! ", file=sys.stderr)
+    return trimmedFileName
 
 
 

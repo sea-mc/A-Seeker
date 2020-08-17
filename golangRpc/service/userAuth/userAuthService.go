@@ -24,8 +24,8 @@ var Database *sql.DB
 //MUST be called before server startup. Running this function will result in a STW for 10 seconds.
 //This is intentional, and allows the MySQL container to initialize.
 func InitDatabaseConn() {
-	log.Info("Starting UserAuth Database Conn...Sleeping for 10 seconds...")
-	time.Sleep(10 * time.Second)
+	log.Info("Starting UserAuth Database Conn...Sleeping for 20 seconds...")
+	time.Sleep(20 * time.Second)
 	log.Info("Attempting connection...")
 
 	var psqlInfo = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", user, password, host, port, dbname)
