@@ -2,17 +2,21 @@ version: '3.7'
 services:
 
  frontend:
+   deploy:
+     mode: replicated
    image: harrisonwaffel/aseekerfrontend
    build:
      context: ./aseekerfrontend
      dockerfile: Dockerfile
    ports:
      - '1337:80'
-   # networks:
-   #   - aseeker
+   networks:
+     - aseeker
 
  database:
    image: 'mysql:5.7'
+   deploy:
+     mode: global
    volumes:
      - 'db_data:/var/lib/mysql'
      - './mysql:/tmp/db'
@@ -22,8 +26,8 @@ services:
      - '3306:3306'
    environment:
      MYSQL_ROOT_PASSWORD: aseeker
-   # networks:
-   #   - aseeker
+   networks:
+     - aseeker
 
  middware:
    image: harrisonwaffel/aseekermiddleware
@@ -32,12 +36,10 @@ services:
      dockerfile: Dockerfile
    deploy:
      mode: replicated
-     replicas: 0
-
    ports:
      - '1177:1177'
-   # networks:
-   #   - aseeker
+   networks:
+     - aseeker
 
 
  deepspeech:
@@ -47,14 +49,13 @@ services:
    image: harrisonwaffel/aseekerdeepspeech
    deploy:
      mode: replicated
-     replicas: 3
-
+     replicas: 1
    volumes:
      - 'aseeker_media:/audio'
    ports:
      - '5000:5000'
-   # networks:
-   #   - aseeker
+   networks:
+     - aseeker
 
 networks:
     aseeker:
@@ -64,3 +65,4 @@ networks:
 volumes:
   db_data: {}
   aseeker_media: {}
+
