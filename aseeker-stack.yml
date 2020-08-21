@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+
+  frontend:
+    image: harrisonwaffel/aseekerfrontend
+    ports:
+      - "80:80"
+    networks:
+      - aseeker
+
+
+
+  database:
+    image: 'mysql:5.7'
+    volumes:
+      - 'db_data:/var/lib/mysql'
+      - './mysql:/tmp/db'
+    command: '--init-file /tmp/db/sqlStartup.sql'
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: aseeker
+    networks:
+      - aseeker
+
+
+  middware:
+    image: harrisonwaffel/aseekermiddleware
+    build:
+      context: ./golangRpc
+      dockerfile: Dockerfile
+    deploy:
+      replicas: 1
+    networks:
+      - aseeker
+    ports:
+      - '1177:1177'
+  #
+  # deepspeech:
+  #   image: harrisonwaffel/aseekerdeepspeech
+  #   build:
+  #      context: ./deepspeech
+  #      dockerfile: Dockerfile
+  #   volumes:
+  #     - 'aseeker_media:/audio'
+  #   ports:
+  #     - '5000:5000'
+  #   networks:
+  #     - aseeker
+
+volumes:
+  db_data: {}
+  aseeker_media: {}

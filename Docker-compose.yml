@@ -1,17 +1,17 @@
 version: '3.7'
 services:
- # frontend:
- #   container_name: frontend
- #   build:
- #     context: ./aseekerfrontend
- #     dockerfile: Dockerfile
- #   ports:
- #     - '1337:80'
- #   networks:
- #     - aseeker
- #
+
+ frontend:
+   image: harrisonwaffel/aseekerfrontend
+   build:
+     context: ./aseekerfrontend
+     dockerfile: Dockerfile
+   ports:
+     - '1337:80'
+   # networks:
+   #   - aseeker
+
  database:
-   container_name: ASeeker-transcription-database
    image: 'mysql:5.7'
    volumes:
      - 'db_data:/var/lib/mysql'
@@ -22,39 +22,43 @@ services:
      - '3306:3306'
    environment:
      MYSQL_ROOT_PASSWORD: aseeker
-   networks:
-     - aseeker
+   # networks:
+   #   - aseeker
 
  middware:
-   container_name: golang-RPC-middleware
+   image: harrisonwaffel/aseekermiddleware
    build:
      context: ./golangRpc
      dockerfile: Dockerfile
+   deploy:
+     mode: replicated
+     replicas: 0
+
    ports:
      - '1177:1177'
-   networks:
-     - aseeker
+   # networks:
+   #   - aseeker
+
 
  deepspeech:
-   container_name: deepspeech
    build:
       context: ./deepspeech
       dockerfile: Dockerfile
+   image: harrisonwaffel/aseekerdeepspeech
+   deploy:
+     mode: replicated
+     replicas: 3
+
    volumes:
      - 'aseeker_media:/audio'
-
    ports:
      - '5000:5000'
-   networks:
-     - aseeker
+   # networks:
+   #   - aseeker
 
-#for a good networking tutorial see https://runnable.com/docker/docker-compose-networking
 networks:
     aseeker:
-        # use the bridge driver
-        driver: bridge
-        ipam:
-            driver: default
+      driver: overlay
 
 
 volumes:

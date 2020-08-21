@@ -10,8 +10,8 @@ import (
 //GetMedia will call the DeepSpeech service API to retrieve a media file, specified by filename.
 //the results will be returned as a byte array.
 func GetMedia(w http.ResponseWriter, fileName string) []byte {
-	log.Info("http://deepspeech:5000/get/" + fileName)
-	req, err := http.NewRequest(http.MethodGet, "http://deepspeech:5000/get/"+fileName, nil)
+	log.Info("http://aseeker_deepspeech:5000/get/" + fileName)
+	req, err := http.NewRequest(http.MethodGet, "http://aseeker_deepspeech:5000/get/"+fileName, nil)
 	if NetworkErr(w, err) {
 		return nil
 	}
@@ -31,7 +31,7 @@ func GetMedia(w http.ResponseWriter, fileName string) []byte {
 //DeepSpeech API, which will start the ASR processing.
 func UploadMediaAsFile(w http.ResponseWriter, file multipart.File, fileName string) *http.Response {
 	log.Info("Sending an upload")
-	req, err := http.NewRequest(http.MethodPost, "http://deepspeech:5000/upload/"+fileName, file)
+	req, err := http.NewRequest(http.MethodPost, "http://aseeker_deepspeech:5000/upload/"+fileName, file)
 	if NetworkErr(w, err) {
 		return &http.Response{}
 	}
