@@ -1,6 +1,7 @@
 import os
 import shlex
 import subprocess
+import multiprocessing as mp
 
 from transcribe import transcribe_file
 
@@ -8,7 +9,11 @@ AUDIO_FOLDER = './audio'
 
 
 def transcribe_input(filepath, filename):
-    return transcribe_file(convertMedia(filepath), "/transcriptions/" + filename)
+    pool = mp.Pool(mp.cpu_count())
+    print("Transcribing input using "+str(mp.cpu_count())+" threads.")
+    results = [pool.apply(transcribe_file(convertMedia(filepath), "/transcriptions"+filename))]
+    pool.close()
+    return results
 
 
 def format_file(filename):
