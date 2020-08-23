@@ -52,7 +52,7 @@ services:
    image: harrisonwaffel/aseekerdeepspeech
    deploy:
      mode: replicated
-     replicas: 1
+     replicas: 3
    volumes:
      - 'aseeker_media:/audio'
    ports:

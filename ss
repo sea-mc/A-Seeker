@@ -1,6 +1,6 @@
 #!/bin/bash
-./rs
-
+# ./rs
+docker network rm aseeker
 docker network create -d overlay aseeker
 echo "made net"
 
