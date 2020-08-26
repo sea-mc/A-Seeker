@@ -44,7 +44,7 @@ def get_file(filename):
     try:
         return send_from_directory(AUDIO_FOLDER, filename=filename, as_attachment=True)
     except FileNotFoundError:
-        abort(404)
+        os.abort(404)
 
 @app.route('/get-transcriptions', methods=['GET'])
 def get_transcriptions():
