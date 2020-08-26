@@ -21,10 +21,5 @@ FROM nginx:stable-alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
 
-# new
-COPY --from=build /nginx/ /etc/nginx/
-
-COPY --from=build /nginx/ /
-
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

@@ -11,8 +11,6 @@ from transcribe import transcribe_file
 AUDIO_FOLDER = './audio'
 TRIM_FOLDER = './trim'
 
-def convertToWav(filename):
-
 def transcribe_input(filepath, filename):
     pool = mp.Pool(mp.cpu_count())
     print("Transcribing input using "+str(mp.cpu_count())+" threads.")

@@ -24,8 +24,8 @@ class TranscriptionUploadButton extends React.Component {
                     //do upload post
                     const formData = new FormData();
                     formData.append('file', acceptedFiles[0]); //only one file at a time
-                    alert("http://aseeker_middware:1177/deepSpeech/media/upload?email='"+cookies.get("email")+"'&filename='"+uploadBox.value+"'");
-                    fetch("http://aseeker_middware:1177/deepSpeech/media/upload?email='"+cookies.get("email")+"'&filename='"+uploadBox.value+"'", {
+                    alert("http://aseeker_middleware:1177/deepSpeech/media/upload?email='"+cookies.get("email")+"'&filename='"+uploadBox.value+"'");
+                    fetch("http://aseeker_middleware:1177/deepSpeech/media/upload?email='"+cookies.get("email")+"'&filename='"+uploadBox.value+"'", {
                         method: 'POST',
                         body: formData
                     })

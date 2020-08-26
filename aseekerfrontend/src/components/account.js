@@ -21,7 +21,7 @@ class Account extends Component {
             redirect: 'follow'
         };
         var email = cookies.get('email');
-        fetch( "http://aseeker_middware:1177/userauth/register/delete?email="+email, requestOptions)
+        fetch( "http://aseeker_middleware:1177/userauth/register/delete?email="+email, requestOptions)
             .then(response => response.text())
             .then(result => {
                 console.log(result);

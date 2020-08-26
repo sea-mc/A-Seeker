@@ -21,7 +21,7 @@ class Register extends Component {
             redirect: 'follow'
         };
 
-        fetch( "http://aseeker_middware:1177/userauth/register/new?email="+this.state.email +"&password="+this.state.password, requestOptions)
+        fetch( "http://aseeker_middleware:1177/userauth/register/new?email="+this.state.email +"&password="+this.state.password, requestOptions)
             .then(response => response.text())
             .then(result => {
                 console.log(result);

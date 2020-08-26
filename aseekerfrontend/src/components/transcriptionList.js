@@ -26,7 +26,7 @@ class TranscriptionList extends React.Component {
         };
 
         //call the middleware to get the requested transcription.
-        fetch('http://aseeker_middware:1177/transcriptions/get/all?email='+cookies.get("email"),requestOptions )
+        fetch('http://aseeker_middleware:1177/transcriptions/get/all?email='+cookies.get("email"),requestOptions )
             .then((response) => response.json())
             .then(transcriptionList => {
                 this.setState({ transcriptions: transcriptionList });
