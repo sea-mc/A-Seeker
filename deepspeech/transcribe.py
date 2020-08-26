@@ -13,7 +13,9 @@ import shlex
 import subprocess
 import wave
 
-from DeepSpeech.native_client.python import Model
+
+from deepspeech import wavTranscriber
+from deepspeech.DeepSpeech.training.deepspeech_training.util.logging import log_error
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import logging
@@ -21,11 +23,7 @@ import logging
 logging.getLogger('sox').setLevel(logging.ERROR)
 import numpy as np
 
-from DeepSpeech.training.deepspeech_training.util.config import initialize_globals
-
-from multiprocessing import Process
-import wavTranscriber
-import Transcription
+from .DeepSpeech.training.deepspeech_training.util.config import initialize_globals
 
 init = False
 
@@ -44,7 +42,7 @@ global output
 
 def transcribe_file(ds, audio_path):
 
-     # break audio up into chunks to be processed
+    # break audio up into chunks to be processed
     print("Chunking file...")
     segments, sample_rate, audio_length, frames = wavTranscriber.vad_segment_generator(audio_path, 3)
     transcribedSegments = []

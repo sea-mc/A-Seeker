@@ -4,6 +4,9 @@ import os
 import shlex
 import subprocess
 import multiprocessing as mp
+import sys
+import time
+import wave
 
 from DeepSpeech.native_client.python import Model
 from transcribe import transcribe_file
