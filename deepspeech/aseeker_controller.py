@@ -10,6 +10,20 @@ from transcribe import transcribe_file
 
 AUDIO_FOLDER = './audio'
 TRIM_FOLDER = './trim'
+def convertToWav(filename):
+
+    print("Converting " + filename + " to WAV ", file=sys.stderr)
+    ffmpeg_cmd = 'ffmpeg -y -i {} -acodec pcm_s16le -ar 16000 {}'.format(shlex.quote(filename), shlex.quote(filename + "converted.wav"))
+    try:
+        subprocess.check_output(shlex.split(ffmpeg_cmd), stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError('ffmpeg returned non-zero status: {}'.format(e.stderr))
+    except OSError as e:
+        raise OSError(e.errno,
+                      'ffmpeg not found')
+
+    print("Conversion for " + filename + " done! ")
+    return shlex.quote(filename + "converted.wav")
 
 def transcribe_input(filepath, filename):
     pool = mp.Pool(mp.cpu_count())
