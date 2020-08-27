@@ -148,4 +148,4 @@ def media_processor(audio_path):
 def transcribe_input(audio_path):
     file_path = convertToWav(audio_path)
     filepath, ds = media_processor(file_path)
-    return transcribe_file(ds, filepath)
+    return transcribe_file(filepath, ds)

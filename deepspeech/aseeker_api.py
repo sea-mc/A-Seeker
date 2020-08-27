@@ -35,7 +35,7 @@ def upload_file(filename):
     with open(os.path.join(AUDIO_FOLDER, filename), "wb") as fp:
         fp.write(request.data)
 
-    transcription = aseeker_controller.transcribe_input(os.path.join(AUDIO_FOLDER, filename), filename)
+    transcription = aseeker_controller.transcribe_input(os.path.join(AUDIO_FOLDER, filename))
 
     return transcription, 201
 

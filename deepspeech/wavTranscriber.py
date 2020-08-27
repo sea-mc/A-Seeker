@@ -81,7 +81,7 @@ def vad_segment_generator(wavFile, aggressiveness):
     audio, sample_rate, audio_length = wavSplit.read_wave(wavFile)
     assert sample_rate == 16000, "Only 16000Hz input WAV files are supported for now!"
     #vad = webrtcvad.Vad(int(aggressiveness))
-    frames = wavSplit.frame_generator(60000, audio, sample_rate)
+    frames = wavSplit.frame_generator(20000, audio, sample_rate)
     frames = list(frames)
     print("{}".format(len(frames)), file=sys.stderr)
     return frames

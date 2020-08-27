@@ -44,7 +44,7 @@ def fail(message, code=1):
 global output
 
 # most cpu's are quad cores nowadays, but powers of 2 are always nice
-NUM_THREADS = 4
+NUM_THREADS = 12
 
 
 class ChunkWorker(threading.Thread):
@@ -113,7 +113,7 @@ def transcribe_file(audio_path, tlog_path):
     print("Chunking file...", file=sys.stderr, flush=True)
     segments = wavTranscriber.vad_segment_generator(audio_path, 3)
     print("Beginning to process generated file chunks")
-
+    inference_time = time.time()
     # make a set of queues for upstream and downstream communication
     WriteQueue = queue.Queue()
     ReadQueue = queue.Queue()
@@ -143,9 +143,26 @@ def transcribe_file(audio_path, tlog_path):
 
     stamped_words = []
 
+    #apply an offset to every n+1 elements
+
     for ele in list(ReadQueue.queue):
         print(ele, file=sys.stderr, flush=True)
-        stamped_words.append(ele)
+        stamped_words.extend(ele)
+
+    curtime = 0.0
+    i = 0
+    for e in stamped_words:
+        if i == 0:
+            curtime = e["time"]
+        
+        if curtime > e["time"]:
+            curtime = curtime + e["time"]
+            e["time"] = curtime
+        else:
+            curtime = e["time"]
+        
+        i = i + 1
+
 
     print("{}".format(json.dumps(stamped_words)), file=sys.stderr, flush=True)
     # timeSum = 0.0
@@ -153,7 +170,7 @@ def transcribe_file(audio_path, tlog_path):
     #     timeSum += i
     # averageTime = timeSum / len(individualTimes)
 
-    # print("done with file; took{}".format(time.time() - inference_time))
+    print("done with file; took{}".format(time.time() - inference_time))
     # print("average chunk time is {}. Current run time is".format(averageTime, time.time() - inference_time))
     # print("Returning transcription to caller.")
     return json.dumps(stamped_words)
@@ -183,3 +200,4 @@ def convert_samplerate(audio_path, desired_sample_rate):
         raise OSError(e.errno,
                       'ffmpeg not found, use {}hz files or install it: {}'.format(desired_sample_rate, e.strerror))
     return shlex.quote(audio_path + "16k.wav")
+
