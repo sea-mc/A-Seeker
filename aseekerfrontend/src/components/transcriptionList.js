@@ -26,7 +26,7 @@ class TranscriptionList extends React.Component {
         };
 
         //call the middleware to get the requested transcription.
-        fetch('http://http://ec2-3-237-8-5.compute-1.amazonaws.com:1177/transcriptions/get/all?email='+cookies.get("email"),requestOptions )
+        fetch('http://ec2-3-237-8-5.compute-1.amazonaws.com:1177/transcriptions/get/all?email='+cookies.get("email"),requestOptions )
             .then((response) => response.json())
             .then(transcriptionList => {
                 this.setState({ transcriptions: transcriptionList });
