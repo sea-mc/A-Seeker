@@ -1,5 +1,7 @@
 #Author https://github.com/mozilla/DeepSpeech-examples/blob/r0.7/vad_transcriber/wavTranscriber.py
 import glob
+import sys
+
 import webrtcvad
 import logging
 import wavSplit
@@ -78,9 +80,8 @@ def vad_segment_generator(wavFile, aggressiveness):
     logging.debug("Caught the wav file @: %s" % (wavFile))
     audio, sample_rate, audio_length = wavSplit.read_wave(wavFile)
     assert sample_rate == 16000, "Only 16000Hz input WAV files are supported for now!"
-    vad = webrtcvad.Vad(int(aggressiveness))
-    frames = wavSplit.frame_generator(30, audio, sample_rate)
+    #vad = webrtcvad.Vad(int(aggressiveness))
+    frames = wavSplit.frame_generator(60000, audio, sample_rate)
     frames = list(frames)
-    segments = wavSplit.vad_collector(sample_rate, 10, 300, vad, frames)
-
-    return segments, sample_rate, audio_length, frames
+    print("{}".format(len(frames)), file=sys.stderr)
+    return frames

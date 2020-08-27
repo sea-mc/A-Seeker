@@ -23,9 +23,9 @@ RUN pip install sox
 RUN apt-get install sox --yes
 RUN apt-get install ffmpeg --yes
 COPY . ./
-RUN mkdir training
-RUN python3 DeepSpeech/setup.py build
-RUN python3 DeepSpeech/setup.py install
+# RUN mkdir training
+# RUN python3 DeepSpeech/setup.py build
+# RUN python3 DeepSpeech/setup.py install
 RUN wget -c -i ./modelUrls
 RUN mkdir -p audio
 ENTRYPOINT ["python","aseeker_api.py"]

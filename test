@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./stop
+docker image rm a-seeker_deepspeech
+
+./start

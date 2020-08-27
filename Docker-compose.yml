@@ -37,6 +37,11 @@ services:
 
  deepspeech:
    container_name: deepspeech
+   deploy:
+     resources:
+       reservations:
+         cpus: '4.5'
+         memory: 220M
    build:
       context: ./deepspeech
       dockerfile: Dockerfile
