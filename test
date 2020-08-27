@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ./stop
-cd deepspeech
-rm transcribe.py
-nano transcribe.py
-cd ..
+#xcd deepspeech
+#rm transcribe.py
+#nano transcribe.py
+#cd ..
 
 docker image rm a-seeker_deepspeech
 

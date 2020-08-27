@@ -44,7 +44,7 @@ def fail(message, code=1):
 global output
 
 # most cpu's are quad cores nowadays, but powers of 2 are always nice
-NUM_THREADS = 12
+NUM_THREADS = 2
 
 
 class ChunkWorker(threading.Thread):

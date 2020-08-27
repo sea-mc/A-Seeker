@@ -2,6 +2,5 @@
 #./setup
 docker-compose down
 
-docker rm frontend
 
 docker-compose up -d --build

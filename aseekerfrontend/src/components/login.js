@@ -41,7 +41,7 @@ class Login extends Component {
             alert("Please enter your password")
         }
         //call auth api and check for user-pass
-        fetch('http://ec2-3-237-8-5.compute-1.amazonaws.com:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString(), requestOptions)
+        fetch('http://localhost:1177/userauth/register/login?email='+this.state.email.toString()+"&password="+this.state.password.toString(), requestOptions)
             .then(response => {
                     if (response.status === 401) {
                         alert("Login Unsuccessful - Account not registered");

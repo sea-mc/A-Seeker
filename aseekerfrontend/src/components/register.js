@@ -21,7 +21,7 @@ class Register extends Component {
             redirect: 'follow'
         };
 
-        fetch( "http://ec2-3-237-8-5.compute-1.amazonaws.com:1177/userauth/register/new?email="+this.state.email +"&password="+this.state.password, requestOptions)
+        fetch( "http://localhost:1177/userauth/register/new?email="+this.state.email +"&password="+this.state.password, requestOptions)
             .then(response => response.text())
             .then(result => {
                 console.log(result);

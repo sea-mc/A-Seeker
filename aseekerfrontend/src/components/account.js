@@ -21,7 +21,7 @@ class Account extends Component {
             redirect: 'follow'
         };
         var email = cookies.get('email');
-        fetch( "http://ec2-3-237-8-5.compute-1.amazonaws.com:1177/userauth/register/delete?email="+email, requestOptions)
+        fetch( "http://localhost:1177/userauth/register/delete?email="+email, requestOptions)
             .then(response => response.text())
             .then(result => {
                 console.log(result);
