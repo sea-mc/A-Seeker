@@ -31,7 +31,7 @@ class TranscriptionEdit extends React.Component {
 
         var video = document.getElementById("video");
 
-        fetch('http://aseeker_middware:1177/deepSpeech/media/get?filename='+this.state.title, requestOptions)
+        fetch('http://localhost:1177/deepSpeech/media/get?filename='+this.state.title, requestOptions)
             .then(response => response.blob())
             .then( blob => {
                 video.src = window.URL.createObjectURL(blob);
@@ -106,7 +106,7 @@ class TranscriptionEdit extends React.Component {
             body: JSON.stringify(endarray)
         };
 
-        fetch('http://aseeker_middware:1177/transcriptions/update?email='+cookies.get("email") + "&title="+title, requestOptions)
+        fetch('http://localhost:1177/transcriptions/update?email='+cookies.get("email") + "&title="+title, requestOptions)
             .then(response => {
                 alert(response.status)
             });

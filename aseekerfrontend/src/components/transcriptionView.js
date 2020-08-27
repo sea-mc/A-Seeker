@@ -32,7 +32,7 @@ class TranscriptionView extends React.Component {
             redirect: 'follow',
         };
 
-        fetch('http://aseeker_middware:1177/transcriptions/get/single?email=' + cookies.get("email") + "&title="+this.state.title, requestOptions)
+        fetch('http://localhost:1177/transcriptions/get/single?email=' + cookies.get("email") + "&title="+this.state.title, requestOptions)
             .then((response) => response.json())
             .then(response => {
                 this.setState({
@@ -48,7 +48,7 @@ class TranscriptionView extends React.Component {
         });
         var video = document.getElementById("video");
 
-        fetch('http://aseeker_middware:1177/deepSpeech/media/get?filename='+this.state.title, requestOptions)
+        fetch('http://localhost:1177/deepSpeech/media/get?filename='+this.state.title, requestOptions)
             .then(response => response.blob())
             .then( blob => {
                 video.src = window.URL.createObjectURL(blob);
