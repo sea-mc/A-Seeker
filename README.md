@@ -34,7 +34,6 @@ Tutorial to Setup for [Mac](https://docs.docker.com/docker-for-mac/install/) and
     - The setup script will install the following        
         - All dependencies of the DeepSpeech project
         - The DeepSpeech language model and scorer required (~1 GB)
-        -  
 
 ### Run
 
@@ -48,6 +47,20 @@ run the following command to avoid downloading the model every startup
 ## Demo video
 
 [A-Seeker Demo Video](https://drive.google.com/file/d/1rkindtNzpnAwZZ06Ox8RtNJhWQqsB8e4/view?usp=sharing)
+
+## Example Files
+These are some of the files used in the testing of A-Seeker which contributed to our report.
+-[covid.mp4](https://drive.google.com/file/d/1HJ7b4E8eo4IoEQjDzlaJa1IM7je8MqIK/view?usp=sharing)
+-[eddy1.wav](https://drive.google.com/file/d/1GP13uJBxCM0TyfTUFUEpotRb-0MrGAtL/view?usp=sharing)
+-[gettysburg_address.mp3](https://drive.google.com/file/d/1-nyrnTGrI8VNg8909ilynFRvrpSTJeJA/view?usp=sharing)
+-[example_file.wav](https://drive.google.com/file/d/1UtbKNpPN0vx-fE53cdtxoVwrCZfI6iGt/view?usp=sharing)
+-[MLK.mp3 (Dr. King's 'Something Happening' Speech)](https://drive.google.com/file/d/1dhc6tTZ1rorDKxtqPdFbtQf-eLa_ASwF/view?usp=sharing)
+-[monica_clinton.wav](https://drive.google.com/file/d/1iXr9FZJMFXMUZh8Zx5yHsgJ2FVGaMTjY/view?usp=sharing)
+-[npr_water_podcast.mp3](https://drive.google.com/file/d/1O5zd1-MZ0iijVWPa9K-IS5Fa6a2qMmZN/view?usp=sharing)
+-[deniro.wav](https://drive.google.com/file/d/1UW_eBvIIcMipbP9NPjSKGDOcUlfiHp4U/view?usp=sharing)
+-[why_harris.wav](https://drive.google.com/file/d/1uIDwNzIzL9SyM5WgtHval61bC22ANtn9/view?usp=sharing)
+-[mit_lecture.mp4](https://drive.google.com/file/d/1bbLQmT-euuY9_w_dp3f0rGV59rqpVZRo/view?usp=sharing)
+
 
 ## Contributors
 
